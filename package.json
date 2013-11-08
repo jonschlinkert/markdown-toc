@@ -1,7 +1,7 @@
 {
   "name": "marked-toc",
   "description": "Generate a markdown TOC (table of contents), using the [marked.js](https://github.com/chjj/marked) lexer and parser.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/jonschlinkert/marked-toc",
   "author": {
     "name": "Jon Schlinkert",
