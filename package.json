@@ -1,0 +1,42 @@
+{
+  "name": "marked-toc",
+  "description": "Generate a markdown TOC (table of contents), using the [marked.js](https://github.com/chjj/marked) lexer and parser.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/marked-toc",
+  "author": {
+    "name": "Jon Schlinkert",
+    "url": "https://github.com/jonschlinkert"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonschlinkert/marked-toc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/marked-toc/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jonschlinkert/marked-toc/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "dependencies": {
+    "marked": "~0.2.10"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-nodeunit": "~0.2.0"
+  },
+  "keywords": [
+    "readme",
+    "markdown",
+    "toc",
+    "table of contents"
+  ]
+}
