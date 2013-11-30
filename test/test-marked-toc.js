@@ -33,14 +33,13 @@ var toc     = makeTOC(grunt.file.read('README.md'));
 */
 
 var generatedTOC = [
-  '* [marked-toc](#marked-toc)',
-  '  * [Getting Started](#getting-started)',
-  '  * [Documentation](#documentation)',
-  '  * [Examples](#examples)',
-  '  * [Contributing](#contributing)',
-  '  * [Release History](#release-history)',
-  '  * [Author](#author)',
-  '  * [License](#license)'
+  '* [Getting Started](#getting-started)',
+  '* [Documentation](#documentation)',
+  '* [Examples](#examples)',
+  '* [Contributing](#contributing)',
+  '* [Release History](#release-history)',
+  '* [Author](#author)',
+  '* [License](#license)'
 ].join('\n');
 
 exports['makeTOC'] = {
