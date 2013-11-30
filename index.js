@@ -37,12 +37,29 @@ var makeTOC = function (src) {
     // Store original text and create an id for linking
     item.headingText = item.text.replace(/(\s*\[!|(?:\[.+ →\]\()).+/g, '');
     item.headingId   = Utils.slugify(item.headingText);
+
+    var arr = ['Table of Contents', 'TOC', 'TABLE OF CONTENTS'];
+    if (isMatch(arr, item.headingText)) {
+      return;
+    }
+
     return true;
   }).forEach(function (item) {
     toc += new Array((item.depth - 1) * 2 + 1).join(" ") + "* " +
       "[" + item.headingText + "](#" + item.headingId + ")\n";
   });
   return toc.replace(/\s*\*\s*\[\].+/g, '');
+};
+
+var isMatch = function (keywords, str) {
+  keywords = Array.isArray(keywords) ? keywords : [keywords];
+  keywords = (keywords.length > 0) ? keywords.join('|') : '.*';
+  var re = new RegExp('(?:' + keywords + ')', 'g');
+  if (String(str).match(re)) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 module.exports = makeTOC;
