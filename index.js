@@ -20,7 +20,7 @@ var makeTOC = function (src) {
   // Remove the very first h1
   tokens.shift();
 
-  var indent = _.any(tokens, {depth: 1});
+  var h1 = _.any(tokens, {depth: 1});
 
   tokens.filter(function (item) {
     // Filter out everything but headings
@@ -30,7 +30,7 @@ var makeTOC = function (src) {
 
     // Since we removed the first h1, we'll check to see if other h1's
     // exist. If none exist, then we unindent the rest of the TOC
-    if(!indent) {
+    if(!h1) {
       item.depth = item.depth - 1;
     }
 

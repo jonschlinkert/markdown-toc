@@ -1,4 +1,4 @@
-# marked-toc [![NPM version](https://badge.fury.io/js/marked-toc.png)](http://badge.fury.io/js/marked-toc)  [![Build Status](true.png)](true)
+# marked-toc [![NPM version](https://badge.fury.io/js/marked-toc.png)](http://badge.fury.io/js/marked-toc)
 
 > Generate a TOC (table of contents) for markdown files, using the [marked.js](https://github.com/chjj/marked) lexer and parser.
 
@@ -7,12 +7,11 @@ Install the module with: `npm install marked-toc`
 
 ```javascript
 var makeTOC = require('marked-toc');
-var file = makeTOC(fs.readFileSync('README.md'));
+var file = makeTOC(fs.readFileSync('README.md'), 'utf8');
 ```
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](http://gruntjs.com/).
-
 
 ## Author
 
