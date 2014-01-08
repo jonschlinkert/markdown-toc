@@ -3,6 +3,7 @@
 > Generate a TOC (table of contents) for markdown files, using the [marked.js](https://github.com/chjj/marked) lexer and parser.
 
 ## Getting Started
+
 Install the module with: `npm install marked-toc`
 
 ```javascript
@@ -11,7 +12,13 @@ var file = makeTOC(fs.readFileSync('README.md'), 'utf8');
 ```
 
 ## Contributing
+
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](http://gruntjs.com/).
+
+```sh
+npm install
+grunt
+```
 
 ## Author
 
