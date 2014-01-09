@@ -10,7 +10,6 @@
 
 var grunt   = require('grunt');
 var makeTOC = require('../index.js');
-var glob    = require('globule');
 
 var sanitize = function(str) {
   return str.replace(/^\s+|\s+$/g, '');
