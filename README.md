@@ -1,6 +1,6 @@
 # marked-toc [![NPM version](https://badge.fury.io/js/marked-toc.png)](http://badge.fury.io/js/marked-toc)
 
-> Generate a TOC (table of contents) for markdown files, using the [marked.js](https://github.com/chjj/marked) lexer and parser.
+> Generate a TOC (table of contents) for markdown files
 
 _(example)_
 <!-- toc -->
@@ -67,7 +67,7 @@ Default: `<%= depth %><%= bullet %>[<%= heading %>](#<%= url %>)\n`
 
 The Lo-Dash template used to generate the Table of Contents.
 
-Example (this is the default):
+**Example (this is the default):**
 
 ```js
 var tmpl = '<%= depth %><%= bullet %>[<%= heading %>](#<%= url %>)\n';
@@ -108,7 +108,7 @@ Default: `['mixin', 'helper', 'filter']`
 
 Strip "blacklisted" keywords from the headings.
 
-Example:
+**Example:**
 
 ```js
 toc(file, {clean: ['docs', 'methods']});
@@ -153,7 +153,9 @@ Type: `String`
 
 Default: `-`
 
-String of chars that you want to be whitelisted when headings are "slugified" for links, e.g. `-_~`. Example:
+String of chars that you want to be whitelisted when headings are "slugified" for links, e.g. `-_~`.
+
+**Example:**
 
 ```markdown
 // This heading
@@ -187,7 +189,7 @@ fs.writeFileSync('toc.md', table);
 
 Inject a TOC at the insertion point in a string, `<!-- toc -->`.
 
-Params:
+**Params:**
 
 * `str`: the content
 * `options`: object of options
@@ -205,13 +207,13 @@ toc.insert(str, options);
 toc.add(src, dest, options)
 ```
 
-Example:
+**Example:**
 
 ```js
 toc.add('path/to/source.md', 'path/to/dest.md');
 ```
 
-Source only:
+**Source only:**
 
 ```js
 toc.add('README.md');
@@ -229,6 +231,8 @@ Returns an object (JSON) with two properties, `data` and `toc`:
 
 * `data`: array of headings and associated properties used to construct a TOC. **TIP**: this can be extended with properties, such as src path etc.
 * `toc`: the actual Table of Contents result, as a string
+
+**Example:**
 
 ```json
 {
