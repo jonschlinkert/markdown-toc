@@ -1,7 +1,7 @@
 {
   "name": "marked-toc",
   "description": "Generate a markdown TOC (table of contents), using the [marked.js](https://github.com/chjj/marked) lexer and parser.",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "homepage": "https://github.com/jonschlinkert/marked-toc",
   "author": {
     "name": "Jon Schlinkert",
@@ -20,19 +20,27 @@
       "url": "https://github.com/jonschlinkert/marked-toc/blob/master/LICENSE-MIT"
     }
   ],
+  "bin": {
+    "toc": "./bin/toc"
+  },
   "main": "index.js",
   "engines": {
     "node": ">= 0.8.0"
   },
-  "dependencies": {
-    "marked": "~0.2.10",
-    "lodash": "~2.4.0"
-  },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-jshint": "~0.6.4",
-    "grunt-contrib-nodeunit": "~0.2.0"
+    "chai": "~1.9.0",
+    "mocha": "~1.17.1"
+  },
+  "dependencies": {
+    "fs-utils": "~0.2.1",
+    "globule": "~0.2.0",
+    "lodash": "~2.4.1",
+    "marked": "~0.3.1",
+    "template": "~0.1.5",
+    "uslug": "~1.0.3",
+    "relative": "~0.1.0",
+    "chalk": "~0.4.0",
+    "gray-matter": "~0.2.3"
   },
   "keywords": [
     "readme",

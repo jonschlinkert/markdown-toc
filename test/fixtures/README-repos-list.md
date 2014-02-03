@@ -1,6 +1,9 @@
-# grunt-readme [![NPM version](https://badge.fury.io/js/grunt-readme.png)](http://badge.fury.io/js/grunt-readme) 
+# grunt-readme [![NPM version](https://badge.fury.io/js/grunt-readme.png)](http://badge.fury.io/js/grunt-readme)
 
 > Grunt plugin for generating a README from templates, including an optional table of contents. No Gruntfile config is necessary, just choose a starter template and you'll be ready to go.
+
+<!-- toc -->
+
 
 This repo is based on [grunt-contrib](https://github.com/gruntjs/grunt-contrib/).
 
@@ -10,7 +13,7 @@ This list is here as a convenience, you will still need to download the tasks in
 ### [assemble](http://assemble.io) [![NPM version](https://badge.fury.io/js/assemble.png)](http://badge.fury.io/js/assemble)
 > Static site generator for Grunt.js, Yeoman and Node.js. Used by H5BP/Effeckt, Topcoat, Web Experience Toolkit, and hundreds of other projects to build sites, themes, components, documentation, blogs and gh-pages.
 
-                                
+
 
 To update this list, from the root of the project run `node docs/repos && grunt`.
 

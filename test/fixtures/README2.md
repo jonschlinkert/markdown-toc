@@ -2,6 +2,8 @@
 
 > Grunt plugin for generating a README from templates, including an optional table of contents. No Gruntfile config is necessary, just choose a starter template and you'll be ready to go.
 
+<!-- toc -->
+
 ## Getting Started
 
 

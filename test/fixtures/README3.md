@@ -2,6 +2,8 @@
 
 > The best project ever.
 
+<!-- toc -->
+
 ## Getting Started
 Install the module with: `npm install marked-toc`
 

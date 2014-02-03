@@ -1,6 +1,8 @@
 ## Examples
 
-### Example config with [Assemble](http://assemble.io)
+<!-- toc -->
+
+## Example config with [Assemble](http://assemble.io)
 
 In your project's Gruntfile, options for the `{{readme}}` helper can be defined in the Assemble task options:
 

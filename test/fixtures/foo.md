@@ -1,3 +1,7 @@
+# Examples
+
+<!-- toc -->
+
 
 This isn't in a code block
 

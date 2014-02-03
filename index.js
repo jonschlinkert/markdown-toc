@@ -1,25 +1,39 @@
-/*
- * marked-toc
- * https://github.com/jonschlinkert/marked-toc, inspired by:
- * https://github.com/jquery/grunt-jquery-content/blob/master/tasks/build.js
+/**
+ * marked-toc <https://github.com/jonschlinkert/marked-toc>
  *
- * Copyright (c) 2013 Jon Schlinkert
+ * Copyright (c) 2014 Jon Schlinkert, contributors.
  * Licensed under the MIT license.
  */
 
 'use strict';
 
-var marked = require("marked");
-var _      = require("lodash");
+var file     = require('fs-utils');
+var marked   = require('marked');
+var chalk    = require('chalk');
+var matter   = require('gray-matter');
+var template = require('template');
+var slugify  = require('uslug');
+var _        = require('lodash');
+
+// Local libs
 var utils  = require("./lib/utils");
 
-module.exports = function(src) {
-  var toc    = "";
-  var tokens = marked.lexer(src);
+// Default template to use for TOC
+var defaultTemplate = '<%= depth %><%= bullet %>[<%= heading %>](#<%= url %>)\n';
 
-  // Remove the very first h1
-  tokens.shift();
 
+var generate = function(str, options) {
+  var opts = _.extend({firsth1: false, blacklist: true, omit: []}, options);
+  var toc    = '';
+  var tokens = marked.lexer(str);
+  var tocArray = [];
+
+  // Remove the very first h1, true by default
+  if(opts.firsth1 === false) {
+    tokens.shift();
+  }
+
+  // Do any h1's still exist?
   var h1 = _.any(tokens, {depth: 1});
 
   tokens.filter(function (token) {
@@ -35,20 +49,77 @@ module.exports = function(src) {
     }
 
     // Store original text and create an id for linking
-    token.headingText = token.text.replace(/(\s*\[!|(?:\[.+ →\]\()).+/g, '');
-    token.headingId   = utils.slugify(token.headingText);
+    token.heading = opts.clean ? utils.clean(token.text, opts) : token.text;
 
-    // console.log(token);
+    // Create a "slugified" id for linking
+    token.id = slugify(token.text, {allowedChars: '-'} || opts);
 
-    var arr = ['Table of Contents', 'TOC', 'TABLE OF CONTENTS'];
-    if (utils.isMatch(arr, token.headingText)) {
+    // Omit headings with these strings
+    var omissions = ['Table of Contents', 'TOC', 'TABLE OF CONTENTS'];
+    var omit = _.union([], opts.omit, omissions);
+
+    if (utils.isMatch(omit, token.heading)) {
       return;
     }
 
     return true;
-  }).forEach(function (token) {
-    toc += new Array((token.depth - 1) * 2 + 1).join(" ") + "* " +
-      "[" + token.headingText + "](#" + token.headingId + ")\n";
+  }).forEach(function (h) {
+
+    var data = _.extend({}, opts.data, {
+      depth  : new Array((h.depth - 1) * 2 + 1).join(' '),
+      bullet : opts.bullet ? opts.bullet : '* ',
+      heading: h.heading,
+      url    : h.id
+    });
+
+    tocArray.push(data);
+
+    var tmpl = opts.template || defaultTemplate;
+    toc += template(tmpl, data);
   });
-  return toc.replace(/\s*\*\s*\[\].+/g, '');
+
+  return {
+    data: tocArray,
+    toc: opts.clean ? utils.clean(toc, opts) : toc
+  };
+};
+
+
+/**
+ * toc
+ */
+
+var toc = module.exports = function(str, options) {
+  return generate(str, options).toc;
+};
+
+
+toc.raw = function(str, options) {
+  return generate(str, options);
+};
+
+
+toc.insert = function(str, options) {
+  var start = '<!-- toc -->\n';
+  var stop  = '\n<!-- toc stop -->';
+  var strip = /<!-- toc -->[\s\S]+<!-- toc stop -->/;
+
+  var content = matter(str).content;
+  var front   = matter.extend(str);
+
+  // Remove the existing TOC
+  content = content.replace(strip, start);
+
+  // Generate the new TOC
+  var table = start + toc(content, options) + stop;
+  return front + content.replace(start, table);
+};
+
+
+// Read a file and add a TOC, dest is optional.
+toc.add = function(src, dest, options) {
+  var content = file.readFileSync(src);
+  if (utils.isDest(dest)) {options = dest; dest = src;}
+  file.writeFileSync(dest, toc.insert(content, {clean: ['docs']}));
+  console.log(chalk.green('>> Success:'), dest);
 };

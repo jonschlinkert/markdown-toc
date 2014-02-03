@@ -1,0 +1,10 @@
+# [Readme3](../fixtures/README3.md)
+
+* [marked-toc [![NPM version](https://badge.fury.io/js/marked-toc.png)](http://badge.fury.io/js/marked-toc)  [![Build Status](true.png)](true)](../fixtures/README3.md/#marked-toc-npm-versionhttpsbadgefuryiojsmarked-tocpnghttpbadgefuryiojsmarked-toc-build-statustruepngtrue)
+  * [Getting Started](../fixtures/README3.md/#getting-started)
+  * [Documentation](../fixtures/README3.md/#documentation)
+  * [Examples](../fixtures/README3.md/#examples)
+  * [Contributing](../fixtures/README3.md/#contributing)
+  * [Release History](../fixtures/README3.md/#release-history)
+  * [Author](../fixtures/README3.md/#author)
+  * [License](../fixtures/README3.md/#license)

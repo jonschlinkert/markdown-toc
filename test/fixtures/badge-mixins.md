@@ -1,6 +1,9 @@
 # Badges
 
 
+<!-- toc -->
+
+
 ## codeclimate
 
 ```js

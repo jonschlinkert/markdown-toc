@@ -1,6 +1,8 @@
-# grunt-readme [![NPM version](https://badge.fury.io/js/grunt-readme.png)](http://badge.fury.io/js/grunt-readme) 
+# grunt-readme [![NPM version](https://badge.fury.io/js/grunt-readme.png)](http://badge.fury.io/js/grunt-readme)
 
 > Grunt plugin for generating a README from templates, including an optional table of contents. No Gruntfile config is necessary, just choose a starter template and you'll be ready to go.
+
+<!-- toc -->
 
 [Also see examples →](./EXAMPLES.md) and [documentation →](./DOCS.md)
 
