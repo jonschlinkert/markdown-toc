@@ -21,7 +21,7 @@ var actual, expected, fixture;
 describe('toc', function () {
   it('should generate a Table of Contents using default settings', function () {
     fixture = file.readFileSync('test/fixtures/README3.md');
-    actual = toc(fixture).toc;
+    actual = toc(fixture);
     expected = [
       '* [Getting Started](#getting-started)',
       '* [Documentation](#documentation)',
@@ -36,7 +36,7 @@ describe('toc', function () {
 
   it('should generate a markdown TOC, while ignoring headings inside fenced code blocks.', function () {
     fixture = file.readFileSync('test/fixtures/README2.md');
-    actual = toc(fixture).toc;
+    actual = toc(fixture);
     expected = [
       '* [Getting Started](#getting-started)',
       '* [Options](#options)',

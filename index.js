@@ -48,6 +48,8 @@ var generate = function(str, options) {
       token.depth = token.depth - 1;
     }
 
+    // console.log(token.depth);
+
     // Store original text and create an id for linking
     token.heading = opts.clean ? utils.clean(token.text, opts) : token.text;
 
@@ -65,12 +67,17 @@ var generate = function(str, options) {
     return true;
   }).forEach(function (h) {
 
+    if(h.depth > opts.maxDepth) {
+      return;
+    }
+
     var data = _.extend({}, opts.data, {
       depth  : new Array((h.depth - 1) * 2 + 1).join(' '),
       bullet : opts.bullet ? opts.bullet : '* ',
       heading: h.heading,
       url    : h.id
     });
+
 
     tocArray.push(data);
 
