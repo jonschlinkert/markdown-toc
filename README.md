@@ -39,7 +39,7 @@ In any markdown file, add `<!-- toc -->` where you want to add the TOC. Then in 
 toc [filename]
 ```
 
-Or, to add a TOC to the project's README.md, add `<!-- toc -->` and run:
+To add a TOC to your project's README.md, add `<!-- toc -->` and run:
 
 ```bash
 toc
