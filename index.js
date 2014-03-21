@@ -16,15 +16,21 @@ var slugify  = require('uslug');
 var _        = require('lodash');
 
 // Local libs
-var utils  = require("./lib/utils");
+var utils  = require('./lib/utils');
 
 // Default template to use for TOC
 var defaultTemplate = '<%= depth %><%= bullet %>[<%= heading %>](#<%= url %>)\n';
 
 
 var generate = function(str, options) {
-  var opts = _.extend({firsth1: false, blacklist: true, omit: []}, options);
-  var toc    = '';
+  var opts = _.extend({
+    firsth1: false,
+    blacklist: true,
+    omit: [],
+    maxDepth: 3
+  }, options);
+
+  var toc = '';
   var tokens = marked.lexer(str);
   var tocArray = [];
 
@@ -47,8 +53,6 @@ var generate = function(str, options) {
     if(!h1) {
       token.depth = token.depth - 1;
     }
-
-    // console.log(token.depth);
 
     // Store original text and create an id for linking
     token.heading = opts.clean ? utils.clean(token.text, opts) : token.text;
@@ -77,7 +81,6 @@ var generate = function(str, options) {
       heading: h.heading,
       url    : h.id
     });
-
 
     tocArray.push(data);
 
