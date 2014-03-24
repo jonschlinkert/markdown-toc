@@ -128,8 +128,9 @@ toc.insert = function(str, options) {
 
 // Read a file and add a TOC, dest is optional.
 toc.add = function(src, dest, options) {
+  var opts = _.extend({clean: ['docs']}, options)
   var content = file.readFileSync(src);
   if (utils.isDest(dest)) {options = dest; dest = src;}
-  file.writeFileSync(dest, toc.insert(content, {clean: ['docs']}));
+  file.writeFileSync(dest, toc.insert(content, opts));
   console.log(chalk.green('>> Success:'), dest);
 };
