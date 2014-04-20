@@ -5,18 +5,16 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
+const file     = require('fs-utils');
+const marked   = require('marked');
+const matter   = require('gray-matter');
+const template = require('template');
+const slugify  = require('uslug');
+const _        = require('lodash');
 
-var file     = require('fs-utils');
-var marked   = require('marked');
-var chalk    = require('chalk');
-var matter   = require('gray-matter');
-var template = require('template');
-var slugify  = require('uslug');
-var _        = require('lodash');
+const utils  = require('./lib/utils');
 
-// Local libs
-var utils  = require('./lib/utils');
+
 
 // Default template to use for TOC
 var defaultTemplate = '<%= depth %><%= bullet %>[<%= heading %>](#<%= url %>)\n';
@@ -131,5 +129,5 @@ toc.add = function(src, dest, options) {
   var content = file.readFileSync(src);
   if (utils.isDest(dest)) {options = dest; dest = src;}
   file.writeFileSync(dest, toc.insert(content, {clean: ['docs']}));
-  console.log(chalk.green('>> Success:'), dest);
+  console.log(' Success:', dest);
 };

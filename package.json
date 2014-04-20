@@ -1,7 +1,7 @@
 {
   "name": "marked-toc",
   "description": "Generate a markdown TOC (table of contents), using the [marked.js](https://github.com/chjj/marked) lexer and parser.",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "homepage": "https://github.com/jonschlinkert/marked-toc",
   "author": {
     "name": "Jon Schlinkert",
@@ -32,15 +32,13 @@
     "mocha": "~1.17.1"
   },
   "dependencies": {
-    "fs-utils": "~0.2.1",
+    "fs-utils": "~0.4.0",
     "globule": "~0.2.0",
+    "gray-matter": "~0.3.5",
     "lodash": "~2.4.1",
-    "marked": "~0.3.1",
-    "template": "~0.1.5",
-    "uslug": "~1.0.3",
-    "relative": "~0.1.0",
-    "chalk": "~0.4.0",
-    "gray-matter": "~0.2.3"
+    "marked": "0.3.0",
+    "template": "~0.1.6",
+    "uslug": "~1.0.3"
   },
   "keywords": [
     "readme",
