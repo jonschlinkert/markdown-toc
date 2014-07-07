@@ -108,8 +108,8 @@ toc.raw = function(str, options) {
 
 
 toc.insert = function(str, options) {
-  var start = '<!-- toc -->\n';
-  var stop  = '\n<!-- toc stop -->';
+  var start = '<!-- toc -->';
+  var stop  = '<!-- toc stop -->';
   var strip = /<!-- toc -->[\s\S]+<!-- toc stop -->/;
 
   var content = matter(str).content;
@@ -119,7 +119,7 @@ toc.insert = function(str, options) {
   content = content.replace(strip, start);
 
   // Generate the new TOC
-  var table = start + toc(content, options) + stop;
+  var table = '\n\n' + start + '\n\n' + toc(content, options) + '\n' + stop + '\n';
   return front + content.replace(start, table);
 };
 

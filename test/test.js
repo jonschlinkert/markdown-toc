@@ -8,8 +8,11 @@
 
 'use strict';
 
+var assert = require('chai').assert;
 var expect = require('chai').expect;
 var file = require('fs-utils');
+var marked = require('marked');
+var _ = require('lodash');
 var toc  = require('../index');
 
 var strip = function(str) {
@@ -64,5 +67,25 @@ describe('toc', function () {
     //   '* [License](#license)'
     // ].join('\n');
     // expect(strip(actual)).to.eql(strip(expected));
+  });
+
+  it('should allow toc stop comment in text.', function () {
+    var fixture = file.readFileSync('test/fixtures/tocstop.md');
+    actual = toc.insert(fixture);
+    var tokens = marked.lexer(actual);
+    var htmlTokens = _.filter(tokens, function (token) { return token.type == 'html' });
+    assert.propertyVal(htmlTokens[0], 'text', '<!-- toc -->\n\n');
+    assert.propertyVal(htmlTokens[1], 'text', '<!-- toc stop -->\n\n');
+  });
+
+  it('should handle extra comments in text.', function() {
+    var fixture = file.readFileSync('test/fixtures/extra-comment.md');
+    actual = toc.insert(fixture);
+    var tokens = marked.lexer(actual);
+    var htmlTokens = _.filter(tokens, function (token) { return token.type == 'html' });
+    assert.propertyVal(htmlTokens[0], 'text', '<!-- toc -->\n\n');
+    // Contains 3 newlines since we don't strip newlines around initial toc comment
+    assert.propertyVal(htmlTokens[1], 'text', '<!-- toc stop -->\n\n\n');
+    assert.propertyVal(htmlTokens[2], 'text', '<!-- Extra comment -->\n\n');
   });
 });
