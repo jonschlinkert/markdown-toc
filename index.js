@@ -9,7 +9,7 @@ const file     = require('fs-utils');
 const marked   = require('marked');
 const matter   = require('gray-matter');
 const template = require('template');
-const slugify  = require('uslug');
+const uslug    = require('uslug');
 const _        = require('lodash');
 
 const utils  = require('./lib/utils');
@@ -25,7 +25,10 @@ var generate = function(str, options) {
     firsth1: false,
     blacklist: true,
     omit: [],
-    maxDepth: 3
+    maxDepth: 3,
+    slugify: function(text) {
+      return uslag(text, {allowedChars: '-'} || this);
+    }
   }, options);
 
   var toc = '';
@@ -56,7 +59,7 @@ var generate = function(str, options) {
     token.heading = opts.clean ? utils.clean(token.text, opts) : token.text;
 
     // Create a "slugified" id for linking
-    token.id = slugify(token.text, {allowedChars: '-'} || opts);
+    token.id = opts.slugify(token.text);
 
     // Omit headings with these strings
     var omissions = ['Table of Contents', 'TOC', 'TABLE OF CONTENTS'];
