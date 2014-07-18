@@ -83,6 +83,15 @@ Default: `* `
 The bullet to use for each item in the generated TOC. This is passed as a variable to the `<%= bullet %>` template.
 
 
+### maxDepth
+
+Type: `Number`
+
+Default: `3`
+
+Use headings whose depth is at most maxDepth.
+
+
 ### firsth1
 
 Type: `Boolean`
