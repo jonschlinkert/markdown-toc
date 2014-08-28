@@ -175,6 +175,16 @@ String of chars that you want to be whitelisted when headings are "slugified" fo
 
 ```
 
+
+### slugify
+
+Type: `Function(text)`
+
+Default `uslag` ([see readme](https://www.npmjs.org/package/uslug#readme))
+
+Use a custom function to generate headings' ids. Use this to generate consistent ids with your marked renderer.
+
+
 ## API
 
 Most methods expect a string as the first paramter, so unless otherwise noted, assume that each example gets the `str` variable from:
