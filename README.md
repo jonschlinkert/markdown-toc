@@ -30,7 +30,7 @@ _(example)_
 Install the module with [npm](npmjs.org):
 
 ```bash
-npm i marked-toc --save
+npm i -g marked-toc --save
 ```
 
 In any markdown file, add `<!-- toc -->` where you want to add the TOC. Then in the command line, run:
