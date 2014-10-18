@@ -25,7 +25,9 @@ var generate = function(str, options) {
     firsth1: false,
     blacklist: true,
     omit: [],
-    maxDepth: 3
+    maxDepth: 3,
+    slugifyOptions: { allowedChars: '-' },
+    slugify: function(text) { return slugify(text, opts.slugifyOptions); }
   }, options);
 
   var toc = '';
@@ -56,7 +58,7 @@ var generate = function(str, options) {
     token.heading = opts.clean ? utils.clean(token.text, opts) : token.text;
 
     // Create a "slugified" id for linking
-    token.id = slugify(token.text, {allowedChars: '-'} || opts);
+    token.id = opts.slugify(token.text);
 
     // Omit headings with these strings
     var omissions = ['Table of Contents', 'TOC', 'TABLE OF CONTENTS'];

@@ -88,4 +88,27 @@ describe('toc', function () {
     assert.propertyVal(htmlTokens[1], 'text', '<!-- toc stop -->\n\n\n');
     assert.propertyVal(htmlTokens[2], 'text', '<!-- Extra comment -->\n\n');
   });
+
+  it('should allow a custom slugify', function() {
+    var actual = toc('# Some Article', {
+      firsth1: true,
+      slugify: function(text) {
+        return '!' + text.toLowerCase().replace(/[^\w]/g, '-') + '!'
+      }
+    });
+    var expected = "* [Some Article](#!some-article!)\n";
+    assert.equal(actual, expected);
+  });
+
+  it('should allow whitelist of slugify characters', function() {
+    var actual = toc('# Some Article: description!', {
+      firsth1: true,
+      slugifyOptions: {
+        allowedChars: '!:'
+      }
+    });
+    var expected = "* [Some Article: description!](#some-article:-description!)\n";
+    assert.equal(actual, expected);
+  });
+
 });
