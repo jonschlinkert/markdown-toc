@@ -13,7 +13,7 @@ var expect = require('chai').expect;
 var file = require('fs-utils');
 var marked = require('marked');
 var _ = require('lodash');
-var toc  = require('../index');
+var toc  = require('..');
 
 var strip = function(str) {
   return str.replace(/^\s+|\s+$/g, '');

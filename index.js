@@ -5,29 +5,43 @@
  * Licensed under the MIT license.
  */
 
-const file     = require('fs-utils');
-const marked   = require('marked');
-const matter   = require('gray-matter');
-const template = require('template');
-const slugify  = require('uslug');
-const _        = require('lodash');
+'use strict';
 
-const utils  = require('./lib/utils');
+var file = require('fs-utils');
+var marked = require('marked');
+var matter = require('gray-matter');
+var template = require('template');
+var slugify = require('uslug');
+var _ = require('lodash');
+var utils = require('./lib/utils');
 
+/**
+ * Default template to use for generating
+ * a table of contents.
+ */
 
-
-// Default template to use for TOC
 var defaultTemplate = '<%= depth %><%= bullet %>[<%= heading %>](#<%= url %>)\n';
 
 
-var generate = function(str, options) {
+/**
+ * Create the table of contents object that
+ * will be used as context for the template.
+ *
+ * @param  {String} `str`
+ * @param  {Object} `options`
+ * @return {Object}
+ */
+
+function generate(str, options) {
   var opts = _.extend({
     firsth1: false,
     blacklist: true,
     omit: [],
     maxDepth: 3,
     slugifyOptions: { allowedChars: '-' },
-    slugify: function(text) { return slugify(text, opts.slugifyOptions); }
+    slugify: function(text) {
+      return slugify(text, opts.slugifyOptions);
+    }
   }, options);
 
   var toc = '';
@@ -92,16 +106,16 @@ var generate = function(str, options) {
     data: tocArray,
     toc: opts.clean ? utils.clean(toc, opts) : toc
   };
-};
+}
 
 
 /**
  * toc
  */
 
-var toc = module.exports = function(str, options) {
+function toc(str, options) {
   return generate(str, options).toc;
-};
+}
 
 
 toc.raw = function(str, options) {
@@ -126,7 +140,14 @@ toc.insert = function(str, options) {
 };
 
 
-// Read a file and add a TOC, dest is optional.
+/**
+ * Read a file and add a TOC. `dest` is optional.
+ *
+ * @param {String} `src`
+ * @param {String} `dest`
+ * @param {String} `options`
+ */
+
 toc.add = function(src, dest, options) {
   var opts = _.extend({clean: ['docs']}, options || {});
   var content = file.readFileSync(src);
@@ -134,3 +155,10 @@ toc.add = function(src, dest, options) {
   file.writeFileSync(dest, toc.insert(content, opts));
   console.log(' Success:', dest);
 };
+
+
+/**
+ * Expose `toc`
+ */
+
+module.exports = toc;

@@ -9,6 +9,7 @@ _(example)_
 * [Options](#options)
   * [template](#template)
   * [bullet](#bullet)
+  * [maxDepth](#maxdepth)
   * [firsth1](#firsth1)
   * [omit](#omit)
   * [clean](#clean)
@@ -39,11 +40,8 @@ In any markdown file, add `<!-- toc -->` where you want to add the TOC. Then in 
 toc [filename]
 ```
 
-To add a TOC to your project's README.md, add `<!-- toc -->` and run:
+If you add the toc to a `README.md`, no need to add `[filename]`, just run `toc`.
 
-```bash
-toc
-```
 
 ## Usage
 
