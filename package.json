@@ -34,6 +34,7 @@
   "dependencies": {
     "fs-utils": "^0.5.0",
     "gray-matter": "^0.5.1",
+    "lineparser": "^0.9.8",
     "lodash": "~2.4.1",
     "marked": "0.3.0",
     "template": "~0.1.6",

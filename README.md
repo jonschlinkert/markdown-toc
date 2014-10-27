@@ -42,6 +42,13 @@ toc [filename]
 
 If you add the toc to a `README.md`, no need to add `[filename]`, just run `toc`.
 
+If you want to specify `bullet`, `maxDepth` or `firsth1` options, you can specify it like below.
+```bash
+toc [-d <maxDepth>] [-b <bullet>] [--firsth1] <src> <dest>
+
+# e.g.
+toc -d 6 -b "+" README.md
+```
 
 ## Usage
 
