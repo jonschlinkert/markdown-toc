@@ -135,7 +135,7 @@ toc.insert = function(str, options) {
   content = content.replace(strip, start);
 
   // Generate the new TOC
-  var table = '\n\n' + start + '\n\n' + toc(content, options) + '\n' + stop + '\n';
+  var table = start + '\n\n' + toc(content, options) + '\n' + stop;
   return front + content.replace(start, table);
 };
 
