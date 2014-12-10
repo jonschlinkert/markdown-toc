@@ -7,22 +7,34 @@ var toc = require('..');
 
 describe('toc', function() {
   it('should generate a TOC from markdown headings:', function() {
-    toc('# AAA\n## BBB\n### CCC').content.should.equal([
+    toc('# AAA\n# BBB\n# CCC\nfoo\nbar\nbaz').content.should.equal([
       '- [AAA](#aaa)',
-      '  * [BBB](#bbb)',
-      '    + [CCC](#ccc)'
-    ].join('\n'));
-  });
-
-  it('should remove the first H1 when `firsth1` is false:', function() {
-    toc('# AAA\n## BBB\n### CCC', {firsth1: false}).content.should.equal([
       '- [BBB](#bbb)',
-      '  * [CCC](#ccc)'
+      '- [CCC](#ccc)'
     ].join('\n'));
   });
 
-  it('should generate a Table of Contents using default settings', function() {
-    toc(read('test/fixtures/basic.md')).content.should.equal([
+  it('should use a different bullet for each level', function() {
+    toc(read('test/fixtures/levels.md')).content.should.equal([
+      '- [AAA](#aaa)',
+      '  * [a.1](#a-1)',
+      '    + [a.2](#a-2)',
+      '      ~ [a.3](#a-3)',
+    ].join('\n'));
+  });
+
+  it('should use a different bullet for each level', function() {
+    toc(read('test/fixtures/repeat-bullets.md')).content.should.equal([
+      '- [AAA](#aaa)',
+      '  * [a.1](#a-1)',
+      '    + [a.2](#a-2)',
+      '      ~ [a.3](#a-3)',
+      '        - [a.4](#a-4)'
+    ].join('\n'));
+  });
+
+  it('should handle mixed heading levels:', function() {
+    toc(read('test/fixtures/mixed.md')).content.should.equal([
       '- [AAA](#aaa)',
       '  * [a.1](#a-1)',
       '    + [a.2](#a-2)',
@@ -46,6 +58,56 @@ describe('toc', function() {
       '- [DDD](#ddd)',
       '- [EEE](#eee)',
       '  * [FFF](#fff)'
+    ].join('\n'));
+  });
+
+  it('should allow `maxdepth` to limit heading levels:', function() {
+    toc('# AAA\n## BBB\n### CCC', {maxdepth: 2}).content.should.equal([
+      '- [AAA](#aaa)',
+      '  * [BBB](#bbb)'
+    ].join('\n'));
+  });
+
+  it('should remove the first H1 when `firsth1` is false:', function() {
+    toc('# AAA\n## BBB\n### CCC', {firsth1: false}).content.should.equal([
+      '- [BBB](#bbb)',
+      '  * [CCC](#ccc)'
+    ].join('\n'));
+  });
+
+  it.skip('should correctly calculate `maxdepth` when `firsth1` is false:', function() {
+    toc('# AAA\n## BBB\n### CCC\n#### DDD', {maxdepth: 2, firsth1: false}).content.should.equal([
+      '- [BBB](#bbb)',
+      '  * [CCC](#ccc)'
+    ].join('\n'));
+
+    toc('## BBB\n### CCC\n#### DDD', {maxdepth: 2, firsth1: false}).content.should.equal([
+      '- [BBB](#bbb)',
+      '  * [CCC](#ccc)'
+    ].join('\n'));
+  });
+
+  it('should allow custom bullet points to be defined:', function() {
+    var actual = toc('# AAA\n# BBB\n# CCC', {
+      bullets: ['?']
+    });
+
+    actual.content.should.equal([
+      '? [AAA](#aaa)',
+      '? [BBB](#bbb)',
+      '? [CCC](#ccc)'
+    ].join('\n'));
+  });
+
+  it('should use custom bullets at any depth:', function() {
+    var actual = toc('# AAA\n## BBB\n### CCC', {
+      bullets: ['?']
+    });
+
+    actual.content.should.equal([
+      '? [AAA](#aaa)',
+      '  ? [BBB](#bbb)',
+      '    ? [CCC](#ccc)'
     ].join('\n'));
   });
 
@@ -82,6 +144,35 @@ describe('toc', function() {
       '* [CCC](#ccc)',
       '  - [aaa](#aaa)',
       '    * [bbb](#bbb)'
+    ].join('\n'));
+  });
+
+  it('should strip words from heading text, but not urls:', function() {
+    var actual = toc(read('test/fixtures/strip-words.md'), {
+      strip: ['foo', 'bar', 'baz', 'fez']
+    });
+
+    actual.content.should.equal([
+      '- [aaa](#foo-aaa)',
+      '- [bbb](#bar-bbb)',
+      '- [ccc](#baz-ccc)',
+      '- [ddd](#fez-ddd)'
+    ].join('\n'));
+  });
+
+  it('should allow a custom function to be passed for stripping words from heading text:', function() {
+    var actual = toc(read('test/fixtures/strip-words.md'), {
+      strip: function(str) {
+        var re = new RegExp(['foo', 'bar', 'baz', 'fez', '-'].join('|'), 'g');
+        return str.replace(re, '~');
+      }
+    });
+
+    actual.content.should.equal([
+      '- [~aaa](#foo-aaa)',
+      '- [~bbb](#bar-bbb)',
+      '- [~ccc](#baz-ccc)',
+      '- [~ddd](#fez-ddd)'
     ].join('\n'));
   });
 

@@ -4,18 +4,18 @@
 
 <!-- toc -->
 
-## AAA
+## foo-aaa
 
 This is aaa.
 
-## BBB
+## bar-bbb
 
 This is bbb.
 
-## CCC
+## baz-ccc
 
 This is ccc.
 
-## DDD
+## fez-ddd
 
 This is ddd.
