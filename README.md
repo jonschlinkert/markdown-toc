@@ -74,11 +74,13 @@ toc(file, {template: tmpl});
 
 ### bullet
 
-Type: `String`
+Type: `String|Array`
 
 Default: `* `
 
 The bullet to use for each item in the generated TOC. This is passed as a variable to the `<%= bullet %>` template.
+
+If an array, like `['* ', '- ']`, the bullet point strings will be used based on the header depth.
 
 
 ### maxDepth

@@ -34,7 +34,7 @@ describe('toc', function () {
       '* [Author](#author)',
       '* [License](#license)'
     ].join('\n');
-    expect(strip(actual)).to.eql(strip(expected));
+    expect(strip(expected)).to.eql(strip(actual));
   });
 
   it('should generate a markdown TOC, while ignoring headings inside fenced code blocks.', function () {
@@ -50,7 +50,7 @@ describe('toc', function () {
       '* [Related](#related)',
       '* [License](#license)'
     ].join('\n');
-    expect(strip(actual)).to.eql(strip(expected));
+    expect(strip(expected)).to.eql(strip(actual));
   });
 
   it('should insert a markdown TOC.', function () {
@@ -66,7 +66,7 @@ describe('toc', function () {
     //   '* [Related](#related)',
     //   '* [License](#license)'
     // ].join('\n');
-    // expect(strip(actual)).to.eql(strip(expected));
+    // expect(strip(expected)).to.eql(strip(actual));
   });
 
   it('should allow toc stop comment in text.', function () {
@@ -111,4 +111,55 @@ describe('toc', function () {
     assert.equal(actual, expected);
   });
 
+  it('should allow custom bullet points at different depths', function() {
+    fixture = file.readFileSync('test/fixtures/handlebars-helper.md');
+
+    actual = toc(fixture, {
+      bullet: ['* ', '1. ', '- ']
+    });
+
+    expected = [
+      '* [Quickstart](#quickstart)',
+      '* [Usage](#usage)',
+      '* [Usage in Assemble](#usage-in-assemble)',
+      '* [Options](#options)',
+      '  1. [task options](#task-options)',
+      '* [Related projects](#related-projects)',
+      '    - [[grunt-convert](https://github.com/assemble/grunt-convert) [![NPM version](https://badge.fury.io/js/grunt-convert.png)](http://badge.fury.io/js/grunt-convert)](#grunt-converthttpsgithubcomassemblegrunt-convert-npm-versionhttpsbadgefuryiojsgrunt-convertpnghttpbadgefuryiojsgrunt-convert)',
+      '    - [[grunt-firebase](https://github.com/assemble/grunt-firebase) [![NPM version](https://badge.fury.io/js/grunt-firebase.png)](http://badge.fury.io/js/grunt-firebase)](#grunt-firebasehttpsgithubcomassemblegrunt-firebase-npm-versionhttpsbadgefuryiojsgrunt-firebasepnghttpbadgefuryiojsgrunt-firebase)',
+      '    - [[grunt-github-api](https://github.com/assemble/grunt-github-api) [![NPM version](https://badge.fury.io/js/grunt-github-api.png)](http://badge.fury.io/js/grunt-github-api)](#grunt-github-apihttpsgithubcomassemblegrunt-github-api-npm-versionhttpsbadgefuryiojsgrunt-github-apipnghttpbadgefuryiojsgrunt-github-api)',
+      '    - [[grunt-matter](https://github.com/assemble/grunt-matter) [![NPM version](https://badge.fury.io/js/grunt-matter.png)](http://badge.fury.io/js/grunt-matter)](#grunt-matterhttpsgithubcomassemblegrunt-matter-npm-versionhttpsbadgefuryiojsgrunt-matterpnghttpbadgefuryiojsgrunt-matter)',
+      '    - [[grunt-repos](https://github.com/assemble/grunt-repos) [![NPM version](https://badge.fury.io/js/grunt-repos.png)](http://badge.fury.io/js/grunt-repos)](#grunt-reposhttpsgithubcomassemblegrunt-repos-npm-versionhttpsbadgefuryiojsgrunt-repospnghttpbadgefuryiojsgrunt-repos)',
+      '    - [[grunt-toc](https://github.com/assemble/grunt-toc) [![NPM version](https://badge.fury.io/js/grunt-toc.png)](http://badge.fury.io/js/grunt-toc)](#grunt-tochttpsgithubcomassemblegrunt-toc-npm-versionhttpsbadgefuryiojsgrunt-tocpnghttpbadgefuryiojsgrunt-toc)',
+      '* [Author](#author)',
+      '* [License](#license)'
+    ].join('\n');
+    expect(strip(expected)).to.eql(strip(actual));
+  });
+
+  it('should wrap around the bullet point array', function() {
+    fixture = file.readFileSync('test/fixtures/handlebars-helper.md');
+
+    actual = toc(fixture, {
+      bullet: ['* ', '- ']
+    });
+
+    expected = [
+      '* [Quickstart](#quickstart)',
+      '* [Usage](#usage)',
+      '* [Usage in Assemble](#usage-in-assemble)',
+      '* [Options](#options)',
+      '  - [task options](#task-options)',
+      '* [Related projects](#related-projects)',
+      '    * [[grunt-convert](https://github.com/assemble/grunt-convert) [![NPM version](https://badge.fury.io/js/grunt-convert.png)](http://badge.fury.io/js/grunt-convert)](#grunt-converthttpsgithubcomassemblegrunt-convert-npm-versionhttpsbadgefuryiojsgrunt-convertpnghttpbadgefuryiojsgrunt-convert)',
+      '    * [[grunt-firebase](https://github.com/assemble/grunt-firebase) [![NPM version](https://badge.fury.io/js/grunt-firebase.png)](http://badge.fury.io/js/grunt-firebase)](#grunt-firebasehttpsgithubcomassemblegrunt-firebase-npm-versionhttpsbadgefuryiojsgrunt-firebasepnghttpbadgefuryiojsgrunt-firebase)',
+      '    * [[grunt-github-api](https://github.com/assemble/grunt-github-api) [![NPM version](https://badge.fury.io/js/grunt-github-api.png)](http://badge.fury.io/js/grunt-github-api)](#grunt-github-apihttpsgithubcomassemblegrunt-github-api-npm-versionhttpsbadgefuryiojsgrunt-github-apipnghttpbadgefuryiojsgrunt-github-api)',
+      '    * [[grunt-matter](https://github.com/assemble/grunt-matter) [![NPM version](https://badge.fury.io/js/grunt-matter.png)](http://badge.fury.io/js/grunt-matter)](#grunt-matterhttpsgithubcomassemblegrunt-matter-npm-versionhttpsbadgefuryiojsgrunt-matterpnghttpbadgefuryiojsgrunt-matter)',
+      '    * [[grunt-repos](https://github.com/assemble/grunt-repos) [![NPM version](https://badge.fury.io/js/grunt-repos.png)](http://badge.fury.io/js/grunt-repos)](#grunt-reposhttpsgithubcomassemblegrunt-repos-npm-versionhttpsbadgefuryiojsgrunt-repospnghttpbadgefuryiojsgrunt-repos)',
+      '    * [[grunt-toc](https://github.com/assemble/grunt-toc) [![NPM version](https://badge.fury.io/js/grunt-toc.png)](http://badge.fury.io/js/grunt-toc)](#grunt-tochttpsgithubcomassemblegrunt-toc-npm-versionhttpsbadgefuryiojsgrunt-tocpnghttpbadgefuryiojsgrunt-toc)',
+      '* [Author](#author)',
+      '* [License](#license)'
+    ].join('\n');
+    expect(strip(expected)).to.eql(strip(actual));
+  });
 });
