@@ -7,14 +7,13 @@
 
 'use strict';
 
-var file = require('fs-utils');
+var fs = require('fs');
 var marked = require('marked');
 var matter = require('gray-matter');
-var template = require('template');
 var slugify = require('uslug');
+var write = require('write');
 var _ = require('lodash');
 var utils = require('./lib/utils');
-
 
 /**
  * Expose `toc`
@@ -107,9 +106,7 @@ function generate(str, options) {
     });
 
     tocArray.push(data);
-
-    var tmpl = opts.template || defaultTemplate;
-    toc += template(tmpl, data);
+    toc += _.template(opts.template || defaultTemplate, data);
   });
 
   return {
@@ -164,8 +161,8 @@ toc.insert = function(str, options) {
 
 toc.add = function(fp, dest, options) {
   var opts = _.extend({strip: ['docs']}, options || {});
-  var content = file.readFileSync(fp);
+  var content = fs.readFileSync(fp, 'utf8');
   if (utils.isDest(dest)) {options = dest; dest = fp;}
-  file.writeFileSync(dest, toc.insert(content, opts));
+  write.sync(dest, toc.insert(content, opts));
   console.log(' Success: ', dest);
 };

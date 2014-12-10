@@ -10,3 +10,4 @@ examples
 vendor
 
 *.sublime-*
+example.js
