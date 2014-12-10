@@ -1,7 +1,15 @@
-# Contains toc stop comment
+# Contains tocstop comment
 
 <!-- toc -->
-<!-- toc stop -->
-## Hello world
+<!-- tocstop -->
+## aaa
 
-Hi
+foo
+
+## bbb
+
+bar
+
+## ccc
+
+baz

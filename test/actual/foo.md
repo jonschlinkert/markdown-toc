@@ -1,2 +1,0 @@
-# [Foo](../fixtures/foo.md)
-
