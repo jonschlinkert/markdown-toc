@@ -1,12 +1,13 @@
 'use strict';
 
 var fs = require('fs');
+var inspect = require('util').inspect;
 var should = require('should');
 var toc = require('..');
 
 describe('toc', function() {
   it('should generate a TOC from markdown headings:', function() {
-    toc('# AAA\n## BBB\n### CCC').should.equal([
+    toc('# AAA\n## BBB\n### CCC').content.should.equal([
       '- [AAA](#aaa)',
       '  * [BBB](#bbb)',
       '    + [CCC](#ccc)'
@@ -14,14 +15,14 @@ describe('toc', function() {
   });
 
   it('should remove the first H1 when `firsth1` is false:', function() {
-    toc('# AAA\n## BBB\n### CCC', {firsth1: false}).should.equal([
+    toc('# AAA\n## BBB\n### CCC', {firsth1: false}).content.should.equal([
       '- [BBB](#bbb)',
       '  * [CCC](#ccc)'
     ].join('\n'));
   });
 
   it('should generate a Table of Contents using default settings', function() {
-    toc(read('test/fixtures/basic.md')).should.equal([
+    toc(read('test/fixtures/basic.md')).content.should.equal([
       '- [AAA](#aaa)',
       '  * [a.1](#a-1)',
       '    + [a.2](#a-2)',
@@ -35,7 +36,7 @@ describe('toc', function() {
   });
 
   it('should ignore headings in fenced code blocks.', function() {
-    strip(toc(read('test/fixtures/fenced-code-blocks.md'))).should.equal([
+    toc(read('test/fixtures/fenced-code-blocks.md')).content.should.equal([
       '- [AAA](#aaa)',
       '  * [a.1](#a-1)',
       '    + [a.2](#a-2)',
@@ -53,7 +54,7 @@ describe('toc', function() {
       bullets: ['*', '1.', '-']
     });
 
-    strip(actual).should.equal([
+    actual.content.should.equal([
       '* [AAA](#aaa)',
       '  1. [aaa](#aaa)',
       '    - [bbb](#bbb)',
@@ -71,7 +72,7 @@ describe('toc', function() {
       bullets: ['*', '-']
     });
 
-    strip(actual).should.equal([
+    actual.content.should.equal([
       '* [AAA](#aaa)',
       '  - [aaa](#aaa)',
       '    * [bbb](#bbb)',
@@ -91,7 +92,7 @@ describe('toc', function() {
         return '!' + str.replace(/[^\w]/g, '-') + '!';
       }
     });
-    actual.should.equal('- [Some Article](#!Some-Article!)')
+    actual.content.should.equal('- [Some Article](#!Some-Article!)')
   });
 
   // it('should allow tocstop comment in text.', function() {
@@ -115,14 +116,38 @@ describe('toc', function() {
   //   htmlTokens[1].should.eql({ type: 'html', pre: false, text: '<!-- tocstop -->\n\n\n' });
   //   htmlTokens[2].should.eql({ type: 'html', pre: false, text: '<!-- Extra comment -->\n\n' });
   // });
+});
 
+// this is lame, but for now I just want to get this working
+describe('toc tokens', function() {
+  var result = toc('# AAA\n## BBB\n### CCC');
 
+  it('should return an object for customizing a toc:', function() {
+    result.should.be.an.object;
+    result.should.have.properties(['highest', 'tokens', 'content']);
+  });
+
+  it('should return the `highest` heading level in the TOC:', function() {
+    toc('# AAA\n## BBB\n### CCC\n#### DDD').should.have.property('highest', 1);
+    toc('## BBB\n### CCC\n#### DDD').should.have.property('highest', 2);
+    toc('### CCC\n#### DDD').should.have.property('highest', 3);
+  });
+
+  it('should return an array of tokens:', function() {
+    result.tokens.should.be.an.array;
+  });
+
+  it('should expose the `lvl` property on headings tokens:', function() {
+    result.tokens[1].should.have.property('lvl', 1);
+    result.tokens[4].should.have.property('lvl', 2);
+    result.tokens[7].should.have.property('lvl', 3);
+  });
 });
 
 describe.skip('read', function() {
   it('should insert a markdown TOC.', function() {
     var str = read('test/fixtures/insert.md');
-    strip(toc.insert(str)).should.equal(read('test/expected/insert.md'));
+    toc.insert(str).content.should.equal(read('test/expected/insert.md'));
   });
 });
 
