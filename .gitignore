@@ -6,5 +6,7 @@ npm-debug.log
 tmp
 temp
 TODO.md
+examples
+vendor
 
 *.sublime-*

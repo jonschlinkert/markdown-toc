@@ -1,0 +1,27 @@
+*.sublime-*
+_gh_pages
+actual
+bower_components
+node_modules
+npm-debug.log
+temp
+test/actual
+tmp
+TODO.md
+vendor
+
+# npmignore
+.editorconfig
+.gitattributes
+.jshintrc
+.travis*
+.verb*
+benchmark
+cli*
+example.js
+fixtures
+grunt*
+gulp*
+LICENSE*
+test.js
+test/
