@@ -44,5 +44,8 @@
     "markdown",
     "toc",
     "table of contents"
-  ]
+  ],
+  "scripts": {
+    "test": "mocha -R spec"
+  }
 }

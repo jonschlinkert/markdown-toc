@@ -89,9 +89,11 @@ function generate(str, options) {
       return;
     }
 
+    var bullet = Array.isArray(opts.bullet) ? opts.bullet[(h.depth - 1) % opts.bullet.length] : opts.bullet;
+
     var data = _.extend({}, opts.data, {
       depth  : new Array((h.depth - 1) * 2 + 1).join(' '),
-      bullet : opts.bullet ? opts.bullet : '* ',
+      bullet : bullet ? bullet : '* ',
       heading: h.heading,
       url    : h.id
     });
