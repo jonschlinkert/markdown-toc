@@ -33,8 +33,8 @@ function toc(str, options) {
  * @api private
  */
 
-function generate(opts) {
-  opts = opts || {firsth1: true};
+function generate(options) {
+  var opts = extend({firsth1: true, maxdepth: 6}, options);
 
   return function(md) {
     md.renderer.render = function (tokens) {
@@ -52,13 +52,21 @@ function generate(opts) {
         }
 
         if (token.type === 'heading_open') {
-          tokens[i].lvl = tokens[i - 1].hLevel;
+          var lvl = tokens[i].lvl = tokens[i - 1].hLevel;
 
-          // Keep the first h1, true by default
+          // Keep the first h1, `true` by default
           if(opts.firsth1 === false) {
-            if (++h === 1) {continue;}
+            // lvl -= 1;
+            if (++h === 1) {
+              continue;
+            }
           }
 
+          // if `lvl` is greater than the max depth,
+          // break out
+          if(lvl > opts.maxdepth) {
+            break;
+          }
           res.push(tokens[i]);
         }
       }
@@ -100,10 +108,13 @@ function highest(arr) {
 
 function linkify(ele, opts) {
   var slug = slugify(ele.content, opts);
+  var text = strip(ele.content, opts);
+
   if (opts && typeof opts.linkify === 'function') {
     return opts.linkify(ele, slug, opts);
   }
-  ele.content = mdu.link(ele.content, '#' + slug);
+
+  ele.content = mdu.link(text, '#' + slug);
   return ele;
 }
 
@@ -112,6 +123,23 @@ function slugify(str, opts) {
     return opts.slugify(str, opts);
   }
   return str.toLowerCase().replace(/[^a-z0-9]/g, '-');
+}
+
+function strip(str, opts) {
+  if (opts && typeof opts.strip === 'function') {
+    return opts.strip(str, opts);
+  }
+
+  var words = opts.strip || [];
+  var len = words.length;
+  var i = 0;
+
+  while (len--) {
+    var word = words[i++];
+    var re = '-*' + word + '-*';
+    str = str.replace(new RegExp(re), '').trim();
+  }
+  return str;
 }
 
 function bullets(arr, opts) {
