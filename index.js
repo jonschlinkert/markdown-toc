@@ -15,13 +15,19 @@ var slugify = require('uslug');
 var _ = require('lodash');
 var utils = require('./lib/utils');
 
+
+/**
+ * Expose `toc`
+ */
+
+module.exports = toc;
+
 /**
  * Default template to use for generating
  * a table of contents.
  */
 
 var defaultTemplate = '<%= depth %><%= bullet %>[<%= heading %>](#<%= url %>)\n';
-
 
 /**
  * Create the table of contents object that
@@ -69,7 +75,7 @@ function generate(str, options) {
     }
 
     // Store original text and create an id for linking
-    token.heading = opts.clean ? utils.clean(token.text, opts) : token.text;
+    token.heading = opts.strip ? utils.strip(token.text, opts) : token.text;
 
     // Create a "slugified" id for linking
     token.id = opts.slugify(token.text);
@@ -89,7 +95,9 @@ function generate(str, options) {
       return;
     }
 
-    var bullet = Array.isArray(opts.bullet) ? opts.bullet[(h.depth - 1) % opts.bullet.length] : opts.bullet;
+    var bullet = Array.isArray(opts.bullet)
+      ? opts.bullet[(h.depth - 1) % opts.bullet.length]
+      : opts.bullet;
 
     var data = _.extend({}, opts.data, {
       depth  : new Array((h.depth - 1) * 2 + 1).join(' '),
@@ -106,10 +114,11 @@ function generate(str, options) {
 
   return {
     data: tocArray,
-    toc: opts.clean ? utils.clean(toc, opts) : toc
+    toc: opts.strip
+      ? utils.strip(toc, opts)
+      : toc
   };
 }
-
 
 /**
  * toc
@@ -119,48 +128,44 @@ function toc(str, options) {
   return generate(str, options).toc;
 }
 
-
 toc.raw = function(str, options) {
   return generate(str, options);
 };
 
-
 toc.insert = function(str, options) {
   var start = '<!-- toc -->';
-  var stop  = '<!-- toc stop -->';
-  var strip = /<!-- toc -->[\s\S]+<!-- toc stop -->/;
+  var stop  = '<!-- tocstop -->';
+  var re = /<!-- toc -->([\s\S]+?)<!-- tocstop -->/;
 
-  var content = matter(str).content;
-  var front   = matter.extend(str);
+  var file = matter(str);
+  var content = file.content;
 
-  // Remove the existing TOC
-  content = content.replace(strip, start);
+  // remove the existing TOC
+  content = content.replace(re, start);
 
-  // Generate the new TOC
-  var table = '\n\n' + start + '\n\n' + toc(content, options) + '\n' + stop + '\n';
-  return front + content.replace(start, table);
+  // generate new TOC
+  var newtoc = '\n\n'
+    + start + '\n\n'
+    + toc(content, options) + '\n'
+    + stop + '\n';
+
+  // If front-matter existed, put it back
+  var res = matter.stringify(content, file.data);
+  return res.replace(start, newtoc);
 };
 
-
 /**
- * Read a file and add a TOC. `dest` is optional.
+ * Add a table of contents to the given file. `dest` is optional.
  *
- * @param {String} `src`
+ * @param {String} `fp` File path
  * @param {String} `dest`
  * @param {String} `options`
  */
 
-toc.add = function(src, dest, options) {
-  var opts = _.extend({clean: ['docs']}, options || {});
-  var content = file.readFileSync(src);
-  if (utils.isDest(dest)) {options = dest; dest = src;}
+toc.add = function(fp, dest, options) {
+  var opts = _.extend({strip: ['docs']}, options || {});
+  var content = file.readFileSync(fp);
+  if (utils.isDest(dest)) {options = dest; dest = fp;}
   file.writeFileSync(dest, toc.insert(content, opts));
-  console.log(' Success:', dest);
+  console.log(' Success: ', dest);
 };
-
-
-/**
- * Expose `toc`
- */
-
-module.exports = toc;
