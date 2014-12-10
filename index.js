@@ -87,44 +87,6 @@ function slugify(str, options) {
 
 function bullets(arr, opts) {
   return arr.map(function(ele) {
-    return listitem(ele.content, ele.lvl, opts);
+    return mdu.listitem(ele.content, ele.lvl, opts);
   }).join('\n');
-}
-
-
-var repeat = require('repeat-string');
-
-/**
- * Create a markdown-formatted listitem.
- *
- * ```js
- * utils.item('Level 0 list item', 0);
- * //=> '* Level 0 list item'
- *
- * utils.item('Level 1 list item', 1);
- * //=> '  * Level 1 list item'
- *
- * utils.item('Level 2 list item', 2);
- * //=> '    * Level 2 list item'
- * ```
- *
- * @name listitem
- * @param  {String} `str`
- * @param  {Number} `level`
- * @param  {String} `bullet` default `*`
- * @api public
- */
-
-function listitem(str, level, opts) {
-  var ch = opts && opts.bullets || ['-', '*', '+', '~'];
-  var lvl = level - opts.highest;
-
-  var depth = lvl > 0
-    ? repeat('  ', lvl)
-    : '';
-
-  var bullet = ch[(lvl) % ch.length];
-  return depth
-    + (bullet ? bullet : '*')
-    + ' ' + str;
 }
