@@ -75,17 +75,6 @@ describe('toc', function() {
     ].join('\n'));
   });
 
-  it.skip('should correctly calculate `maxdepth` when `firsth1` is false:', function() {
-    toc('# AAA\n## BBB\n### CCC\n#### DDD', {maxdepth: 2, firsth1: false}).content.should.equal([
-      '- [BBB](#bbb)',
-      '  * [CCC](#ccc)'
-    ].join('\n'));
-
-    toc('## BBB\n### CCC\n#### DDD', {maxdepth: 2, firsth1: false}).content.should.equal([
-      '- [BBB](#bbb)',
-      '  * [CCC](#ccc)'
-    ].join('\n'));
-  });
 
   it('should allow custom bullet points to be defined:', function() {
     var actual = toc('# AAA\n# BBB\n# CCC', {
@@ -99,7 +88,7 @@ describe('toc', function() {
     ].join('\n'));
   });
 
-  it('should use custom bullets at any depth:', function() {
+  it('should rotate bullets when there are more levels than bullets defined:', function() {
     var actual = toc('# AAA\n## BBB\n### CCC', {
       bullets: ['?']
     });
@@ -108,24 +97,6 @@ describe('toc', function() {
       '? [AAA](#aaa)',
       '  ? [BBB](#bbb)',
       '    ? [CCC](#ccc)'
-    ].join('\n'));
-  });
-
-  it('should allow custom bullet points at different depths', function() {
-    var actual = toc(read('test/fixtures/heading-levels.md'), {
-      bullets: ['*', '1.', '-']
-    });
-
-    actual.content.should.equal([
-      '* [AAA](#aaa)',
-      '  1. [aaa](#aaa)',
-      '    - [bbb](#bbb)',
-      '* [BBB](#bbb)',
-      '  1. [aaa](#aaa)',
-      '    - [bbb](#bbb)',
-      '* [CCC](#ccc)',
-      '  1. [aaa](#aaa)',
-      '    - [bbb](#bbb)'
     ].join('\n'));
   });
 
@@ -147,7 +118,25 @@ describe('toc', function() {
     ].join('\n'));
   });
 
-  it('should strip words from heading text, but not urls:', function() {
+  it('should allow custom bullet points at different depths', function() {
+    var actual = toc(read('test/fixtures/heading-levels.md'), {
+      bullets: ['*', '1.', '-']
+    });
+
+    actual.content.should.equal([
+      '* [AAA](#aaa)',
+      '  1. [aaa](#aaa)',
+      '    - [bbb](#bbb)',
+      '* [BBB](#bbb)',
+      '  1. [aaa](#aaa)',
+      '    - [bbb](#bbb)',
+      '* [CCC](#ccc)',
+      '  1. [aaa](#aaa)',
+      '    - [bbb](#bbb)'
+    ].join('\n'));
+  });
+
+  it('should strip words from heading text, but not from urls:', function() {
     var actual = toc(read('test/fixtures/strip-words.md'), {
       strip: ['foo', 'bar', 'baz', 'fez']
     });
@@ -160,11 +149,11 @@ describe('toc', function() {
     ].join('\n'));
   });
 
-  it.skip('should allow a custom function to be passed for stripping words from heading text:', function() {
+  it('should allow a custom function to be passed for stripping words from heading text:', function() {
     var actual = toc(read('test/fixtures/strip-words.md'), {
+      slugify: false,
       strip: function(str) {
-        var re = new RegExp(['foo', 'bar', 'baz', 'fez', '-'].join('|'), 'g');
-        return str.replace(re, '~');
+        return '~' + str.slice(4);
       }
     });
 
@@ -185,28 +174,6 @@ describe('toc', function() {
     });
     actual.content.should.equal('- [Some Article](#!Some-Article!)')
   });
-
-  // it('should allow tocstop comment in text.', function() {
-  //   var tokens = marked.lexer(toc.insert(read('test/fixtures/tocstop.md')));
-  //   var htmlTokens = _.filter(tokens, function(token) {
-  //     return token.type == 'html'
-  //   });
-
-  //   htmlTokens[0].should.eql({ type: 'html', pre: false, text: '<!-- toc -->\n\n' });
-  //   htmlTokens[1].should.eql({ type: 'html', pre: false, text: '<!-- tocstop -->\n\n' });
-  // });
-
-  // it('should handle extra comments in text.', function() {
-  //   var actual = toc.insert(read('test/fixtures/extra-comment.md'));
-  //   var tokens = marked.lexer(actual);
-  //   var htmlTokens = _.filter(tokens, function(token) {
-  //     return token.type == 'html'
-  //   });
-
-  //   htmlTokens[0].should.eql({ type: 'html', pre: false, text: '<!-- toc -->\n\n' });
-  //   htmlTokens[1].should.eql({ type: 'html', pre: false, text: '<!-- tocstop -->\n\n\n' });
-  //   htmlTokens[2].should.eql({ type: 'html', pre: false, text: '<!-- Extra comment -->\n\n' });
-  // });
 });
 
 // this is lame, but for now I just want to get this working
@@ -235,10 +202,15 @@ describe('toc tokens', function() {
   });
 });
 
-describe.skip('read', function() {
-  it('should insert a markdown TOC.', function() {
+describe('read', function() {
+  it('should insert a markdown TOC beneath a `<!-- toc -->` comment.', function() {
     var str = read('test/fixtures/insert.md');
-    toc.insert(str).content.should.equal(read('test/expected/insert.md'));
+    strip(toc.insert(str)).should.equal(read('test/expected/insert.md'));
+  });
+
+  it('should replace an old TOC between `<!-- toc -->...<!-- tocstop -->` comments.', function() {
+    var str = read('test/fixtures/replace-existing.md');
+    strip(toc.insert(str)).should.equal(read('test/expected/replace-existing.md'));
   });
 });
 

@@ -31,6 +31,12 @@ module.exports = function toc(str, options) {
 };
 
 /**
+ * Expose `insert` method
+ */
+
+module.exports.insert = require('./lib/insert');
+
+/**
  * Generate a markdown table of contents. This is the
  * function that does all of the main work with Remarkable.
  *
@@ -43,6 +49,7 @@ function generate(options) {
 
   return function(md) {
     md.renderer.render = function (tokens) {
+      tokens = tokens.slice();
       var res = [], i = 0, h = 0;
       var len = tokens.length;
       var tocstart = -1;
@@ -55,13 +62,6 @@ function generate(options) {
 
         if (token.type === 'heading_open') {
           var lvl = tokens[i].lvl = tokens[i - 1].hLevel;
-
-          // Keep the first h1? This is `true` by default
-          if(opts.firsth1 === false) {
-            if (++h === 1) { continue; }
-          }
-          // if `lvl` is greater than the max depth
-          if(lvl > opts.maxdepth) { break; }
           res.push(tokens[i]);
         }
       }
@@ -87,15 +87,37 @@ function generate(options) {
 /**
  * Render markdown list bullets
  *
- * @param  {Array} `arr`
+ * @param  {Array} `arr` Array of listitem objects
  * @param  {Object} `opts`
  * @return {String}
  */
 
 function bullets(arr, opts) {
-  return arr.map(function(ele) {
-    return mdu.listitem(ele.content, ele.lvl, opts);
-  }).join('\n');
+  var unindent = 0;
+
+  // Keep the first h1? This is `true` by default
+  if(opts && opts.firsth1 === false) {
+    unindent = 1;
+    arr.shift();
+  }
+
+  var len = arr.length;
+  var res = [];
+  var i = 0;
+
+  while (i < len) {
+    var ele = arr[i++];
+    ele.lvl -= unindent;
+
+    res.push(mdu.listitem(ele.content, ele.lvl, opts));
+
+    // break if heading level is greater than maxdepth
+    if (ele.lvl === opts.maxdepth) {
+      break;
+    }
+  }
+
+  return res.join('\n');
 }
 
 /**
@@ -137,6 +159,7 @@ function linkify(ele, opts) {
  */
 
 function slugify(str, opts) {
+  if (opts && opts.slugify === false) return str;
   if (opts && typeof opts.slugify === 'function') {
     return opts.slugify(str, opts);
   }
@@ -152,19 +175,16 @@ function slugify(str, opts) {
  */
 
 function strip(str, opts) {
-  if (opts && typeof opts.strip === 'function') {
+  opts = opts || {};
+
+  if (!opts.strip) return str;
+  if (typeof opts.strip === 'function') {
     return opts.strip(str, opts);
   }
 
-  var words = opts.strip || [];
-  var len = words.length;
-  var i = 0;
-
-  while (len--) {
-    var word = words[i++];
-    var re = '-*' + word + '-*';
-    str = str.replace(new RegExp(re), '').trim();
-  }
-  return str;
+  var strip = opts.strip.join('|');
+  var re = new RegExp(strip, 'g');
+  return str.trim().replace(re, '')
+    .replace(/^-|-$/g, '');
 }
 
