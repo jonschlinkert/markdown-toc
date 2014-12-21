@@ -1,7 +1,11 @@
+*.DS_Store
+*.rar
 *.sublime-*
+*.zip
 _gh_pages
 actual
 bower_components
+examples
 node_modules
 npm-debug.log
 temp
@@ -9,4 +13,3 @@ test/actual
 tmp
 TODO.md
 vendor
-*.DS_Store
