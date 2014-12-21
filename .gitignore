@@ -13,3 +13,7 @@ test/actual
 tmp
 TODO.md
 vendor
+
+
+example.js
+cli.js

@@ -7,30 +7,35 @@
 
 'use strict';
 
+/**
+ * Module dependencies
+ */
+
 var Remarkable = require('remarkable');
 var extend = require('extend-shallow');
 var mdu = require('markdown-utils');
 
 /**
- * Expose `toc`
+ * Load `generate` as a remarkable plugin and
+ * expose the `toc` function.
+ *
+ * @param  {String} `str` String of markdown
+ * @param  {Object} `options`
+ * @return {String} Markdown-formatted table of contents
  */
 
-module.exports = toc;
-
-
-function toc(str, options) {
+module.exports = function toc(str, options) {
   return new Remarkable()
     .use(generate(options))
     .render(str);
-}
-
+};
 
 /**
- * Generate a markdown table of contents.
+ * Generate a markdown table of contents. This is the
+ * function that does all of the main work with Remarkable.
  *
  * @param {Object} `options`
  * @return {String}
- * @api private
  */
 
 function generate(options) {
@@ -38,15 +43,12 @@ function generate(options) {
 
   return function(md) {
     md.renderer.render = function (tokens) {
+      var res = [], i = 0, h = 0;
       var len = tokens.length;
       var tocstart = -1;
-      var res = [];
-      var i = 0;
-      var h = 0;
 
       while (len--) {
         var token = tokens[i++];
-
         if (/<!--[ \t]*toc[ \t]*-->/.test(token.content)) {
           tocstart = token.lines[1];
         }
@@ -56,16 +58,10 @@ function generate(options) {
 
           // Keep the first h1? This is `true` by default
           if(opts.firsth1 === false) {
-            // lvl -= 1;
-            if (++h === 1) {
-              continue;
-            }
+            if (++h === 1) { continue; }
           }
-
           // if `lvl` is greater than the max depth
-          if(lvl > opts.maxdepth) {
-            break;
-          }
+          if(lvl > opts.maxdepth) { break; }
           res.push(tokens[i]);
         }
       }
@@ -73,9 +69,7 @@ function generate(options) {
       // exclude headings that come before the actual
       // table of contents.
       res = res.reduce(function(acc, token) {
-        if (token.lines[0] > tocstart) {
-          acc.push(token);
-        }
+        if (token.lines[0] > tocstart) { acc.push(token); }
         token = linkify(token, opts);
         return acc;
       }, []);
@@ -91,12 +85,25 @@ function generate(options) {
 }
 
 /**
+ * Render markdown list bullets
+ *
+ * @param  {Array} `arr`
+ * @param  {Object} `opts`
+ * @return {String}
+ */
+
+function bullets(arr, opts) {
+  return arr.map(function(ele) {
+    return mdu.listitem(ele.content, ele.lvl, opts);
+  }).join('\n');
+}
+
+/**
  * Get the highest heading level in the array, so
  * we can un-indent the proper number of levels.
  *
  * @param {Array} `arr` Array of tokens
  * @return {Number} Highest level
- * @api private
  */
 
 function highest(arr) {
@@ -104,6 +111,10 @@ function highest(arr) {
     return a.lvl > b.lvl;
   })[0].lvl;
 }
+
+/**
+ * Turn headings into anchors
+ */
 
 function linkify(ele, opts) {
   var slug = slugify(ele.content, opts);
@@ -117,12 +128,28 @@ function linkify(ele, opts) {
   return ele;
 }
 
+/**
+ * Slugify links.
+ *
+ * @param  {String} `str` The string to slugify
+ * @param  {Object} `opts` Pass a custom slugify function on `slugify`
+ * @return {String}
+ */
+
 function slugify(str, opts) {
   if (opts && typeof opts.slugify === 'function') {
     return opts.slugify(str, opts);
   }
   return str.toLowerCase().replace(/[^a-z0-9]/g, '-');
 }
+
+/**
+ * Optionally strip specified words from headings.
+ *
+ * @param  {String} `str`
+ * @param  {String} `opts`
+ * @return {String}
+ */
 
 function strip(str, opts) {
   if (opts && typeof opts.strip === 'function') {
@@ -141,8 +168,3 @@ function strip(str, opts) {
   return str;
 }
 
-function bullets(arr, opts) {
-  return arr.map(function(ele) {
-    return mdu.listitem(ele.content, ele.lvl, opts);
-  }).join('\n');
-}
