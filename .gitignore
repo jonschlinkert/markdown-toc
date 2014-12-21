@@ -1,14 +1,19 @@
+*.DS_Store
+*.rar
+*.sublime-*
+*.zip
+_gh_pages
+actual
+bower_components
+examples
 node_modules
 npm-debug.log
-
-*.rar
-*.zip
-tmp
 temp
+test/actual
+tmp
 TODO.md
-examples
 vendor
 
-*.sublime-*
+
 example.js
-*.DS_Store
+cli.js

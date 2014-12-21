@@ -1,5 +1,5 @@
-/**
- * marked-toc <https://github.com/jonschlinkert/marked-toc>
+/*!
+ * markdown-toc <https://github.com/jonschlinkert/markdown-toc>
  *
  * Copyright (c) 2014 Jon Schlinkert, contributors.
  * Licensed under the MIT license.
@@ -7,162 +7,184 @@
 
 'use strict';
 
-var fs = require('fs');
-var marked = require('marked');
-var matter = require('gray-matter');
-var slugify = require('uslug');
-var write = require('write');
-var _ = require('lodash');
-var utils = require('./lib/utils');
-
 /**
- * Expose `toc`
+ * Module dependencies
  */
 
-module.exports = toc;
+var Remarkable = require('remarkable');
+var extend = require('extend-shallow');
+var mdu = require('markdown-utils');
 
 /**
- * Default template to use for generating
- * a table of contents.
- */
-
-var defaultTemplate = '<%= depth %><%= bullet %>[<%= heading %>](#<%= url %>)\n';
-
-/**
- * Create the table of contents object that
- * will be used as context for the template.
+ * Load `generate` as a remarkable plugin and
+ * expose the `toc` function.
  *
- * @param  {String} `str`
+ * @param  {String} `str` String of markdown
  * @param  {Object} `options`
- * @return {Object}
+ * @return {String} Markdown-formatted table of contents
  */
 
-function generate(str, options) {
-  var opts = _.extend({
-    firsth1: false,
-    blacklist: true,
-    omit: [],
-    maxDepth: 3,
-    slugifyOptions: { allowedChars: '-' },
-    slugify: function(text) {
-      return slugify(text, opts.slugifyOptions);
-    }
-  }, options);
+module.exports = function toc(str, options) {
+  return new Remarkable()
+    .use(generate(options))
+    .render(str);
+};
 
-  var toc = '';
-  var tokens = marked.lexer(str);
-  var tocArray = [];
+/**
+ * Expose `insert` method
+ */
 
-  // Remove the very first h1, true by default
-  if(opts.firsth1 === false) {
-    tokens.shift();
-  }
+module.exports.insert = require('./lib/insert');
 
-  // Do any h1's still exist?
-  var h1 = _.any(tokens, {depth: 1});
+/**
+ * Generate a markdown table of contents. This is the
+ * function that does all of the main work with Remarkable.
+ *
+ * @param {Object} `options`
+ * @return {String}
+ */
 
-  tokens.filter(function (token) {
-    // Filter out everything but headings
-    if (token.type !== 'heading' || token.type === 'code') {
-      return false;
-    }
+function generate(options) {
+  var opts = extend({firsth1: true, maxdepth: 6}, options);
 
-    // Since we removed the first h1, we'll check to see if other h1's
-    // exist. If none exist, then we unindent the rest of the TOC
-    if(!h1) {
-      token.depth = token.depth - 1;
-    }
+  return function(md) {
+    md.renderer.render = function (tokens) {
+      tokens = tokens.slice();
+      var res = [], i = 0, h = 0;
+      var len = tokens.length;
+      var tocstart = -1;
 
-    // Store original text and create an id for linking
-    token.heading = opts.strip ? utils.strip(token.text, opts) : token.text;
+      while (len--) {
+        var token = tokens[i++];
+        if (/<!--[ \t]*toc[ \t]*-->/.test(token.content)) {
+          tocstart = token.lines[1];
+        }
 
-    // Create a "slugified" id for linking
-    token.id = opts.slugify(token.text);
+        if (token.type === 'heading_open') {
+          var lvl = tokens[i].lvl = tokens[i - 1].hLevel;
+          res.push(tokens[i]);
+        }
+      }
 
-    // Omit headings with these strings
-    var omissions = ['Table of Contents', 'TOC', 'TABLE OF CONTENTS'];
-    var omit = _.union([], opts.omit, omissions);
+      // exclude headings that come before the actual
+      // table of contents.
+      res = res.reduce(function(acc, token) {
+        if (token.lines[0] > tocstart) { acc.push(token); }
+        token = linkify(token, opts);
+        return acc;
+      }, []);
 
-    if (utils.isMatch(omit, token.heading)) {
-      return;
-    }
-
-    return true;
-  }).forEach(function (h) {
-
-    if(h.depth > opts.maxDepth) {
-      return;
-    }
-
-    var bullet = Array.isArray(opts.bullet)
-      ? opts.bullet[(h.depth - 1) % opts.bullet.length]
-      : opts.bullet;
-
-    var data = _.extend({}, opts.data, {
-      depth  : new Array((h.depth - 1) * 2 + 1).join(' '),
-      bullet : bullet ? bullet : '* ',
-      heading: h.heading,
-      url    : h.id
-    });
-
-    tocArray.push(data);
-    toc += _.template(opts.template || defaultTemplate, data);
-  });
-
-  return {
-    data: tocArray,
-    toc: opts.strip
-      ? utils.strip(toc, opts)
-      : toc
+      opts.highest = highest(res);
+      return {
+        highest: opts.highest,
+        content: bullets(res, opts),
+        tokens: tokens
+      };
+    };
   };
 }
 
 /**
- * toc
+ * Render markdown list bullets
+ *
+ * @param  {Array} `arr` Array of listitem objects
+ * @param  {Object} `opts`
+ * @return {String}
  */
 
-function toc(str, options) {
-  return generate(str, options).toc;
+function bullets(arr, opts) {
+  var unindent = 0;
+
+  // Keep the first h1? This is `true` by default
+  if(opts && opts.firsth1 === false) {
+    unindent = 1;
+    arr.shift();
+  }
+
+  var len = arr.length;
+  var res = [];
+  var i = 0;
+
+  while (i < len) {
+    var ele = arr[i++];
+    ele.lvl -= unindent;
+
+    res.push(mdu.listitem(ele.content, ele.lvl, opts));
+
+    // break if heading level is greater than maxdepth
+    if (ele.lvl === opts.maxdepth) {
+      break;
+    }
+  }
+
+  return res.join('\n');
 }
 
-toc.raw = function(str, options) {
-  return generate(str, options);
-};
-
-toc.insert = function(str, options) {
-  var start = '<!-- toc -->';
-  var stop  = '<!-- tocstop -->';
-  var re = /<!-- toc -->([\s\S]+?)<!-- tocstop -->/;
-
-  var file = matter(str);
-  var content = file.content;
-
-  // remove the existing TOC
-  content = content.replace(re, start);
-
-  // generate new TOC
-  var newtoc = '\n\n'
-    + start + '\n\n'
-    + toc(content, options) + '\n'
-    + stop + '\n';
-
-  // If front-matter existed, put it back
-  var res = matter.stringify(content, file.data);
-  return res.replace(start, newtoc);
-};
-
 /**
- * Add a table of contents to the given file. `dest` is optional.
+ * Get the highest heading level in the array, so
+ * we can un-indent the proper number of levels.
  *
- * @param {String} `fp` File path
- * @param {String} `dest`
- * @param {String} `options`
+ * @param {Array} `arr` Array of tokens
+ * @return {Number} Highest level
  */
 
-toc.add = function(fp, dest, options) {
-  var opts = _.extend({strip: ['docs']}, options || {});
-  var content = fs.readFileSync(fp, 'utf8');
-  if (utils.isDest(dest)) {options = dest; dest = fp;}
-  write.sync(dest, toc.insert(content, opts));
-  console.log(' Success: ', dest);
-};
+function highest(arr) {
+  return arr.slice().sort(function(a, b) {
+    return a.lvl > b.lvl;
+  })[0].lvl;
+}
+
+/**
+ * Turn headings into anchors
+ */
+
+function linkify(ele, opts) {
+  var slug = slugify(ele.content, opts);
+  var text = strip(ele.content, opts);
+
+  if (opts && typeof opts.linkify === 'function') {
+    return opts.linkify(ele, slug, opts);
+  }
+
+  ele.content = mdu.link(text, '#' + slug);
+  return ele;
+}
+
+/**
+ * Slugify links.
+ *
+ * @param  {String} `str` The string to slugify
+ * @param  {Object} `opts` Pass a custom slugify function on `slugify`
+ * @return {String}
+ */
+
+function slugify(str, opts) {
+  if (opts && opts.slugify === false) return str;
+  if (opts && typeof opts.slugify === 'function') {
+    return opts.slugify(str, opts);
+  }
+  return str.toLowerCase().replace(/[^a-z0-9]/g, '-');
+}
+
+/**
+ * Optionally strip specified words from headings.
+ *
+ * @param  {String} `str`
+ * @param  {String} `opts`
+ * @return {String}
+ */
+
+function strip(str, opts) {
+  opts = opts || {};
+
+  if (!opts.strip) return str;
+  if (typeof opts.strip === 'function') {
+    return opts.strip(str, opts);
+  }
+
+  var strip = opts.strip.join('|');
+  var re = new RegExp(strip, 'g');
+  return str.trim().replace(re, '')
+    .replace(/^-|-$/g, '');
+}
+
