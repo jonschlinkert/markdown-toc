@@ -54,7 +54,7 @@ function generate(options) {
         if (token.type === 'heading_open') {
           var lvl = tokens[i].lvl = tokens[i - 1].hLevel;
 
-          // Keep the first h1, `true` by default
+          // Keep the first h1? This is `true` by default
           if(opts.firsth1 === false) {
             // lvl -= 1;
             if (++h === 1) {
@@ -62,8 +62,7 @@ function generate(options) {
             }
           }
 
-          // if `lvl` is greater than the max depth,
-          // break out
+          // if `lvl` is greater than the max depth
           if(lvl > opts.maxdepth) {
             break;
           }
@@ -71,9 +70,9 @@ function generate(options) {
         }
       }
 
+      // exclude headings that come before the actual
+      // table of contents.
       res = res.reduce(function(acc, token) {
-        // exclude headings that come before the
-        // actual table of contents.
         if (token.lines[0] > tocstart) {
           acc.push(token);
         }
