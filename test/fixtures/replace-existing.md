@@ -1,18 +1,15 @@
 ---
 name: Test
 ---
+
 # Test
 
 > This is a test!
 
 <!-- toc -->
-
-- [Quickstart](#quickstart)
-- [Options](#options)
-- [Usage examples](#usage-examples)
-- [Contributing](#contributing)
-- [Author](#author)
-
+- old toc line 1
+- old toc line 2
+- old toc line 3
 <!-- tocstop -->
 
 ## Quickstart
@@ -29,3 +26,4 @@ This is the Contributing section.
 
 ## Author
 This is the Author section.
+
