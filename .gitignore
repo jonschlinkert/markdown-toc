@@ -11,3 +11,4 @@ vendor
 
 *.sublime-*
 example.js
+*.DS_Store
