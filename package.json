@@ -1,7 +1,7 @@
 {
   "name": "markdown-toc",
-  "description": "Generate a table of contents for markdown files. Can also generate a multi-file TOC with relative links.",
-  "version": "0.1.0",
+  "description": "Generate a markdown TOC (table of contents) with Remarkable.",
+  "version": "0.5.1",
   "homepage": "https://github.com/jonschlinkert/markdown-toc",
   "author": {
     "name": "Jon Schlinkert",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jonschlinkert/markdown-toc.git"
+    "url": "https://github.com/jonschlinkert/markdown-toc.git"
   },
   "bugs": {
     "url": "https://github.com/jonschlinkert/markdown-toc/issues"
@@ -28,12 +28,29 @@
   "dependencies": {
     "extend-shallow": "^0.2.0",
     "gray-matter": "^1.0.2",
-    "markdown-utils": "^0.1.3",
-    "remarkable": "^1.4.2"
+    "markdown-utils": "^0.3.0",
+    "remarkable": "^1.5.0"
   },
   "devDependencies": {
     "mocha": "*",
     "should": "*"
   },
-  "keywords": []
+  "keywords": [
+    "anchor",
+    "commonmark",
+    "docs",
+    "document",
+    "documentation",
+    "heading",
+    "markdown",
+    "md",
+    "readme",
+    "remarkable",
+    "render",
+    "renderer",
+    "table of contents",
+    "table",
+    "toc",
+    "write"
+  ]
 }
