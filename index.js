@@ -17,6 +17,12 @@ var mdu = require('markdown-utils');
 var pick = require('object.pick');
 
 /**
+ * expose `toc`
+ */
+
+module.exports = toc;
+
+/**
  * Load `generate` as a remarkable plugin and
  * expose the `toc` function.
  *
@@ -25,17 +31,17 @@ var pick = require('object.pick');
  * @return {String} Markdown-formatted table of contents
  */
 
-module.exports = function toc(str, options) {
+function toc(str, options) {
   return new Remarkable()
     .use(generate(options))
     .render(str);
-};
+}
 
 /**
  * Expose `insert` method
  */
 
-module.exports.insert = require('./lib/insert');
+toc.insert = require('./lib/insert');
 
 /**
  * Generate a markdown table of contents. This is the
@@ -192,3 +198,11 @@ function strip(str, opts) {
     .replace(/^-|-$/g, '');
 }
 
+/**
+ * Expose utils
+ */
+
+toc.bullets = bullets;
+toc.linkify = linkify;
+toc.slugify = slugify;
+toc.strip = strip;
