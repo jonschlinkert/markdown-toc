@@ -1,7 +1,7 @@
 /*!
  * markdown-toc <https://github.com/jonschlinkert/markdown-toc>
  *
- * Copyright (c) 2014 Jon Schlinkert, contributors.
+ * Copyright (c) 2014-2015, Jon Schlinkert.
  * Licensed under the MIT license.
  */
 
@@ -14,6 +14,7 @@
 var Remarkable = require('remarkable');
 var extend = require('extend-shallow');
 var mdu = require('markdown-utils');
+var pick = require('object.pick');
 
 /**
  * Load `generate` as a remarkable plugin and
@@ -66,19 +67,24 @@ function generate(options) {
         }
       }
 
+      var results = [];
+      var json = [];
+
       // exclude headings that come before the actual
       // table of contents.
-      res = res.reduce(function(acc, token) {
-        if (token.lines[0] > tocstart) { acc.push(token); }
-        token = linkify(token, opts);
-        return acc;
-      }, []);
+      res.forEach(function(token) {
+        if (token.lines[0] > tocstart) {
+          json.push(pick(token, ['content', 'lvl']));
+          results.push(linkify(token, opts));
+        }
+      });
 
-      opts.highest = highest(res);
+      opts.highest = highest(results);
       return {
+        tokens: tokens,
         highest: opts.highest,
-        content: bullets(res, opts),
-        tokens: tokens
+        content: bullets(results, opts),
+        json: json
       };
     };
   };
@@ -110,8 +116,6 @@ function bullets(arr, opts) {
     ele.lvl -= unindent;
 
     res.push(mdu.listitem(ele.content, ele.lvl, opts));
-
-    // break if heading level is greater than maxdepth
     if (ele.lvl === opts.maxdepth) {
       break;
     }
