@@ -75,6 +75,17 @@ describe('toc', function() {
     ].join('\n'));
   });
 
+  it.skip('should correctly calculate `maxdepth` when `firsth1` is false:', function() {
+    toc('# AAA\n## BBB\n### CCC\n#### DDD', {maxdepth: 2, firsth1: false}).content.should.equal([
+      '- [BBB](#bbb)',
+      '  * [CCC](#ccc)'
+    ].join('\n'));
+
+    toc('## BBB\n### CCC\n#### DDD', {maxdepth: 2, firsth1: false}).content.should.equal([
+      '- [BBB](#bbb)',
+      '  * [CCC](#ccc)'
+    ].join('\n'));
+  });
 
   it('should allow custom bullet points to be defined:', function() {
     var actual = toc('# AAA\n# BBB\n# CCC', {
@@ -176,7 +187,6 @@ describe('toc', function() {
   });
 });
 
-// this is lame, but for now I just want to get this working
 describe('toc tokens', function() {
   var result = toc('# AAA\n## BBB\n### CCC');
 
@@ -199,6 +209,20 @@ describe('toc tokens', function() {
     result.tokens[1].should.have.property('lvl', 1);
     result.tokens[4].should.have.property('lvl', 2);
     result.tokens[7].should.have.property('lvl', 3);
+  });
+});
+
+describe('json', function() {
+  var result = toc('# AAA\n## BBB\n### CCC\nfoo');
+  it('should expose a `json` property:', function() {
+    result.json.should.be.an.array;
+    result.json[0].should.have.properties(['content', 'lvl']);
+  });
+
+  it('should return the `content` property for a heading:', function() {
+    toc('# AAA\n## BBB\n### CCC\n#### DDD').json[0].should.have.property('content', 'AAA');
+    toc('## BBB\n### CCC\n#### DDD').json[2].should.have.property('content', 'DDD');
+    toc('### CCC\n#### DDD').json[0].should.have.property('content', 'CCC');
   });
 });
 
