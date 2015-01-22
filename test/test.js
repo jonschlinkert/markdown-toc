@@ -14,6 +14,15 @@ describe('toc', function() {
     ].join('\n'));
   });
 
+  it('should allow duplicate headings:', function() {
+    toc('# AAA\n# BBB\n# BBB\n# CCC\nfoo\nbar\nbaz').content.should.equal([
+      '- [AAA](#aaa)',
+      '- [BBB](#bbb)',
+      '- [BBB](#bbb)',
+      '- [CCC](#ccc)'
+    ].join('\n'));
+  });
+
   it('should use a different bullet for each level', function() {
     toc(read('test/fixtures/levels.md')).content.should.equal([
       '- [AAA](#aaa)',
@@ -213,7 +222,7 @@ describe('toc tokens', function() {
 });
 
 describe('json', function() {
-  var result = toc('# AAA\n## BBB\n### CCC\nfoo');
+  var result = toc('# AAA\n## BBB\n## BBB\n### CCC\nfoo');
   it('should expose a `json` property:', function() {
     result.json.should.be.an.array;
     result.json[0].should.have.properties(['content', 'lvl']);
