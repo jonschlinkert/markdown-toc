@@ -26,9 +26,25 @@ To allow customization of the output, an object is returned with the following p
  - `tokens` **{Array}**: Headings tokens that can be used for custom rendering
 
 
+### toc.json
+
+Object for creating a custom TOC. 
+
+```js
+toc('# AAA\n## BBB\n### CCC\nfoo').json;
+
+// results in
+[ { content: 'AAA', lvl: 1 },
+  { content: 'BBB', lvl: 2 },
+  { content: 'CCC', lvl: 3 } ]
+```
+
+
 ### toc.insert
 
-Insert a table of contents immediately after an _opening_ `<!-- toc -->` code comment, or replace an existing TOC if both an _opening_ comment and a _closing_ comment (`<!-- tocstop -->`) are found. (This strategy works well since code comments in markdown are hidden when viewed as HTML, e.g. on GitHub README's for example).
+Insert a table of contents immediately after an _opening_ `<!-- toc -->` code comment, or replace an existing TOC if both an _opening_ comment and a _closing_ comment (`<!-- tocstop -->`) are found. 
+
+_(This strategy works well since code comments in markdown are hidden when viewed as HTML, like when viewing a README on GitHub README for example)._
 
 **Example**
 
@@ -60,6 +76,30 @@ This is a b c.
 ## xyz
 This is x y z.
 ```
+
+### Utility functions
+
+As a convenience to folks who wants to create a custom TOC, markdown-toc's internal utility methods are exposed:
+
+```js
+var toc = require('markdown-toc');
+```
+- `toc.bullets()`: render a bullet list from an array of tokens
+- `toc.linkify()`: linking a heading `content` string
+- `toc.slugify()`: slugify a heading `content` string 
+- `toc.strip()`: strip words or characters from a heading `content` string 
+
+**Example**
+
+```js
+var result = toc('# AAA\n## BBB\n### CCC\nfoo');
+var str = '';
+
+result.json.forEach(function(heading) {
+  str += toc.linkify(heading.content);
+});
+```
+
 
 ## Options
 
@@ -109,7 +149,7 @@ Pull requests and stars are always welcome. For bugs and feature requests, [plea
 + [twitter/jonschlinkert](http://twitter.com/jonschlinkert) 
 
 ## License
-Copyright (c) 2015, Jon Schlinkert.
+Copyright (c) 2015 Jon Schlinkert  
 Released under the MIT license
 
 ***
