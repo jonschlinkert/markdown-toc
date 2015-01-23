@@ -17,6 +17,12 @@ var mdu = require('markdown-utils');
 var pick = require('object.pick');
 
 /**
+ * expose `toc`
+ */
+
+module.exports = toc;
+
+/**
  * Load `generate` as a remarkable plugin and
  * expose the `toc` function.
  *
@@ -191,12 +197,6 @@ function strip(str, opts) {
   return str.trim().replace(re, '')
     .replace(/^-|-$/g, '');
 }
-
-/**
- * expose `toc`
- */
-
-module.exports = toc;
 
 /**
  * Expose utils
