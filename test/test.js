@@ -245,6 +245,13 @@ describe('read', function() {
     var str = read('test/fixtures/replace-existing.md');
     strip(toc.insert(str)).should.equal(read('test/expected/replace-existing.md'));
   });
+
+  it('should accept options', function() {
+    var str = read('test/fixtures/insert.md');
+    strip(toc.insert(str, { slugify: function(text) {
+      return text.toLowerCase();
+    }})).should.equal(read('test/expected/insert-options.md'));
+  });
 });
 
 function strip(str) {
