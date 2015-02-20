@@ -68,6 +68,7 @@ function generate(options) {
         }
 
         if (token.type === 'heading_open') {
+          tokens[i].lvl = tokens[i - 1].hLevel;
           res.push(tokens[i]);
         }
       }
