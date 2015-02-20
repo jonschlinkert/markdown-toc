@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var inspect = require('util').inspect;
-var should = require('should');
+require('should');
 var toc = require('..');
 
 describe('toc', function() {

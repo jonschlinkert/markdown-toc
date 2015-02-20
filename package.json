@@ -14,21 +14,23 @@
   "bugs": {
     "url": "https://github.com/jonschlinkert/markdown-toc/issues"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/jonschlinkert/markdown-toc/blob/master/LICENSE-MIT"
-  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jonschlinkert/markdown-toc/blob/master/LICENSE"
+    }
+  ],
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "main": "index.js",
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha"
   },
-  "files": [
-    "index.js",
-    "lib"
-  ],
   "dependencies": {
     "extend-shallow": "^0.2.0",
     "gray-matter": "^1.1.2",
