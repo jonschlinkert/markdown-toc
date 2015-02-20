@@ -57,7 +57,7 @@ function generate(options) {
   return function(md) {
     md.renderer.render = function (tokens) {
       tokens = tokens.slice();
-      var res = [], i = 0, h = 0;
+      var res = [], i = 0;
       var len = tokens.length;
       var tocstart = -1;
 
@@ -68,7 +68,6 @@ function generate(options) {
         }
 
         if (token.type === 'heading_open') {
-          var lvl = tokens[i].lvl = tokens[i - 1].hLevel;
           res.push(tokens[i]);
         }
       }
@@ -192,10 +191,10 @@ function strip(str, opts) {
     return opts.strip(str, opts);
   }
 
-  var strip = opts.strip.join('|');
-  var re = new RegExp(strip, 'g');
-  return str.trim().replace(re, '')
-    .replace(/^-|-$/g, '');
+  var res = opts.strip.join('|');
+  var re = new RegExp(res, 'g');
+  str = str.trim().replace(re, '');
+  return str.replace(/^-|-$/g, '');
 }
 
 /**
