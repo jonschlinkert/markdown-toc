@@ -140,7 +140,7 @@ function bullets(arr, opts) {
 
 function highest(arr) {
   return arr.slice().sort(function(a, b) {
-    return a.lvl > b.lvl;
+    return a.lvl - b.lvl;
   })[0].lvl;
 }
 
