@@ -57,7 +57,7 @@ function generate(options) {
   return function(md) {
     md.renderer.render = function (tokens) {
       tokens = tokens.slice();
-      var res = [], i = 0;
+      var arr = [], i = 0;
       var len = tokens.length;
       var tocstart = -1;
 
@@ -69,29 +69,28 @@ function generate(options) {
 
         if (token.type === 'heading_open') {
           tokens[i].lvl = tokens[i - 1].hLevel;
-          res.push(tokens[i]);
+          arr.push(tokens[i]);
         }
       }
 
-      var results = [];
-      var json = [];
+      var line = [];
+      var res = {};
+      res.json = [];
 
       // exclude headings that come before the actual
       // table of contents.
-      res.forEach(function(token) {
+      arr.forEach(function(token) {
         if (token.lines[0] > tocstart) {
-          json.push(pick(token, ['content', 'lvl']));
-          results.push(linkify(token, opts));
+          res.json.push(pick(token, ['content', 'lvl']));
+          line.push(linkify(token, opts));
         }
       });
 
-      opts.highest = highest(results);
-      return {
-        tokens: tokens,
-        highest: opts.highest,
-        content: bullets(results, opts),
-        json: json
-      };
+      opts.highest = highest(line);
+      res.highest = opts.highest;
+      res.tokens = tokens;
+      res.content = bullets(line, opts);
+      return res;
     };
   };
 }
@@ -107,6 +106,10 @@ function generate(options) {
 function bullets(arr, opts) {
   var unindent = 0;
 
+  var fn = typeof opts.filter === 'function'
+    ? opts.filter
+    : null;
+
   // Keep the first h1? This is `true` by default
   if(opts && opts.firsth1 === false) {
     unindent = 1;
@@ -121,12 +124,13 @@ function bullets(arr, opts) {
     var ele = arr[i++];
     ele.lvl -= unindent;
 
+    if (fn && !fn(ele.content, ele, arr)) { continue; }
+
     res.push(mdu.listitem(ele.content, ele.lvl, opts));
     if (ele.lvl === opts.maxdepth) {
       break;
     }
   }
-
   return res.join('\n');
 }
 
@@ -139,9 +143,14 @@ function bullets(arr, opts) {
  */
 
 function highest(arr) {
-  return arr.slice().sort(function(a, b) {
+  var res = arr.slice().sort(function(a, b) {
     return a.lvl - b.lvl;
-  })[0].lvl;
+  });
+
+  if (res && res.length) {
+    return res[0].lvl;
+  }
+  return 0;
 }
 
 /**
@@ -149,23 +158,26 @@ function highest(arr) {
  */
 
 function linkify(ele, opts) {
-  var slug = slugify(ele.content, opts);
-  var text = strip(ele.content, opts);
+  if (ele && ele.content) {
+    var text = titleize(ele.content, opts);
+    var slug = slugify(ele.content, opts);
 
-  if (opts && typeof opts.linkify === 'function') {
-    return opts.linkify(ele, slug, opts);
+    if (opts && typeof opts.linkify === 'function') {
+      return opts.linkify(ele, slug, opts);
+    }
+    ele.content = mdu.link(text, '#' + slug);
   }
-
-  ele.content = mdu.link(text, '#' + slug);
   return ele;
 }
 
 /**
- * Slugify links.
+ * Slugify the url part of a markdown link.
  *
+ * @name  options.slugify
  * @param  {String} `str` The string to slugify
  * @param  {Object} `opts` Pass a custom slugify function on `slugify`
  * @return {String}
+ * @api public
  */
 
 function slugify(str, opts) {
@@ -177,8 +189,28 @@ function slugify(str, opts) {
 }
 
 /**
+ * Titleize the title part of a markdown link.
+ *
+ * @name  options.titleize
+ * @param  {String} `str` The string to titleize
+ * @param  {Object} `opts` Pass a custom titleize function on `titleize`
+ * @return {String}
+ * @api public
+ */
+
+function titleize(str, opts) {
+  if (opts && opts.strip) { return strip(str, opts); }
+  if (opts && opts.titleize === false) return str;
+  if (opts && typeof opts.titleize === 'function') {
+    return opts.titleize(str, opts);
+  }
+  return str;
+}
+
+/**
  * Optionally strip specified words from headings.
  *
+ * @name  options.strip
  * @param  {String} `str`
  * @param  {String} `opts`
  * @return {String}
@@ -186,16 +218,18 @@ function slugify(str, opts) {
 
 function strip(str, opts) {
   opts = opts || {};
-
   if (!opts.strip) return str;
   if (typeof opts.strip === 'function') {
     return opts.strip(str, opts);
   }
 
-  var res = opts.strip.join('|');
-  var re = new RegExp(res, 'g');
-  str = str.trim().replace(re, '');
-  return str.replace(/^-|-$/g, '');
+  if (Array.isArray(opts.strip) && opts.strip.length) {
+    var res = opts.strip.join('|');
+    var re = new RegExp(res, 'g');
+    str = str.trim().replace(re, '');
+    return str.replace(/^-|-$/g, '');
+  }
+  return str;
 }
 
 /**
@@ -205,4 +239,5 @@ function strip(str, opts) {
 toc.bullets = bullets;
 toc.linkify = linkify;
 toc.slugify = slugify;
+toc.titleize = titleize;
 toc.strip = strip;

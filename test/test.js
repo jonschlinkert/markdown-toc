@@ -2,8 +2,65 @@
 
 var fs = require('fs');
 var inspect = require('util').inspect;
-require('should');
 var toc = require('..');
+require('should');
+
+function strip(str) {
+  return str.trim();
+}
+
+function read(fp) {
+  return strip(fs.readFileSync(fp, 'utf8'));
+}
+
+describe('options: custom functions:', function() {
+  it('should allow a custom `strip` function to strip words from heading text:', function() {
+    var actual = toc(read('test/fixtures/strip-words.md'), {
+      slugify: false,
+      strip: function(str) {
+        return '~' + str.slice(4);
+      }
+    });
+
+    actual.content.should.equal([
+      '- [~aaa](#foo-aaa)',
+      '- [~bbb](#bar-bbb)',
+      '- [~ccc](#baz-ccc)',
+      '- [~ddd](#fez-ddd)'
+    ].join('\n'));
+  });
+
+  it('should allow a custom slugify function to be passed:', function() {
+    var actual = toc('# Some Article', {
+      firsth1: true,
+      slugify: function(str) {
+        return '!' + str.replace(/[^\w]/g, '-') + '!';
+      }
+    });
+    actual.content.should.equal('- [Some Article](#!Some-Article!)');
+  });
+
+  it('should allow a `filter` function to filter out unwanted bullets:', function() {
+    var actual = toc(read('test/fixtures/filter.md'), {
+      filter: function(str, ele, arr) {
+        return str.indexOf('...') === -1;
+      }
+    });
+    actual.content.should.equal([
+      '- [AAA](#aaa)',
+      '  * [a.1](#a-1)',
+      '    + [a.2](#a-2)',
+      '      ~ [a.3](#a-3)',
+      '- [BBB](#bbb)',
+      '- [CCC](#ccc)',
+      '- [CCC](#ccc)',
+      '    + [bbb](#bbb)',
+      '- [DDD](#ddd)',
+      '- [EEE](#eee)',
+      '  * [FFF](#fff)',
+    ].join('\n'));
+  });
+});
 
 describe('toc', function() {
   it('should generate a TOC from markdown headings:', function() {
@@ -168,32 +225,6 @@ describe('toc', function() {
       '- [ddd](#fez-ddd)'
     ].join('\n'));
   });
-
-  it('should allow a custom function to be passed for stripping words from heading text:', function() {
-    var actual = toc(read('test/fixtures/strip-words.md'), {
-      slugify: false,
-      strip: function(str) {
-        return '~' + str.slice(4);
-      }
-    });
-
-    actual.content.should.equal([
-      '- [~aaa](#foo-aaa)',
-      '- [~bbb](#bar-bbb)',
-      '- [~ccc](#baz-ccc)',
-      '- [~ddd](#fez-ddd)'
-    ].join('\n'));
-  });
-
-  it('should allow a custom slugify function to be passed:', function() {
-    var actual = toc('# Some Article', {
-      firsth1: true,
-      slugify: function(str) {
-        return '!' + str.replace(/[^\w]/g, '-') + '!';
-      }
-    });
-    actual.content.should.equal('- [Some Article](#!Some-Article!)')
-  });
 });
 
 describe('toc tokens', function() {
@@ -221,7 +252,7 @@ describe('toc tokens', function() {
   });
 });
 
-describe('json', function() {
+describe('json property', function() {
   var result = toc('# AAA\n## BBB\n## BBB\n### CCC\nfoo');
   it('should expose a `json` property:', function() {
     result.json.should.be.an.array;
@@ -235,7 +266,7 @@ describe('json', function() {
   });
 });
 
-describe('read', function() {
+describe('toc.insert', function() {
   it('should insert a markdown TOC beneath a `<!-- toc -->` comment.', function() {
     var str = read('test/fixtures/insert.md');
     strip(toc.insert(str)).should.equal(read('test/expected/insert.md'));
@@ -253,11 +284,3 @@ describe('read', function() {
     }})).should.equal(read('test/expected/insert-options.md'));
   });
 });
-
-function strip(str) {
-  return str.replace(/^\s*|\s*$/g, '');
-}
-
-function read(fp) {
-  return strip(fs.readFileSync(fp, 'utf8'));
-}
