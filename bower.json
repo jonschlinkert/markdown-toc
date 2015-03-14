@@ -21,6 +21,7 @@
     "remarkable": "^1.6.0"
   },
   "devDependencies": {
+    "helper-related": "^0.1.0",
     "mocha": "*",
     "should": "*"
   },

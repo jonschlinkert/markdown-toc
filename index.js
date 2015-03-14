@@ -57,9 +57,9 @@ function generate(options) {
   return function(md) {
     md.renderer.render = function (tokens) {
       tokens = tokens.slice();
-      var arr = [], i = 0;
-      var len = tokens.length;
+      var len = tokens.length, i = 0;
       var tocstart = -1;
+      var arr = [], res = {};
 
       while (len--) {
         var token = tokens[i++];
@@ -74,7 +74,6 @@ function generate(options) {
       }
 
       var line = [];
-      var res = {};
       res.json = [];
 
       // exclude headings that come before the actual
