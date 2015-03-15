@@ -1,5 +1,6 @@
 'use strict';
 
+/* deps:mocha */
 var fs = require('fs');
 var inspect = require('util').inspect;
 var toc = require('..');
@@ -18,15 +19,15 @@ describe('options: custom functions:', function() {
     var actual = toc(read('test/fixtures/strip-words.md'), {
       slugify: false,
       strip: function(str) {
-        return '~' + str.slice(4);
+        return '~' + str.slice(4) + '~';
       }
     });
 
     actual.content.should.equal([
-      '- [~aaa](#foo-aaa)',
-      '- [~bbb](#bar-bbb)',
-      '- [~ccc](#baz-ccc)',
-      '- [~ddd](#fez-ddd)'
+      '- [~aaa~](#foo-aaa)',
+      '- [~bbb~](#bar-bbb)',
+      '- [~ccc~](#baz-ccc)',
+      '- [~ddd~](#fez-ddd)'
     ].join('\n'));
   });
 
