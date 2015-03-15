@@ -1,17 +1,23 @@
 {
   "name": "markdown-toc",
   "description": "Generate a markdown TOC (table of contents) with Remarkable.",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "homepage": "https://github.com/jonschlinkert/markdown-toc",
   "author": {
     "name": "Jon Schlinkert",
     "url": "https://github.com/jonschlinkert"
   },
-  "repository": "jonschlinkert/markdown-toc",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jonschlinkert/markdown-toc.git"
+  },
   "bugs": {
     "url": "https://github.com/jonschlinkert/markdown-toc/issues"
   },
-  "license": "MIT",
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/jonschlinkert/markdown-toc/blob/master/LICENSE"
+  },
   "files": [
     "index.js",
     "lib/"
@@ -25,13 +31,13 @@
   },
   "dependencies": {
     "extend-shallow": "^1.1.2",
-    "gray-matter": "^1.2.6",
-    "markdown-utils": "^0.3.0",
+    "gray-matter": "^1.3.0",
+    "markdown-link": "^0.1.0",
     "object.pick": "^1.1.1",
-    "remarkable": "^1.6.0"
+    "remarkable": "^1.6.0",
+    "repeat-string": "^1.5.0"
   },
   "devDependencies": {
-    "helper-related": "^0.1.0",
     "mocha": "*",
     "should": "*"
   },

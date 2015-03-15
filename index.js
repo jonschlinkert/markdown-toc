@@ -12,8 +12,9 @@
  */
 
 var Remarkable = require('remarkable');
+var repeat = require('repeat-string');
 var extend = require('extend-shallow');
-var mdu = require('markdown-utils');
+var mdlink = require('markdown-link');
 var pick = require('object.pick');
 
 /**
@@ -53,11 +54,12 @@ toc.insert = require('./lib/insert');
 
 function generate(options) {
   var opts = extend({firsth1: true, maxdepth: 6}, options);
+  var stripFirst = opts.firsth1 === false;
 
   return function(md) {
     md.renderer.render = function (tokens) {
       tokens = tokens.slice();
-      var len = tokens.length, i = 0;
+      var len = tokens.length, i = 0, num = 0;
       var tocstart = -1;
       var arr = [], res = {};
 
@@ -69,26 +71,31 @@ function generate(options) {
 
         if (token.type === 'heading_open') {
           tokens[i].lvl = tokens[i - 1].hLevel;
+          tokens[i].i = num++;
           arr.push(tokens[i]);
         }
       }
 
-      var line = [];
+      var result = [];
       res.json = [];
 
       // exclude headings that come before the actual
       // table of contents.
-      arr.forEach(function(token) {
-        if (token.lines[0] > tocstart) {
-          res.json.push(pick(token, ['content', 'lvl']));
-          line.push(linkify(token, opts));
+      var alen = arr.length, j = 0;
+      while (alen--) {
+        var tok = arr[j++];
+        if (tok.lines[0] > tocstart) {
+          res.json.push(pick(tok, ['content', 'lvl', 'i']));
+          result.push(linkify(tok, opts));
         }
-      });
+      }
 
-      opts.highest = highest(line);
+      opts.highest = highest(result);
       res.highest = opts.highest;
       res.tokens = tokens;
-      res.content = bullets(line, opts);
+
+      if(stripFirst) result = result.slice(1);
+      res.content = bullets(result, opts);
       return res;
     };
   };
@@ -112,7 +119,6 @@ function bullets(arr, opts) {
   // Keep the first h1? This is `true` by default
   if(opts && opts.firsth1 === false) {
     unindent = 1;
-    arr.shift();
   }
 
   var len = arr.length;
@@ -125,12 +131,31 @@ function bullets(arr, opts) {
 
     if (fn && !fn(ele.content, ele, arr)) { continue; }
 
-    res.push(mdu.listitem(ele.content, ele.lvl, opts));
+    res.push(listitem(ele.content, ele.lvl, opts));
     if (ele.lvl === opts.maxdepth) {
       break;
     }
   }
   return res.join('\n');
+}
+
+/**
+ * Generate a list item.
+ */
+
+function listitem(str, level, options) {
+  var opts = options || {};
+  var ch = opts.bullets || ['-', '*', '+', '~'];
+  var lvl = level - opts.highest;
+
+  var depth = lvl > 0
+    ? repeat('  ', lvl)
+    : '';
+
+  var bullet = ch[(lvl) % ch.length];
+  return depth
+    + (bullet ? bullet : '*')
+    + ' ' + str;
 }
 
 /**
@@ -145,7 +170,6 @@ function highest(arr) {
   var res = arr.slice().sort(function(a, b) {
     return a.lvl - b.lvl;
   });
-
   if (res && res.length) {
     return res[0].lvl;
   }
@@ -164,7 +188,7 @@ function linkify(ele, opts) {
     if (opts && typeof opts.linkify === 'function') {
       return opts.linkify(ele, slug, opts);
     }
-    ele.content = mdu.link(text, '#' + slug);
+    ele.content = mdlink(text, '#' + slug);
   }
   return ele;
 }
