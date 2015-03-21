@@ -278,6 +278,12 @@ describe('toc.insert', function() {
     strip(toc.insert(str)).should.equal(read('test/expected/replace-existing.md'));
   });
 
+  it('should insert the toc passed on the options.', function() {
+    var str = read('test/fixtures/replace-existing.md');
+    strip(toc.insert(str, {toc: toc(str).content})).should.equal(read('test/expected/replace-existing.md'));
+    strip(toc.insert(str, {toc: '- Foo'})).should.equal(read('test/expected/foo.md'));
+  });
+
   it('should accept options', function() {
     var str = read('test/fixtures/insert.md');
     strip(toc.insert(str, { slugify: function(text) {
