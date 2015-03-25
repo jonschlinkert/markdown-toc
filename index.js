@@ -96,6 +96,7 @@ function generate(options) {
 
       if(stripFirst) result = result.slice(1);
       res.content = bullets(result, opts);
+      res.content += (opts.append || '');
       return res;
     };
   };
