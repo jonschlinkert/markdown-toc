@@ -162,7 +162,7 @@ var result = toc(str, {filter: removeYunk});
 ```
 
 
-### options.bullet
+### options.bullets
 
 Type: `String|Array`
 
