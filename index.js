@@ -209,6 +209,7 @@ function slugify(str, opts) {
   if (opts && typeof opts.slugify === 'function') {
     return opts.slugify(str, opts);
   }
+  str = str.split('.').join('');
   return str.toLowerCase().replace(/[^a-z0-9]/g, '-');
 }
 

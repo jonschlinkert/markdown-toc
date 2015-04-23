@@ -49,9 +49,9 @@ describe('options: custom functions:', function() {
     });
     actual.content.should.equal([
       '- [AAA](#aaa)',
-      '  * [a.1](#a-1)',
-      '    + [a.2](#a-2)',
-      '      ~ [a.3](#a-3)',
+      '  * [a.1](#a1)',
+      '    + [a.2](#a2)',
+      '      ~ [a.3](#a3)',
       '- [BBB](#bbb)',
       '- [CCC](#ccc)',
       '- [CCC](#ccc)',
@@ -84,28 +84,28 @@ describe('toc', function() {
   it('should use a different bullet for each level', function() {
     toc(read('test/fixtures/levels.md')).content.should.equal([
       '- [AAA](#aaa)',
-      '  * [a.1](#a-1)',
-      '    + [a.2](#a-2)',
-      '      ~ [a.3](#a-3)',
+      '  * [a.1](#a1)',
+      '    + [a.2](#a2)',
+      '      ~ [a.3](#a3)',
     ].join('\n'));
   });
 
   it('should use a different bullet for each level', function() {
     toc(read('test/fixtures/repeat-bullets.md')).content.should.equal([
       '- [AAA](#aaa)',
-      '  * [a.1](#a-1)',
-      '    + [a.2](#a-2)',
-      '      ~ [a.3](#a-3)',
-      '        - [a.4](#a-4)'
+      '  * [a.1](#a1)',
+      '    + [a.2](#a2)',
+      '      ~ [a.3](#a3)',
+      '        - [a.4](#a4)'
     ].join('\n'));
   });
 
   it('should handle mixed heading levels:', function() {
     toc(read('test/fixtures/mixed.md')).content.should.equal([
       '- [AAA](#aaa)',
-      '  * [a.1](#a-1)',
-      '    + [a.2](#a-2)',
-      '      ~ [a.3](#a-3)',
+      '  * [a.1](#a1)',
+      '    + [a.2](#a2)',
+      '      ~ [a.3](#a3)',
       '- [BBB](#bbb)',
       '- [CCC](#ccc)',
       '- [DDD](#ddd)',
@@ -117,9 +117,9 @@ describe('toc', function() {
   it('should ignore headings in fenced code blocks.', function() {
     toc(read('test/fixtures/fenced-code-blocks.md')).content.should.equal([
       '- [AAA](#aaa)',
-      '  * [a.1](#a-1)',
-      '    + [a.2](#a-2)',
-      '      ~ [a.3](#a-3)',
+      '  * [a.1](#a1)',
+      '    + [a.2](#a2)',
+      '      ~ [a.3](#a3)',
       '- [BBB](#bbb)',
       '- [CCC](#ccc)',
       '- [DDD](#ddd)',
