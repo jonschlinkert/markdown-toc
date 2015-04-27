@@ -187,7 +187,7 @@ function linkify(ele, opts) {
     var slug = slugify(ele.content, opts);
 
     if (opts && typeof opts.linkify === 'function') {
-      return opts.linkify(ele, slug, opts);
+      return opts.linkify(ele, text, slug, opts);
     }
     ele.content = mdlink(text, '#' + slug);
   }
