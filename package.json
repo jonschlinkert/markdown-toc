@@ -14,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/jonschlinkert/markdown-toc/issues"
   },
-  "license": "",
+  "license": "MIT",
   "files": [
     "index.js",
     "lib/"
