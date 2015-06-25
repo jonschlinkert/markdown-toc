@@ -1,7 +1,7 @@
 {
   "name": "markdown-toc",
   "description": "Generate a markdown TOC (table of contents) with Remarkable.",
-  "version": "0.11.4",
+  "version": "0.11.5",
   "homepage": "https://github.com/jonschlinkert/markdown-toc",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "bin": {
@@ -31,6 +31,7 @@
     "concat-stream": "^1.4.8",
     "extend-shallow": "^1.1.2",
     "gray-matter": "^2.0.0",
+    "lazy-cache": "^0.1.0",
     "markdown-link": "^0.1.1",
     "minimist": "^1.1.1",
     "object.pick": "^1.1.1",
