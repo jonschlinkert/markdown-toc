@@ -1,10 +1,7 @@
 {
   "name": "markdown-toc",
   "description": "Generate a markdown TOC (table of contents) with Remarkable.",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/jonschlinkert/markdown-toc.git"
-  },
+  "repository": "jonschlinkert/markdown-toc",
   "license": "MIT",
   "homepage": "https://github.com/jonschlinkert/markdown-toc",
   "authors": [
@@ -14,11 +11,12 @@
     "index.js"
   ],
   "dependencies": {
-    "concat-stream": "^1.4.8",
-    "extend-shallow": "^1.1.2",
-    "gray-matter": "^2.0.0",
+    "concat-stream": "^1.5.0",
+    "extend-shallow": "^2.0.1",
+    "gray-matter": "^2.0.1",
+    "lazy-cache": "^0.2.3",
     "markdown-link": "^0.1.1",
-    "minimist": "^1.1.1",
+    "minimist": "^1.2.0",
     "object.pick": "^1.1.1",
     "remarkable": "^1.6.0",
     "repeat-string": "^1.5.2"
@@ -36,6 +34,8 @@
     "heading",
     "markdown",
     "md",
+    "glossary",
+    "index",
     "links",
     "reference",
     "readme",
@@ -44,6 +44,7 @@
     "plugin",
     "render",
     "renderer",
+    "table-of-contents",
     "table of contents",
     "table",
     "toc",

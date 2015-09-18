@@ -4,13 +4,7 @@
   "version": "0.11.5",
   "homepage": "https://github.com/jonschlinkert/markdown-toc",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
-  "bin": {
-    "markdown-toc": "cli.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/jonschlinkert/markdown-toc.git"
-  },
+  "repository": "jonschlinkert/markdown-toc",
   "bugs": {
     "url": "https://github.com/jonschlinkert/markdown-toc/issues"
   },
@@ -21,6 +15,9 @@
     "lib/"
   ],
   "main": "index.js",
+  "bin": {
+    "markdown-toc": "cli.js"
+  },
   "engines": {
     "node": ">=0.10.0"
   },
@@ -28,12 +25,12 @@
     "test": "mocha"
   },
   "dependencies": {
-    "concat-stream": "^1.4.8",
-    "extend-shallow": "^1.1.2",
-    "gray-matter": "^2.0.0",
-    "lazy-cache": "^0.1.0",
+    "concat-stream": "^1.5.0",
+    "extend-shallow": "^2.0.1",
+    "gray-matter": "^2.0.1",
+    "lazy-cache": "^0.2.3",
     "markdown-link": "^0.1.1",
-    "minimist": "^1.1.1",
+    "minimist": "^1.2.0",
     "object.pick": "^1.1.1",
     "remarkable": "^1.6.0",
     "repeat-string": "^1.5.2"
@@ -51,6 +48,8 @@
     "heading",
     "markdown",
     "md",
+    "glossary",
+    "index",
     "links",
     "reference",
     "readme",
@@ -59,6 +58,7 @@
     "plugin",
     "render",
     "renderer",
+    "table-of-contents",
     "table of contents",
     "table",
     "toc",
@@ -66,5 +66,19 @@
   ],
   "directories": {
     "test": "test"
+  },
+  "verb": {
+    "related": {
+      "list": [
+        "remarkable",
+        "markdown-utils",
+        "markdown-link",
+        "gfm-code-blocks",
+        "pretty-remarkable"
+      ]
+    },
+    "reflinks": [
+      "verb"
+    ]
   }
 }
