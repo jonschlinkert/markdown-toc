@@ -6,9 +6,9 @@
 
 var Remarkable = require('remarkable');
 var repeat = require('repeat-string');
-var extend = require('extend-shallow');
 var mdlink = require('markdown-link');
 var pick = require('object.pick');
+var merge = require('mixin-deep');
 
 /**
  * expose `toc`
@@ -46,7 +46,7 @@ toc.insert = require('./lib/insert');
  */
 
 function generate(options) {
-  var opts = extend({firsth1: true, maxdepth: 6}, options);
+  var opts = merge({firsth1: true, maxdepth: 6}, options);
   var stripFirst = opts.firsth1 === false;
 
   return function(md) {
