@@ -13,6 +13,7 @@
 * [Options](#options)
   - [options.append](#optionsappend)
   - [options.filter](#optionsfilter)
+  - [options.slugify](#optionsslugify)
   - [options.bullets](#optionsbullets)
   - [options.maxdepth](#optionsmaxdepth)
   - [options.firsth1](#optionsfirsth1)
@@ -174,6 +175,18 @@ function removeJunk(str, ele, arr) {
 
 var result = toc(str, {filter: removeJunk});
 //=> beautiful TOC
+```
+
+### options.slugify
+
+Type: `Function`
+
+Default: Basic non-word character replacement.
+
+**Example**
+
+```js
+var str = toc('# Some Article', {slugify: require('uslug')});
 ```
 
 ### options.bullets
