@@ -199,6 +199,8 @@ function slugify(str, opts) {
   }
 
   str = str.split('.').join('').toLowerCase();
+  str = str.split(' ').join('-');
+  str = str.split(/\t/).join('----');
   return str.replace(/[^a-z0-9]/g, '-');
 }
 
@@ -222,7 +224,7 @@ function titleize(str, opts) {
 }
 
 /**
- * Optionally strip specified words from headings.
+ * Optionally strip specified words from heading text (not url)
  *
  * @name  options.strip
  * @param  {String} `str`

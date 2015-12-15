@@ -3,6 +3,7 @@
 require('mocha');
 require('should');
 var fs = require('fs');
+var assert = require('assert');
 var inspect = require('util').inspect;
 var utils = require('../lib/utils');
 var toc = require('..');
@@ -40,6 +41,14 @@ describe('options: custom functions:', function() {
       }
     });
     actual.content.should.equal('- [Some Article](#!Some-Article!)');
+  });
+
+  it('should replace spaces with tabs', function() {
+    assert((toc('# Foo - bar').content) === '- [Foo - bar](#foo---bar)');
+    assert((toc('# Foo- - -bar').content) === '- [Foo- - -bar](#foo-----bar)');
+    assert((toc('# Foo---bar').content) === '- [Foo---bar](#foo---bar)');
+    assert((toc('# Foo- - -bar').content) === '- [Foo- - -bar](#foo-----bar)');
+    assert((toc('# Foo- -   -bar').content) === '- [Foo- -   -bar](#foo-------bar)');
   });
 
   it('should allow a `filter` function to filter out unwanted bullets:', function() {
