@@ -15,14 +15,14 @@
     "lib/"
   ],
   "main": "index.js",
-  "bin": {
-    "markdown-toc": "cli.js"
-  },
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
     "test": "mocha"
+  },
+  "bin": {
+    "markdown-toc": "cli.js"
   },
   "dependencies": {
     "concat-stream": "^1.5.1",
@@ -45,28 +45,25 @@
     "docs",
     "document",
     "documentation",
-    "heading",
-    "markdown",
-    "md",
     "glossary",
+    "heading",
     "index",
     "links",
-    "reference",
+    "markdown",
+    "md",
+    "plugin",
     "readme",
+    "reference",
     "remarkable",
     "remarkableplugin",
-    "plugin",
     "render",
     "renderer",
-    "table-of-contents",
-    "table of contents",
     "table",
+    "table of contents",
+    "table-of-contents",
     "toc",
     "write"
   ],
-  "directories": {
-    "test": "test"
-  },
   "verb": {
     "related": {
       "list": [
@@ -80,5 +77,8 @@
     "reflinks": [
       "verb"
     ]
+  },
+  "directories": {
+    "test": "test"
   }
 }
