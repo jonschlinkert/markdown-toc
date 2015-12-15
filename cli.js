@@ -7,17 +7,18 @@ var args = utils.minimist(process.argv.slice(2), {
   boolean: ['i', 'json']
 });
 
-if (args._.length != 1) {
-  console.error('Usage: markdown-toc [--json] [-i] <input> \n\
-\n\
-  input:  The markdown file to parse for table of contents,\n\
-          or "-" to read from stdin.\n\
-\n\
-  --json: Print the TOC in json format\n\
-\n\
-  -i:     Edit the <input> file directly, adding the TOC at <!-- toc -->\n\
-          (The default is to print the TOC to stdout.)\n\
-');
+if (args._.length !== 1) {
+  console.error([
+    'Usage: markdown-toc [--json] [-i] <input> ',
+    '',
+    '  input:  The markdown file to parse for table of contents,',
+    '          or "-" to read from stdin.',
+    '',
+    '  --json: Print the TOC in json format',
+    '',
+    '  -i:     Edit the <input> file directly, injecting the TOC at <!-- toc -->',
+    '          (Without this flag, the default is to print the TOC to stdout.)'
+  ].join('\n'));
   process.exit(1);
 }
 
@@ -26,7 +27,7 @@ if (args.i && args.json) {
   process.exit(1);
 }
 
-if (args.i && args._[0] === "-") {
+if (args.i && args._[0] === '-') {
   console.error('markdown-toc: you cannot use -i with "-" (stdin) for input');
   process.exit(1);
 }
@@ -49,7 +50,7 @@ input.on('error', function onErr(err) {
   process.exit(1);
 })
 
-function output (parsed) {
+function output(parsed) {
   if (args.json) return console.log(JSON.stringify(parsed.json, null, '  '));
   process.stdout.write(parsed.content);
 }
