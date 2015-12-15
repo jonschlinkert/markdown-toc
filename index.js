@@ -46,11 +46,13 @@ function generate(options) {
   var stripFirst = opts.firsth1 === false;
 
   return function(md) {
-    md.renderer.render = function (tokens) {
+    md.renderer.render = function(tokens) {
       tokens = tokens.slice();
       var len = tokens.length, i = 0, num = 0;
       var tocstart = -1;
-      var arr = [], res = {};
+      var seen = {};
+      var arr = [];
+      var res = {};
 
       while (len--) {
         var token = tokens[i++];
@@ -74,7 +76,14 @@ function generate(options) {
       while (alen--) {
         var tok = arr[j++];
         if (tok.lines[0] > tocstart) {
-          res.json.push(utils.pick(tok, ['content', 'lvl', 'i']));
+          if (!seen.hasOwnProperty(tok.content)) {
+            seen[tok.content] = 0;
+          } else {
+            seen[tok.content]++;
+          }
+
+          tok.seen = seen[tok.content];
+          res.json.push(utils.pick(tok, ['content', 'lvl', 'i', 'seen']));
           result.push(linkify(tok, opts));
         }
       }
@@ -83,7 +92,7 @@ function generate(options) {
       res.highest = opts.highest;
       res.tokens = tokens;
 
-      if(stripFirst) result = result.slice(1);
+      if (stripFirst) result = result.slice(1);
       res.content = bullets(result, opts);
       res.content += (opts.append || '');
       return res;
@@ -110,7 +119,7 @@ function bullets(arr, options) {
     : null;
 
   // Keep the first h1? This is `true` by default
-  if(opts && opts.firsth1 === false) {
+  if (opts && opts.firsth1 === false) {
     unindent = 1;
   }
 
@@ -157,17 +166,20 @@ function highest(arr) {
  * Turn headings into anchors
  */
 
-function linkify(ele, opts) {
-  if (ele && ele.content) {
-    var text = titleize(ele.content, opts);
-    var slug = slugify(ele.content, opts);
+function linkify(tok, opts) {
+  if (tok && tok.content) {
+    var text = titleize(tok.content, opts);
+    var slug = slugify(tok.content, opts);
+    if (tok.seen > 0) {
+      slug += '-' + tok.seen;
+    }
 
     if (opts && typeof opts.linkify === 'function') {
-      return opts.linkify(ele, text, slug, opts);
+      return opts.linkify(tok, text, slug, opts);
     }
-    ele.content = utils.mdlink(text, '#' + slug);
+    tok.content = utils.mdlink(text, '#' + slug);
   }
-  return ele;
+  return tok;
 }
 
 /**
@@ -185,8 +197,9 @@ function slugify(str, opts) {
   if (opts && typeof opts.slugify === 'function') {
     return opts.slugify(str, opts);
   }
-  str = str.split('.').join('');
-  return str.toLowerCase().replace(/[^a-z0-9]/g, '-');
+
+  str = str.split('.').join('').toLowerCase();
+  return str.replace(/[^a-z0-9]/g, '-');
 }
 
 /**

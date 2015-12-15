@@ -55,7 +55,7 @@ describe('options: custom functions:', function() {
       '      - [a.3](#a3)',
       '- [BBB](#bbb)',
       '- [CCC](#ccc)',
-      '- [CCC](#ccc)',
+      '- [CCC](#ccc-1)',
       '    + [bbb](#bbb)',
       '- [DDD](#ddd)',
       '- [EEE](#eee)',
@@ -77,7 +77,7 @@ describe('toc', function() {
     toc('# AAA\n# BBB\n# BBB\n# CCC\nfoo\nbar\nbaz').content.should.equal([
       '- [AAA](#aaa)',
       '- [BBB](#bbb)',
-      '- [BBB](#bbb)',
+      '- [BBB](#bbb-1)',
       '- [CCC](#ccc)'
     ].join('\n'));
   });
@@ -179,6 +179,11 @@ describe('toc', function() {
     ].join('\n'));
   });
 
+  it('should rotate bullets when there are more levels than bullets defined:', function() {
+    var actual = toc(read('test/fixtures/repeated-headings.md')).content;
+    actual.should.equal(read('test/expected/repeated-headings.md'));
+  });
+
   it('should wrap around the bullet point array', function() {
     var actual = toc(read('test/fixtures/heading-levels.md'), {
       bullets: ['*', '-']
@@ -189,11 +194,11 @@ describe('toc', function() {
       '  - [aaa](#aaa)',
       '    * [bbb](#bbb)',
       '* [BBB](#bbb)',
-      '  - [aaa](#aaa)',
-      '    * [bbb](#bbb)',
+      '  - [aaa](#aaa-1)',
+      '    * [bbb](#bbb-1)',
       '* [CCC](#ccc)',
-      '  - [aaa](#aaa)',
-      '    * [bbb](#bbb)'
+      '  - [aaa](#aaa-2)',
+      '    * [bbb](#bbb-2)'
     ].join('\n'));
   });
 
@@ -207,11 +212,11 @@ describe('toc', function() {
       '  1. [aaa](#aaa)',
       '    - [bbb](#bbb)',
       '* [BBB](#bbb)',
-      '  1. [aaa](#aaa)',
-      '    - [bbb](#bbb)',
+      '  1. [aaa](#aaa-1)',
+      '    - [bbb](#bbb-1)',
       '* [CCC](#ccc)',
-      '  1. [aaa](#aaa)',
-      '    - [bbb](#bbb)'
+      '  1. [aaa](#aaa-2)',
+      '    - [bbb](#bbb-2)'
     ].join('\n'));
   });
 
