@@ -75,6 +75,7 @@
       ]
     },
     "reflinks": [
+      "<%= related.list %>",
       "verb"
     ],
     "plugins": [
