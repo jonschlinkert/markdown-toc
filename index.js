@@ -99,9 +99,12 @@ function generate(options) {
  * @return {String}
  */
 
-function bullets(arr, opts) {
+function bullets(arr, options) {
+  var opts = utils.merge({indent: '  '}, options);
+  opts.chars = opts.chars || opts.bullets || ['-', '*', '+'];
   var unindent = 0;
 
+  var listitem = utils.li(opts);
   var fn = typeof opts.filter === 'function'
     ? opts.filter
     : null;
@@ -118,34 +121,18 @@ function bullets(arr, opts) {
   while (i < len) {
     var ele = arr[i++];
     ele.lvl -= unindent;
+    if (fn && !fn(ele.content, ele, arr)) {
+      continue;
+    }
 
-    if (fn && !fn(ele.content, ele, arr)) { continue; }
+    var lvl = ele.lvl - opts.highest;
+    res.push(listitem(lvl, ele.content, opts));
 
-    res.push(listitem(ele.content, ele.lvl, opts));
     if (ele.lvl === opts.maxdepth) {
       break;
     }
   }
   return res.join('\n');
-}
-
-/**
- * Generate a list item.
- */
-
-function listitem(str, level, options) {
-  var opts = options || {};
-  var ch = opts.bullets || ['-', '*', '+', '~'];
-  var lvl = level - opts.highest;
-
-  var depth = lvl > 0
-    ? utils.repeat('  ', lvl)
-    : '';
-
-  var bullet = ch[(lvl) % ch.length];
-  return depth
-    + (bullet ? bullet : '*')
-    + ' ' + str;
 }
 
 /**

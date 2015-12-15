@@ -1,10 +1,11 @@
 'use strict';
 
-/* deps:mocha */
+require('mocha');
+require('should');
 var fs = require('fs');
 var inspect = require('util').inspect;
+var utils = require('../lib/utils');
 var toc = require('..');
-require('should');
 
 function strip(str) {
   return str.trim();
@@ -51,7 +52,7 @@ describe('options: custom functions:', function() {
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
       '    + [a.2](#a2)',
-      '      ~ [a.3](#a3)',
+      '      - [a.3](#a3)',
       '- [BBB](#bbb)',
       '- [CCC](#ccc)',
       '- [CCC](#ccc)',
@@ -86,7 +87,7 @@ describe('toc', function() {
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
       '    + [a.2](#a2)',
-      '      ~ [a.3](#a3)',
+      '      - [a.3](#a3)',
     ].join('\n'));
   });
 
@@ -95,8 +96,8 @@ describe('toc', function() {
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
       '    + [a.2](#a2)',
-      '      ~ [a.3](#a3)',
-      '        - [a.4](#a4)'
+      '      - [a.3](#a3)',
+      '        * [a.4](#a4)'
     ].join('\n'));
   });
 
@@ -105,7 +106,7 @@ describe('toc', function() {
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
       '    + [a.2](#a2)',
-      '      ~ [a.3](#a3)',
+      '      - [a.3](#a3)',
       '- [BBB](#bbb)',
       '- [CCC](#ccc)',
       '- [DDD](#ddd)',
@@ -119,7 +120,7 @@ describe('toc', function() {
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
       '    + [a.2](#a2)',
-      '      ~ [a.3](#a3)',
+      '      - [a.3](#a3)',
       '- [BBB](#bbb)',
       '- [CCC](#ccc)',
       '- [DDD](#ddd)',
