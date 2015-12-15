@@ -268,6 +268,11 @@ describe('json property', function() {
 });
 
 describe('toc.insert', function() {
+  it('should retain trailing newlines in the given string', function() {
+    var str = fs.readFileSync('test/fixtures/newline.md', 'utf8');
+    toc.insert(str).should.equal(fs.readFileSync('test/expected/newline.md', 'utf8'));
+  });
+
   it('should insert a markdown TOC beneath a `<!-- toc -->` comment.', function() {
     var str = read('test/fixtures/insert.md');
     strip(toc.insert(str)).should.equal(read('test/expected/insert.md'));
