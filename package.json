@@ -67,15 +67,18 @@
   "verb": {
     "related": {
       "list": [
-        "remarkable",
-        "markdown-utils",
-        "markdown-link",
         "gfm-code-blocks",
-        "pretty-remarkable"
+        "markdown-link",
+        "markdown-utils",
+        "pretty-remarkable",
+        "remarkable"
       ]
     },
     "reflinks": [
       "verb"
+    ],
+    "plugins": [
+      "gulp-format-md"
     ]
   },
   "directories": {
