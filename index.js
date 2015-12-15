@@ -4,11 +4,7 @@
  * Module dependencies
  */
 
-var Remarkable = require('remarkable');
-var repeat = require('repeat-string');
-var mdlink = require('markdown-link');
-var pick = require('object.pick');
-var merge = require('mixin-deep');
+var utils = require('./lib/utils');
 
 /**
  * expose `toc`
@@ -26,7 +22,7 @@ module.exports = toc;
  */
 
 function toc(str, options) {
-  return new Remarkable()
+  return new utils.Remarkable()
     .use(generate(options))
     .render(str);
 }
@@ -46,7 +42,7 @@ toc.insert = require('./lib/insert');
  */
 
 function generate(options) {
-  var opts = merge({firsth1: true, maxdepth: 6}, options);
+  var opts = utils.merge({firsth1: true, maxdepth: 6}, options);
   var stripFirst = opts.firsth1 === false;
 
   return function(md) {
@@ -78,7 +74,7 @@ function generate(options) {
       while (alen--) {
         var tok = arr[j++];
         if (tok.lines[0] > tocstart) {
-          res.json.push(pick(tok, ['content', 'lvl', 'i']));
+          res.json.push(utils.pick(tok, ['content', 'lvl', 'i']));
           result.push(linkify(tok, opts));
         }
       }
@@ -143,7 +139,7 @@ function listitem(str, level, options) {
   var lvl = level - opts.highest;
 
   var depth = lvl > 0
-    ? repeat('  ', lvl)
+    ? utils.repeat('  ', lvl)
     : '';
 
   var bullet = ch[(lvl) % ch.length];
@@ -182,7 +178,7 @@ function linkify(ele, opts) {
     if (opts && typeof opts.linkify === 'function') {
       return opts.linkify(ele, text, slug, opts);
     }
-    ele.content = mdlink(text, '#' + slug);
+    ele.content = utils.mdlink(text, '#' + slug);
   }
   return ele;
 }

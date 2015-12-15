@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
-var concat = require('concat-stream');
 var toc = require('./index.js');
-var args = require('minimist')(process.argv.slice(2), {"boolean": ["i", "json"]});
+var utils = require('./lib/utils');
+var args = utils.minimist(process.argv.slice(2), {
+  boolean: ['i', 'json']
+});
 
 if (args._.length != 1) {
   console.error('Usage: markdown-toc [--json] [-i] <input> \n\
@@ -32,7 +34,7 @@ if (args.i && args._[0] === "-") {
 var input = process.stdin;
 if (args._[0] !== '-') input = fs.createReadStream(args._[0]);
 
-input.pipe(concat(function (input) {
+input.pipe(utils.concat(function (input) {
   if (args.i) {
     var newMarkdown = toc.insert(input.toString());
     fs.writeFileSync(args._[0], newMarkdown);
