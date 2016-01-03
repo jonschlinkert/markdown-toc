@@ -273,7 +273,6 @@ describe('json property', function() {
   it('should expose a `json` property:', function() {
     result.json.should.be.an.array;
     result.json[0].should.have.properties(['content', 'lvl', 'slug']);
-    console.log(result.json[0]);
   });
 
   it('should return the `content` property for a heading:', function() {
