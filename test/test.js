@@ -272,7 +272,7 @@ describe('json property', function() {
   var result = toc('# AAA\n## BBB\n## BBB\n### CCC\nfoo');
   it('should expose a `json` property:', function() {
     result.json.should.be.an.array;
-    result.json[0].should.have.properties(['content', 'lvl']);
+    result.json[0].should.have.properties(['content', 'lvl', 'slug']);
   });
 
   it('should return the `content` property for a heading:', function() {
