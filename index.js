@@ -83,7 +83,8 @@ function generate(options) {
           }
 
           tok.seen = seen[tok.content];
-          res.json.push(utils.pick(tok, ['content', 'lvl', 'i', 'seen']));
+          tok.slug = _getSlug(tok, opts);
+          res.json.push(utils.pick(tok, ['content', 'slug', 'lvl', 'i', 'seen']));
           result.push(linkify(tok, opts));
         }
       }
@@ -169,10 +170,7 @@ function highest(arr) {
 function linkify(tok, opts) {
   if (tok && tok.content) {
     var text = titleize(tok.content, opts);
-    var slug = slugify(tok.content, opts);
-    if (tok.seen > 0) {
-      slug += '-' + tok.seen;
-    }
+    var slug = _getSlug(tok, opts);
 
     if (opts && typeof opts.linkify === 'function') {
       return opts.linkify(tok, text, slug, opts);
@@ -181,6 +179,16 @@ function linkify(tok, opts) {
   }
   return tok;
 }
+
+function _getSlug( tok, opts ) {
+  var slug = slugify(tok.content, opts);
+  if (tok.seen > 0) {
+    slug += '-' + tok.seen;
+  }
+  return slug;
+}
+
+
 
 /**
  * Slugify the url part of a markdown link.
