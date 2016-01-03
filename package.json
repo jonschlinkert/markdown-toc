@@ -37,6 +37,7 @@
     "repeat-string": "^1.5.2"
   },
   "devDependencies": {
+    "gulp-format-md": "^0.1.4",
     "mocha": "*",
     "should": "*"
   },
