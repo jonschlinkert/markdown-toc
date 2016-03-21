@@ -67,6 +67,18 @@ describe('options: custom functions:', function() {
     actual.content.should.equal('- [Some Article](#!Some-Article!)');
   });
 
+  it('should allow a custom slugending function for duplicate hendings to be passed:', function() {
+    var actual = toc('# Overview\n# Overview', {
+      slugending: function(str, seen, opts) {
+       return str + '-' + (seen + 1);  // starts at '-2' for first duplicate slug rather than '-1'
+      }
+    });
+    actual.content.should.equal([
+      '- [Overview](#overview)',
+      '- [Overview](#overview-2)'
+    ].join('\n'));
+  });
+
   it('should strip forward slashes in slugs', function() {
     var actual = toc('# Some/Article');
     actual.content.should.equal('- [Some/Article](#somearticle)');
