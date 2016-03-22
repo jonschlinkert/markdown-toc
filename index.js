@@ -134,13 +134,15 @@ function bullets(arr, options) {
     if (fn && !fn(ele.content, ele, arr)) {
       continue;
     }
+    
+    if (ele.lvl > opts.maxdepth) {
+      continue;
+    }
 
     var lvl = ele.lvl - opts.highest;
     res.push(listitem(lvl, ele.content, opts));
 
-    if (ele.lvl === opts.maxdepth) {
-      break;
-    }
+    
   }
   return res.join('\n');
 }
