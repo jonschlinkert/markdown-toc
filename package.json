@@ -1,7 +1,7 @@
 {
   "name": "markdown-toc",
   "description": "Generate a markdown TOC (table of contents) with Remarkable.",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "homepage": "https://github.com/jonschlinkert/markdown-toc",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/markdown-toc",
@@ -27,19 +27,19 @@
   "dependencies": {
     "concat-stream": "^1.5.1",
     "gray-matter": "^2.0.2",
-    "lazy-cache": "^1.0.2",
-    "list-item": "^1.0.1",
+    "lazy-cache": "^1.0.3",
+    "list-item": "^1.1.1",
     "markdown-link": "^0.1.1",
     "minimist": "^1.2.0",
     "mixin-deep": "^1.1.3",
-    "object.pick": "^1.1.1",
-    "remarkable": "^1.6.1",
-    "repeat-string": "^1.5.2"
+    "object.pick": "^1.1.2",
+    "remarkable": "^1.6.2",
+    "repeat-string": "^1.5.4"
   },
   "devDependencies": {
-    "gulp-format-md": "^0.1.4",
-    "mocha": "*",
-    "should": "*"
+    "gulp-format-md": "^0.1.7",
+    "mocha": "^2.4.5",
+    "should": "^8.2.2"
   },
   "keywords": [
     "anchor",
@@ -67,6 +67,15 @@
     "write"
   ],
   "verb": {
+    "run": true,
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
     "related": {
       "list": [
         "gfm-code-blocks",
@@ -80,9 +89,9 @@
       "<%= related.list %>",
       "verb"
     ],
-    "plugins": [
-      "gulp-format-md"
-    ]
+    "lint": {
+      "reflinks": true
+    }
   },
   "directories": {
     "test": "test"
