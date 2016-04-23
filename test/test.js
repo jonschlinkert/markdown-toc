@@ -99,7 +99,6 @@ describe('toc', function() {
     ].join('\n'));
   });
 
-
   it('should use a different bullet for each level', function() {
     toc(read('test/fixtures/levels.md')).content.should.equal([
       '- [AAA](#aaa)',

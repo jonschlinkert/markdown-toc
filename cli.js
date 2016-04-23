@@ -35,7 +35,7 @@ if (args.i && args._[0] === '-') {
 var input = process.stdin;
 if (args._[0] !== '-') input = fs.createReadStream(args._[0]);
 
-input.pipe(utils.concat(function (input) {
+input.pipe(utils.concat(function(input) {
   if (args.i) {
     var newMarkdown = toc.insert(input.toString());
     fs.writeFileSync(args._[0], newMarkdown);

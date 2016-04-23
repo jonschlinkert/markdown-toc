@@ -142,7 +142,6 @@ function bullets(arr, options) {
     var lvl = ele.lvl - opts.highest;
     res.push(listitem(lvl, ele.content, opts));
 
-
   }
   return res.join('\n');
 }
@@ -182,15 +181,13 @@ function linkify(tok, opts) {
   return tok;
 }
 
-function _getSlug( tok, opts ) {
+function _getSlug(tok, opts) {
   var slug = slugify(tok.content, opts);
   if (tok.seen > 0) {
     slug += '-' + tok.seen;
   }
   return slug;
 }
-
-
 
 /**
  * Slugify the url part of a markdown link.
