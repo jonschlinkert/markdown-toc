@@ -264,4 +264,5 @@ toc.bullets = bullets;
 toc.linkify = linkify;
 toc.slugify = slugify;
 toc.titleize = titleize;
+toc.plugin = generate;
 toc.strip = strip;

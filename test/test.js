@@ -16,6 +16,30 @@ function read(fp) {
   return strip(fs.readFileSync(fp, 'utf8'));
 }
 
+describe('plugin', function() {
+  it('should work as a remarkable plugin', function() {
+    function render(str, options) {
+      return new utils.Remarkable()
+        .use(toc.plugin(options))
+        .render(str);
+    }
+
+    var actual = render(read('test/fixtures/strip-words.md'), {
+      slugify: false,
+      strip: function(str) {
+        return '~' + str.slice(4) + '~';
+      }
+    });
+
+    actual.content.should.equal([
+      '- [~aaa~](#foo-aaa)',
+      '- [~bbb~](#bar-bbb)',
+      '- [~ccc~](#baz-ccc)',
+      '- [~ddd~](#fez-ddd)'
+    ].join('\n'));
+  });
+});
+
 describe('options: custom functions:', function() {
   it('should allow a custom `strip` function to strip words from heading text:', function() {
     var actual = toc(read('test/fixtures/strip-words.md'), {

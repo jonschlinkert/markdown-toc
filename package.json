@@ -12,17 +12,17 @@
   "files": [
     "cli.js",
     "index.js",
-    "lib/"
+    "lib"
   ],
   "main": "index.js",
+  "bin": {
+    "markdown-toc": "cli.js"
+  },
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
     "test": "mocha"
-  },
-  "bin": {
-    "markdown-toc": "cli.js"
   },
   "dependencies": {
     "concat-stream": "^1.5.1",
@@ -86,7 +86,11 @@
       ]
     },
     "reflinks": [
-      "<%= related.list %>",
+      "gfm-code-blocks",
+      "markdown-link",
+      "markdown-utils",
+      "pretty-remarkable",
+      "remarkable",
       "verb"
     ],
     "lint": {
