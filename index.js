@@ -134,7 +134,7 @@ function bullets(arr, options) {
     if (fn && !fn(ele.content, ele, arr)) {
       continue;
     }
-    
+
     if (ele.lvl > opts.maxdepth) {
       continue;
     }
@@ -142,7 +142,7 @@ function bullets(arr, options) {
     var lvl = ele.lvl - opts.highest;
     res.push(listitem(lvl, ele.content, opts));
 
-    
+
   }
   return res.join('\n');
 }
@@ -209,6 +209,7 @@ function slugify(str, opts) {
   }
 
   str = str.split('.').join('').toLowerCase();
+  str = str.split(':').join('');
   str = str.split(' ').join('-');
   str = str.split(/\t/).join('----');
   return str.replace(/[^a-z0-9]/g, '-');

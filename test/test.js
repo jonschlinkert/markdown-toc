@@ -91,6 +91,15 @@ describe('toc', function() {
     ].join('\n'));
   });
 
+  it('should handle dots, colons and dashes correctly:', function() {
+    toc('# AAA:aaa\n# BBB.bbb\n# CCC-ccc\nfoo\nbar\nbaz').content.should.equal([
+      '- [AAA:aaa](#aaaaaa)',
+      '- [BBB.bbb](#bbbbbb)',
+      '- [CCC-ccc](#ccc-ccc)'
+    ].join('\n'));
+  });
+
+
   it('should use a different bullet for each level', function() {
     toc(read('test/fixtures/levels.md')).content.should.equal([
       '- [AAA](#aaa)',
