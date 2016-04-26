@@ -115,11 +115,12 @@ describe('toc', function() {
     ].join('\n'));
   });
 
-  it('should handle dots, colons and dashes correctly:', function() {
-    toc('# AAA:aaa\n# BBB.bbb\n# CCC-ccc\nfoo\nbar\nbaz').content.should.equal([
+  it('should handle dots, colons dashes and underscores correctly:', function() {
+    toc('# AAA:aaa\n# BBB.bbb\n# CCC-ccc\n# DDD_ddd\nfoo\nbar\nbaz').content.should.equal([
       '- [AAA:aaa](#aaaaaa)',
       '- [BBB.bbb](#bbbbbb)',
-      '- [CCC-ccc](#ccc-ccc)'
+      '- [CCC-ccc](#ccc-ccc)',
+      '- [DDD_ddd](#ddd_ddd)'
     ].join('\n'));
   });
 
