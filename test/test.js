@@ -67,6 +67,21 @@ describe('options: custom functions:', function() {
     actual.content.should.equal('- [Some Article](#!Some-Article!)');
   });
 
+  it('should strip forward slashes in slugs', function() {
+    var actual = toc('# Some/Article');
+    actual.content.should.equal('- [Some/Article](#somearticle)');
+  });
+
+  it('should strip backticks in slugs', function() {
+    var actual = toc('# Some`Article`');
+    actual.content.should.equal('- [Some`Article`](#somearticle)');
+  });
+
+  it('should condense spaces in the heading text', function() {
+    var actual = toc('# Some    Article');
+    actual.content.should.equal('- [Some Article](#some----article)');
+  });
+
   it('should replace spaces with tabs', function() {
     assert((toc('# Foo - bar').content) === '- [Foo - bar](#foo---bar)');
     assert((toc('# Foo- - -bar').content) === '- [Foo- - -bar](#foo-----bar)');

@@ -83,7 +83,7 @@ function generate(options) {
           }
 
           tok.seen = seen[tok.content];
-          tok.slug = _getSlug(tok, opts);
+          tok.slug = slugify(tok.content, opts, tok);
           res.json.push(utils.pick(tok, ['content', 'slug', 'lvl', 'i', 'seen']));
           result.push(linkify(tok, opts));
         }
@@ -141,7 +141,6 @@ function bullets(arr, options) {
 
     var lvl = ele.lvl - opts.highest;
     res.push(listitem(lvl, ele.content, opts));
-
   }
   return res.join('\n');
 }
@@ -171,22 +170,13 @@ function highest(arr) {
 function linkify(tok, opts) {
   if (tok && tok.content) {
     var text = titleize(tok.content, opts);
-    var slug = _getSlug(tok, opts);
-
+    var slug = slugify(tok.content, opts, tok);
     if (opts && typeof opts.linkify === 'function') {
       return opts.linkify(tok, text, slug, opts);
     }
     tok.content = utils.mdlink(text, '#' + slug);
   }
   return tok;
-}
-
-function _getSlug(tok, opts) {
-  var slug = slugify(tok.content, opts);
-  if (tok.seen > 0) {
-    slug += '-' + tok.seen;
-  }
-  return slug;
 }
 
 /**
@@ -199,17 +189,20 @@ function _getSlug(tok, opts) {
  * @api public
  */
 
-function slugify(str, opts) {
+function slugify(str, opts, token) {
   if (opts && opts.slugify === false) return str;
   if (opts && typeof opts.slugify === 'function') {
-    return opts.slugify(str, opts);
+    return opts.slugify(str, opts, token);
   }
-
-  str = str.split('.').join('').toLowerCase();
-  str = str.split(':').join('');
-  str = str.split(' ').join('-');
-  str = str.split(/\t/).join('----');
-  return str.replace(/[^a-z0-9\_]/g, '-');
+  str = utils.stripColor(str);
+  str = str.toLowerCase();
+  str = str.split(/ /).join('-');
+  str = str.split(/\t/).join('--');
+  str = str.split(/[|$`~=\\\/@+*!?({[\]})<>=.,;:'"^]/).join('');
+  if (token.seen > 0) {
+    str += '-' + token.seen;
+  }
+  return str;
 }
 
 /**
@@ -228,7 +221,7 @@ function titleize(str, opts) {
   if (opts && typeof opts.titleize === 'function') {
     return opts.titleize(str, opts);
   }
-  return str;
+  return str.replace(/ +/, ' ');
 }
 
 /**
