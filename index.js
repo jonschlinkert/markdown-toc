@@ -209,7 +209,7 @@ function slugify(str, opts) {
   str = str.split(':').join('');
   str = str.split(' ').join('-');
   str = str.split(/\t/).join('----');
-  return str.replace(/[^a-z0-9]/g, '-');
+  return str.replace(/[^a-z0-9\_]/g, '-');
 }
 
 /**
