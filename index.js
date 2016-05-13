@@ -189,7 +189,8 @@ function linkify(tok, opts) {
  * @api public
  */
 
-function slugify(str, opts, token) {
+function slugify(str, options, token) {
+  var opts = utils.merge({}, options);
   if (opts && opts.slugify === false) return str;
   if (opts && typeof opts.slugify === 'function') {
     return opts.slugify(str, opts, token);
@@ -199,8 +200,10 @@ function slugify(str, opts, token) {
   str = str.split(/ /).join('-');
   str = str.split(/\t/).join('--');
   str = str.split(/[|$`~=\\\/@+*!?({[\]})<>=.,;:'"^]/).join('');
-  if (token.seen > 0) {
-    str += '-' + token.seen;
+  if (token && typeof token === 'object' && token.seen) {
+    if (token.seen > 0) {
+      str += '-' + token.seen;
+    }
   }
   return str;
 }
