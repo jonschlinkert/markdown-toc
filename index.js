@@ -199,7 +199,7 @@ function slugify(str, options, token) {
   str = str.toLowerCase();
   str = str.split(/ /).join('-');
   str = str.split(/\t/).join('--');
-  str = str.split(/[|$`~=\\\/@+*!?({[\]})<>=.,;:'"^]/).join('');
+  str = str.split(/[|$&`~=\\\/@+*!?({[\]})<>=.,;:'"^]/).join('');
   if (token && typeof token === 'object' && token.seen) {
     if (token.seen > 0) {
       str += '-' + token.seen;

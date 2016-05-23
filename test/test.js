@@ -77,6 +77,11 @@ describe('options: custom functions:', function() {
     actual.content.should.equal('- [Some`Article`](#somearticle)');
   });
 
+  it('should strip & in slugs', function() {
+    var actual = toc('# Foo & Bar');
+    actual.content.should.equal('- [Foo & Bar](#foo--bar)');
+  });
+
   it('should condense spaces in the heading text', function() {
     var actual = toc('# Some    Article');
     actual.content.should.equal('- [Some Article](#some----article)');
