@@ -45,7 +45,7 @@ Usage: markdown-toc [--json] [-i] <input>
 
   --json: Print the TOC in json format
 
-  -i:     Edit the <input> file directly, injecting the TOC at - [Highights](#highights)
+  -i:     Edit the <input> file directly, injecting the TOC at  <!-- toc -->
 - [Usage](#usage)
 - [API](#api)
 - [toc.plugin](#tocplugin)
