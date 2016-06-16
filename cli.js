@@ -32,6 +32,11 @@ if (args.i && args._[0] === '-') {
   process.exit(1);
 }
 
+if (args.maxdepth === true || isNaN(parseInt(args.maxdepth))) {
+	console.error('markdown-toc: usage --maxdepth [depth]');
+	process.exit(1);
+}
+
 var input = process.stdin;
 if (args._[0] !== '-') input = fs.createReadStream(args._[0]);
 
@@ -40,7 +45,7 @@ input.pipe(utils.concat(function(input) {
     var newMarkdown = toc.insert(input.toString());
     fs.writeFileSync(args._[0], newMarkdown);
   } else {
-    var parsed = toc(input.toString());
+    var parsed = toc(input.toString(), { maxdepth: args.maxdepth || Infinity});
     output(parsed);
   }
 }))
