@@ -32,7 +32,7 @@ if (args.i && args._[0] === '-') {
   process.exit(1);
 }
 
-if (args.maxdepth === true || isNaN(parseInt(args.maxdepth))) {
+if (args.maxdepth && isNaN(parseInt(args.maxdepth))) {
 	console.error('markdown-toc: usage --maxdepth [depth]');
 	process.exit(1);
 }
