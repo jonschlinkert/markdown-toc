@@ -12,7 +12,9 @@
   "files": [
     "cli.js",
     "index.js",
-    "lib"
+    "lib",
+    "LICENSE",
+    "README.md"
   ],
   "main": "index.js",
   "bin": {
@@ -92,7 +94,8 @@
       "markdown-utils",
       "pretty-remarkable",
       "remarkable",
-      "verb"
+      "verb",
+      "verb-readme-generator"
     ],
     "lint": {
       "reflinks": true
