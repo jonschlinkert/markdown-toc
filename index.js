@@ -195,6 +195,7 @@ function slugify(str, options, token) {
   if (opts && typeof opts.slugify === 'function') {
     return opts.slugify(str, opts, token);
   }
+  str = utils.getTitle(str);
   str = utils.stripColor(str);
   str = str.toLowerCase();
   str = str.split(/ /).join('-');
@@ -224,6 +225,7 @@ function titleize(str, opts) {
   if (opts && typeof opts.titleize === 'function') {
     return opts.titleize(str, opts);
   }
+  str = utils.getTitle(str);
   return str.replace(/ +/, ' ');
 }
 
