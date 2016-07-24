@@ -75,7 +75,7 @@ function generate(options) {
       var alen = arr.length, j = 0;
       while (alen--) {
         var tok = arr[j++];
-        if (tok.lines[0] > tocstart) {
+        if (tok.lines && (tok.lines[0] > tocstart)) {
           if (!seen.hasOwnProperty(tok.content)) {
             seen[tok.content] = 0;
           } else {
