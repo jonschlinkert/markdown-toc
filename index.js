@@ -203,7 +203,12 @@ function slugify(str, options, token) {
   str = str.split(/[|$&`~=\\\/@+*!?({[\]})<>=.,;:'"^]/).join('');
   if (token && typeof token === 'object' && token.seen) {
     if (token.seen > 0) {
-      str += '-' + token.seen;
+      if (opts && typeof opts.slugending === 'function') {
+        str = opts.slugending(str, token.seen, opts);
+      }
+      else {
+        str += '-' + token.seen;
+      }
     }
   }
   return str;

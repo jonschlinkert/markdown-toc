@@ -17,6 +17,7 @@ Generate a markdown TOC (table of contents) with Remarkable.
   * [options.append](#optionsappend)
   * [options.filter](#optionsfilter)
   * [options.slugify](#optionsslugify)
+  * [options.slugending](#optionsslugending)
   * [options.bullets](#optionsbullets)
   * [options.maxdepth](#optionsmaxdepth)
   * [options.firsth1](#optionsfirsth1)
@@ -241,6 +242,22 @@ Default: Basic non-word character replacement.
 
 ```js
 var str = toc('# Some Article', {slugify: require('uslug')});
+```
+
+### options.slugending
+
+Type: `Function`
+
+Default: Adds a "-1" suffix at the end of the slug of the first duplicate and increases it for each new one.
+
+Allows to change default behavior when finding a duplicate slug (i.e. a heading with the same text as another heading). This is useful when using other TOC tool that behave differently when treating duplicate slugs.
+
+**Example**
+
+```js
+var str = toc('# Some Article # Some Article', {slugending: function(str, seen, opts) {
+  return str + '-' + (seen + 1);  // starts at '-2' for first duplicate slug rather than '-1'
+}});
 ```
 
 ### options.bullets
