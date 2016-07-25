@@ -135,6 +135,13 @@ describe('toc', function() {
     ].join('\n'));
   });
 
+  it('should allow and ignore empty headings:', function() {
+    toc('#\n# \n# AAA\n# BBB\nfoo\nbar\nbaz#\n').content.should.equal([
+      '- [AAA](#aaa)',
+      '- [BBB](#bbb)'
+    ].join('\n'));
+  });
+
   it('should handle dots, colons dashes and underscores correctly:', function() {
     toc('# AAA:aaa\n# BBB.bbb\n# CCC-ccc\n# DDD_ddd\nfoo\nbar\nbaz').content.should.equal([
       '- [AAA:aaa](#aaaaaa)',
