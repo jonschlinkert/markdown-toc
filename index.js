@@ -43,6 +43,7 @@ toc.insert = require('./lib/insert');
 
 function generate(options) {
   var opts = utils.merge({firsth1: true, maxdepth: 6}, options);
+  var seen = opts.seen = {};
   var stripFirst = opts.firsth1 === false;
 
   return function(md) {
@@ -50,7 +51,6 @@ function generate(options) {
       tokens = tokens.slice();
       var len = tokens.length, i = 0, num = 0;
       var tocstart = -1;
-      var seen = {};
       var arr = [];
       var res = {};
 
@@ -83,7 +83,7 @@ function generate(options) {
           }
 
           tok.seen = seen[tok.content];
-          tok.slug = slugify(tok.content, opts, tok);
+          tok.slug = utils.slugify(tok.content, opts);
           res.json.push(utils.pick(tok, ['content', 'slug', 'lvl', 'i', 'seen']));
           result.push(linkify(tok, opts));
         }
@@ -170,43 +170,17 @@ function highest(arr) {
 function linkify(tok, opts) {
   if (tok && tok.content) {
     var text = titleize(tok.content, opts);
-    var slug = slugify(tok.content, opts, tok);
+    var slug = utils.slugify(tok.content, opts);
+
+    if (tok.seen) {
+      slug += '-' + tok.seen;
+    }
     if (opts && typeof opts.linkify === 'function') {
       return opts.linkify(tok, text, slug, opts);
     }
     tok.content = utils.mdlink(text, '#' + slug);
   }
   return tok;
-}
-
-/**
- * Slugify the url part of a markdown link.
- *
- * @name  options.slugify
- * @param  {String} `str` The string to slugify
- * @param  {Object} `opts` Pass a custom slugify function on `slugify`
- * @return {String}
- * @api public
- */
-
-function slugify(str, options, token) {
-  var opts = utils.merge({}, options);
-  if (opts && opts.slugify === false) return str;
-  if (opts && typeof opts.slugify === 'function') {
-    return opts.slugify(str, opts, token);
-  }
-  str = utils.getTitle(str);
-  str = utils.stripColor(str);
-  str = str.toLowerCase();
-  str = str.split(/ /).join('-');
-  str = str.split(/\t/).join('--');
-  str = str.split(/[|$&`~=\\\/@+*!?({[\]})<>=.,;:'"^]/).join('');
-  if (token && typeof token === 'object' && token.seen) {
-    if (token.seen > 0) {
-      str += '-' + token.seen;
-    }
-  }
-  return str;
 }
 
 /**
@@ -244,7 +218,6 @@ function strip(str, opts) {
   if (typeof opts.strip === 'function') {
     return opts.strip(str, opts);
   }
-
   if (Array.isArray(opts.strip) && opts.strip.length) {
     var res = opts.strip.join('|');
     var re = new RegExp(res, 'g');
@@ -260,7 +233,7 @@ function strip(str, opts) {
 
 toc.bullets = bullets;
 toc.linkify = linkify;
-toc.slugify = slugify;
+toc.slugify = utils.slugify;
 toc.titleize = titleize;
 toc.plugin = generate;
 toc.strip = strip;
