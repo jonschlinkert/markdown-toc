@@ -75,15 +75,23 @@ function generate(options) {
       var alen = arr.length, j = 0;
       while (alen--) {
         var tok = arr[j++];
+
         if (tok.lines && (tok.lines[0] > tocstart)) {
-          if (!seen.hasOwnProperty(tok.content)) {
-            seen[tok.content] = 0;
-          } else {
-            seen[tok.content]++;
+          var val = tok.content;
+          if (tok.children && tok.children[0].type === 'link_open') {
+            if (tok.children[1].type === 'text') {
+              val = tok.children[1].content;
+            }
           }
 
-          tok.seen = seen[tok.content];
-          tok.slug = utils.slugify(tok.content, opts);
+          if (!seen.hasOwnProperty(val)) {
+            seen[val] = 0;
+          } else {
+            seen[val]++;
+          }
+
+          tok.seen = seen[val];
+          tok.slug = utils.slugify(val, opts);
           res.json.push(utils.pick(tok, ['content', 'slug', 'lvl', 'i', 'seen']));
           result.push(linkify(tok, opts));
         }
@@ -171,7 +179,6 @@ function linkify(tok, opts) {
   if (tok && tok.content) {
     var text = titleize(tok.content, opts);
     var slug = utils.slugify(tok.content, opts);
-
     if (tok.seen) {
       slug += '-' + tok.seen;
     }
