@@ -339,6 +339,7 @@ describe('json property', function() {
     toc('# AAA\n## BBB\n### CCC\n#### DDD').json[0].should.have.property('content', 'AAA');
     toc('## BBB\n### CCC\n#### DDD').json[2].should.have.property('content', 'DDD');
     toc('### CCC\n#### DDD').json[0].should.have.property('content', 'CCC');
+    toc('### AAA\n### AAA').json[1].should.have.property('slug', 'aaa-1'); // duplicate headers
   });
 });
 
