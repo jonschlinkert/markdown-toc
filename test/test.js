@@ -82,6 +82,12 @@ describe('options: custom functions:', function() {
     actual.content.should.equal('- [Foo & Bar](#foo--bar)');
   });
 
+  it('should escape the CJK characters in linkify', function() {
+    toc('# 中文').content.should.equal('- [中文](#%E4%B8%AD%E6%96%87)');
+    toc('# かんじ').content.should.equal('- [かんじ](#%E3%81%8B%E3%82%93%E3%81%98)');
+    toc('# 한자').content.should.equal('- [한자](#%ED%95%9C%EC%9E%90)');
+  });
+
   it('should condense spaces in the heading text', function() {
     var actual = toc('# Some    Article');
     actual.content.should.equal('- [Some Article](#some----article)');

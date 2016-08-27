@@ -9,7 +9,7 @@ name: Test
 
 - [Quickstart](#quickstart)
 - [Options](#options)
-- [Usage examples](#usage examples)
+- [Usage examples](#usage%20examples)
 - [Contributing](#contributing)
 - [Author](#author)
 
