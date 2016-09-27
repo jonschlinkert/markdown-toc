@@ -77,6 +77,11 @@ describe('options: custom functions:', function() {
     actual.content.should.equal('- [Some`Article`](#somearticle)');
   });
 
+  it('should strip CJK punctuations in slugs', function() {
+    var actual = toc('# 存在，【中文】；《标点》、符号！的标题？');
+    actual.content.should.equal('- [存在，【中文】；《标点》、符号！的标题？](#存在中文标点符号的标题)');
+  });
+
   it('should strip & in slugs', function() {
     var actual = toc('# Foo & Bar');
     actual.content.should.equal('- [Foo & Bar](#foo--bar)');
