@@ -5,6 +5,7 @@
  */
 
 var utils = require('./lib/utils');
+var querystring = require('querystring');
 
 /**
  * expose `toc`
@@ -182,6 +183,7 @@ function linkify(tok, opts) {
     if (tok.seen) {
       slug += '-' + tok.seen;
     }
+    slug = querystring.escape(slug);
     if (opts && typeof opts.linkify === 'function') {
       return opts.linkify(tok, text, slug, opts);
     }
