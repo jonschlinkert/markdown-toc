@@ -79,7 +79,7 @@ describe('options: custom functions:', function() {
 
   it('should strip CJK punctuations in slugs', function() {
     var actual = toc('# 存在，【中文】；《标点》、符号！的标题？');
-    actual.content.should.equal('- [存在，【中文】；《标点》、符号！的标题？](#存在中文标点符号的标题)');
+    actual.content.should.equal('- [存在，【中文】；《标点》、符号！的标题？](#%E5%AD%98%E5%9C%A8%E4%B8%AD%E6%96%87%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%E7%9A%84%E6%A0%87%E9%A2%98)');
   });
 
   it('should strip & in slugs', function() {
@@ -88,6 +88,7 @@ describe('options: custom functions:', function() {
   });
 
   it('should escape the CJK characters in linkify', function() {
+    ''
     toc('# 中文').content.should.equal('- [中文](#%E4%B8%AD%E6%96%87)');
     toc('# かんじ').content.should.equal('- [かんじ](#%E3%81%8B%E3%82%93%E3%81%98)');
     toc('# 한자').content.should.equal('- [한자](#%ED%95%9C%EC%9E%90)');
