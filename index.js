@@ -46,7 +46,7 @@ function generate(options) {
   var opts = utils.merge({firsth1: true, maxdepth: 6}, options);
   var seen = opts.seen = {};
   var stripFirst = opts.firsth1 === false;
-  if(opts.linkify!==false) opts.linkify=true;
+  if (opts.linkify !== false) opts.linkify = true;
 
   return function(md) {
     md.renderer.render = function(tokens) {
@@ -95,7 +95,7 @@ function generate(options) {
           tok.seen = seen[val];
           tok.slug = utils.slugify(val, opts);
           res.json.push(utils.pick(tok, ['content', 'slug', 'lvl', 'i', 'seen']));
-          if(opts.linkify) tok=linkify(tok,opts);
+          if (opts.linkify) tok = linkify(tok, opts);
           result.push(tok);
         }
       }
