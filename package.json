@@ -58,8 +58,7 @@
   },
   "devDependencies": {
     "gulp-format-md": "^0.1.11",
-    "mocha": "^3.2.0",
-    "should": "^11.1.1"
+    "mocha": "^3.2.0"
   },
   "keywords": [
     "anchor",
