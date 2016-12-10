@@ -153,6 +153,12 @@ describe('toc', function() {
     ].join('\n'));
   });
 
+  it('should increment duplicate headings:', function() {
+    assert.equal(toc('### AAA\n### AAA\n### AAA').json[0].slug, 'aaa');
+    assert.equal(toc('### AAA\n### AAA\n### AAA').json[1].slug, 'aaa-1');
+    assert.equal(toc('### AAA\n### AAA\n### AAA').json[2].slug, 'aaa-2');
+  });
+
   it('should allow and ignore empty headings:', function() {
     assert.equal(toc('#\n# \n# AAA\n# BBB\nfoo\nbar\nbaz#\n').content, [
       '- [AAA](#aaa)',

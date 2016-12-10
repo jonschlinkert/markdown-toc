@@ -44,13 +44,13 @@ toc.insert = require('./lib/insert');
 
 function generate(options) {
   var opts = utils.merge({firsth1: true, maxdepth: 6}, options);
-  var seen = opts.seen = {};
   var stripFirst = opts.firsth1 === false;
   if (opts.linkify !== false) opts.linkify = true;
 
   return function(md) {
     md.renderer.render = function(tokens) {
       tokens = tokens.slice();
+      var seen = {};
       var len = tokens.length, i = 0, num = 0;
       var tocstart = -1;
       var arr = [];
@@ -92,7 +92,7 @@ function generate(options) {
             seen[val]++;
           }
 
-          tok.seen = seen[val];
+          tok.seen = opts.num = seen[val];
           tok.slug = utils.slugify(val, opts);
           res.json.push(utils.pick(tok, ['content', 'slug', 'lvl', 'i', 'seen']));
           if (opts.linkify) tok = linkify(tok, opts);
@@ -178,13 +178,12 @@ function highest(arr) {
  * Turn headings into anchors
  */
 
-function linkify(tok, opts) {
+function linkify(tok, options) {
+  var opts = utils.merge({}, options);
   if (tok && tok.content) {
+    opts.num = tok.seen;
     var text = titleize(tok.content, opts);
     var slug = utils.slugify(tok.content, opts);
-    if (tok.seen) {
-      slug += '-' + tok.seen;
-    }
     slug = querystring.escape(slug);
     if (opts && typeof opts.linkify === 'function') {
       return opts.linkify(tok, text, slug, opts);
@@ -212,7 +211,8 @@ function titleize(str, opts) {
   }
   str = utils.getTitle(str);
   str = str.split(/<\/?[^>]+>/).join('');
-  return str.replace(/[ \t]+/g, ' ').trim();
+  str = str.split(/[ \t]+/).join(' ');
+  return str.trim();
 }
 
 /**
