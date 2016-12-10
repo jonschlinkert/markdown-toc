@@ -211,7 +211,8 @@ function titleize(str, opts) {
     return opts.titleize(str, opts);
   }
   str = utils.getTitle(str);
-  return str.replace(/ +/, ' ');
+  str = str.split(/<\/?[^>]+>/).join('');
+  return str.replace(/[ \t]+/g, ' ').trim();
 }
 
 /**

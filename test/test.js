@@ -96,6 +96,8 @@ describe('options: custom functions:', function() {
     assert.equal(toc('# <test>Foo').content, '- [Foo](#foo)');
     assert.equal(toc('# <test> Foo').content, '- [Foo](#-foo)');
     assert.equal(toc('# <test> Foo ').content, '- [Foo](#-foo)');
+    assert.equal(toc('# <div> Foo </div>').content, '- [Foo](#-foo-)');
+    assert.equal(toc('#  Foo <test>').content, '- [Foo](#foo-)');
   });
 
   it('should condense spaces in the heading text', function() {
