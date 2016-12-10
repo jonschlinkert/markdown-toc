@@ -382,4 +382,11 @@ describe('toc.insert', function() {
       return text.toLowerCase();
     }})).should.equal(read('test/expected/insert-options.md'));
   });
+  
+  it('should accept no links option', function() {
+    var str = read('test/fixtures/insert.md');
+    strip(toc.insert(str, { })).should.equal(read('test/expected/insert.md'));
+    strip(toc.insert(str, { linkify: true })).should.equal(read('test/expected/insert.md'));
+    strip(toc.insert(str, { linkify: false })).should.equal(read('test/expected/insert-no-links.md'));
+  });
 });

@@ -43,12 +43,12 @@ input.pipe(utils.concat(function(input) {
     var parsed = toc(input.toString());
     output(parsed);
   }
-}))
+}));
 
 input.on('error', function onErr(err) {
   console.error(err);
   process.exit(1);
-})
+});
 
 function output(parsed) {
   if (args.json) return console.log(JSON.stringify(parsed.json, null, '  '));

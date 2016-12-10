@@ -168,6 +168,8 @@ This is a b c.
 This is x y z.
 ```
 
+If passing the option `linkify:false` the resulting toc will not have links to the headers.
+
 ### Utility functions
 
 As a convenience to folks who wants to create a custom TOC, markdown-toc's internal utility methods are exposed:
