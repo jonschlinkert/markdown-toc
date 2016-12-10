@@ -10,13 +10,12 @@ coverage
 # npm
 node_modules
 npm-debug.log
-examples
 
 # misc
 _gh_pages
-benchmark
 bower_components
 vendor
 temp
 tmp
 TODO.md
+yarn.lock
