@@ -1,4 +1,4 @@
-# markdown-toc [![NPM version](https://img.shields.io/npm/v/markdown-toc.svg?style=flat)](https://www.npmjs.com/package/markdown-toc) [![NPM downloads](https://img.shields.io/npm/dm/markdown-toc.svg?style=flat)](https://npmjs.org/package/markdown-toc) [![Build Status](https://img.shields.io/travis/jonschlinkert/markdown-toc.svg?style=flat)](https://travis-ci.org/jonschlinkert/markdown-toc)
+# markdown-toc [![NPM version](https://img.shields.io/npm/v/markdown-toc.svg?style=flat)](https://www.npmjs.com/package/markdown-toc) [![NPM monthly downloads](https://img.shields.io/npm/dm/markdown-toc.svg?style=flat)](https://npmjs.org/package/markdown-toc)  [![NPM total downloads](https://img.shields.io/npm/dt/markdown-toc.svg?style=flat)](https://npmjs.org/package/markdown-toc) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/markdown-toc.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/markdown-toc)
 
 > Generate a markdown TOC (table of contents) with Remarkable.
 
@@ -24,6 +24,7 @@
   * [Related projects](#related-projects)
   * [Contributing](#contributing)
   * [Contributors](#contributors)
+  * [Release history](#release-history)
   * [Building docs](#building-docs)
   * [Running tests](#running-tests)
   * [Author](#author)
@@ -168,8 +169,6 @@ This is a b c.
 This is x y z.
 ```
 
-If passing the option `linkify:false` the resulting toc will not have links to the headers.
-
 ### Utility functions
 
 As a convenience to folks who wants to create a custom TOC, markdown-toc's internal utility methods are exposed:
@@ -275,11 +274,11 @@ Exclude the first h1-level heading in a file. For example, this prevents the fir
 
 ### Related projects
 
-* [gfm-code-blocks](https://www.npmjs.com/package/gfm-code-blocks): Extract gfm (GitHub Flavored Markdown) fenced code blocks from a string. | [homepage](https://github.com/jonschlinkert/gfm-code-blocks)
-* [markdown-link](https://www.npmjs.com/package/markdown-link): Micro util for generating a single markdown link. | [homepage](https://github.com/jonschlinkert/markdown-link)
-* [markdown-utils](https://www.npmjs.com/package/markdown-utils): Micro-utils for creating markdown snippets. | [homepage](https://github.com/jonschlinkert/markdown-utils)
-* [pretty-remarkable](https://www.npmjs.com/package/pretty-remarkable): Plugin for prettifying markdown with Remarkable using custom renderer rules. | [homepage](https://github.com/jonschlinkert/pretty-remarkable)
-* [remarkable](https://www.npmjs.com/package/remarkable): Markdown parser, done right. 100% Commonmark support, extensions, syntax plugins, high speed - all in… [more](https://github.com/jonschlinkert/remarkable) | [homepage](https://github.com/jonschlinkert/remarkable)
+* [gfm-code-blocks](https://www.npmjs.com/package/gfm-code-blocks): Extract gfm (GitHub Flavored Markdown) fenced code blocks from a string. | [homepage](https://github.com/jonschlinkert/gfm-code-blocks "Extract gfm (GitHub Flavored Markdown) fenced code blocks from a string.")
+* [markdown-link](https://www.npmjs.com/package/markdown-link): Micro util for generating a single markdown link. | [homepage](https://github.com/jonschlinkert/markdown-link "Micro util for generating a single markdown link.")
+* [markdown-utils](https://www.npmjs.com/package/markdown-utils): Micro-utils for creating markdown snippets. | [homepage](https://github.com/jonschlinkert/markdown-utils "Micro-utils for creating markdown snippets.")
+* [pretty-remarkable](https://www.npmjs.com/package/pretty-remarkable): Plugin for prettifying markdown with Remarkable using custom renderer rules. | [homepage](https://github.com/jonschlinkert/pretty-remarkable "Plugin for prettifying markdown with Remarkable using custom renderer rules.")
+* [remarkable](https://www.npmjs.com/package/remarkable): Markdown parser, done right. 100% Commonmark support, extensions, syntax plugins, high speed - all in… [more](https://github.com/jonschlinkert/remarkable) | [homepage](https://github.com/jonschlinkert/remarkable "Markdown parser, done right. 100% Commonmark support, extensions, syntax plugins, high speed - all in one.")
 
 ### Contributing
 
@@ -287,25 +286,27 @@ Pull requests and stars are always welcome. For bugs and feature requests, [plea
 
 ### Contributors
 
-| **Commits** | **Contributor**<br/> |  
-| --- | --- |  
-| 171 | [jonschlinkert](https://github.com/jonschlinkert) |  
-| 4   | [stefanwalther](https://github.com/stefanwalther) |  
-| 3   | [Marsup](https://github.com/Marsup) |  
-| 2   | [dvcrn](https://github.com/dvcrn) |  
-| 2   | [maxogden](https://github.com/maxogden) |  
-| 2   | [twang2218](https://github.com/twang2218) |  
-| 2   | [zeke](https://github.com/zeke) |  
-| 1   | [owzim](https://github.com/owzim) |  
-| 1   | [Vortex375](https://github.com/Vortex375) |  
-| 1   | [chendaniely](https://github.com/chendaniely) |  
-| 1   | [Feder1co5oave](https://github.com/Feder1co5oave) |  
-| 1   | [garygreen](https://github.com/garygreen) |  
-| 1   | [TehShrike](https://github.com/TehShrike) |  
-| 1   | [citizenmatt](https://github.com/citizenmatt) |  
-| 1   | [RichardBradley](https://github.com/RichardBradley) |  
-| 1   | [sethvincent](https://github.com/sethvincent) |  
-| 1   | [lu22do](https://github.com/lu22do) |
+| **Commits** | **Contributor**<br/> | 
+| --- | --- |
+| 178 | [jonschlinkert](https://github.com/jonschlinkert) |
+| 4 | [stefanwalther](https://github.com/stefanwalther) |
+| 3 | [Marsup](https://github.com/Marsup) |
+| 2 | [dvcrn](https://github.com/dvcrn) |
+| 2 | [maxogden](https://github.com/maxogden) |
+| 2 | [twang2218](https://github.com/twang2218) |
+| 2 | [angrykoala](https://github.com/angrykoala) |
+| 2 | [zeke](https://github.com/zeke) |
+| 1 | [Vortex375](https://github.com/Vortex375) |
+| 1 | [owzim](https://github.com/owzim) |
+| 1 | [chendaniely](https://github.com/chendaniely) |
+| 1 | [Feder1co5oave](https://github.com/Feder1co5oave) |
+| 1 | [garygreen](https://github.com/garygreen) |
+| 1 | [TehShrike](https://github.com/TehShrike) |
+| 1 | [citizenmatt](https://github.com/citizenmatt) |
+| 1 | [rafaelsteil](https://github.com/rafaelsteil) |
+| 1 | [RichardBradley](https://github.com/RichardBradley) |
+| 1 | [sethvincent](https://github.com/sethvincent) |
+| 1 | [lu22do](https://github.com/lu22do) |
 
 ### Building docs
 
@@ -339,4 +340,4 @@ Released under the [MIT license](https://github.com/jonschlinkert/markdown-toc/b
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.1.31, on September 27, 2016._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.2.0, on December 09, 2016._
