@@ -301,6 +301,15 @@ describe('toc', function() {
     ].join('\n'));
   });
 
+  it('should remove diacritics from the links', function() {
+    var actual = toc(read('test/fixtures/diacritics.md'));
+
+    actual.content.should.equal([
+      '- [Regras de formatação de código](#regras-de-formatacao-de-codigo)',
+      '- [Conteúdo de autenticação côncovo](#conteudo-de-autenticacao-concovo)'
+    ].join('\n'));
+  });
+
   it('should strip words from heading text, but not from urls:', function() {
     var actual = toc(read('test/fixtures/strip-words.md'), {
       strip: ['foo', 'bar', 'baz', 'fez']
