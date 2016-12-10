@@ -1,7 +1,6 @@
 'use strict';
 
 require('mocha');
-require('should');
 var fs = require('fs');
 var assert = require('assert');
 var inspect = require('util').inspect;
@@ -31,7 +30,7 @@ describe('plugin', function() {
       }
     });
 
-    actual.content.should.equal([
+    assert.equal(actual.content, [
       '- [~aaa~](#foo-aaa)',
       '- [~bbb~](#bar-bbb)',
       '- [~ccc~](#baz-ccc)',
@@ -49,7 +48,7 @@ describe('options: custom functions:', function() {
       }
     });
 
-    actual.content.should.equal([
+    assert.equal(actual.content, [
       '- [~aaa~](#foo-aaa)',
       '- [~bbb~](#bar-bbb)',
       '- [~ccc~](#baz-ccc)',
@@ -64,47 +63,52 @@ describe('options: custom functions:', function() {
         return '!' + str.replace(/[^\w]/g, '-') + '!';
       }
     });
-    actual.content.should.equal('- [Some Article](#!Some-Article!)');
+    assert.equal(actual.content, '- [Some Article](#!Some-Article!)');
   });
 
   it('should strip forward slashes in slugs', function() {
     var actual = toc('# Some/Article');
-    actual.content.should.equal('- [Some/Article](#somearticle)');
+    assert.equal(actual.content, '- [Some/Article](#somearticle)');
   });
 
   it('should strip backticks in slugs', function() {
     var actual = toc('# Some`Article`');
-    actual.content.should.equal('- [Some`Article`](#somearticle)');
+    assert.equal(actual.content, '- [Some`Article`](#somearticle)');
   });
 
   it('should strip CJK punctuations in slugs', function() {
     var actual = toc('# 存在，【中文】；《标点》、符号！的标题？');
-    actual.content.should.equal('- [存在，【中文】；《标点》、符号！的标题？](#%E5%AD%98%E5%9C%A8%E4%B8%AD%E6%96%87%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%E7%9A%84%E6%A0%87%E9%A2%98)');
+    assert.equal(actual.content, '- [存在，【中文】；《标点》、符号！的标题？](#%E5%AD%98%E5%9C%A8%E4%B8%AD%E6%96%87%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%E7%9A%84%E6%A0%87%E9%A2%98)');
   });
 
   it('should strip & in slugs', function() {
     var actual = toc('# Foo & Bar');
-    actual.content.should.equal('- [Foo & Bar](#foo--bar)');
+    assert.equal(actual.content, '- [Foo & Bar](#foo--bar)');
   });
 
   it('should escape the CJK characters in linkify', function() {
-    ''
-    toc('# 中文').content.should.equal('- [中文](#%E4%B8%AD%E6%96%87)');
-    toc('# かんじ').content.should.equal('- [かんじ](#%E3%81%8B%E3%82%93%E3%81%98)');
-    toc('# 한자').content.should.equal('- [한자](#%ED%95%9C%EC%9E%90)');
+    assert.equal(toc('# 中文').content, '- [中文](#%E4%B8%AD%E6%96%87)');
+    assert.equal(toc('# かんじ').content, '- [かんじ](#%E3%81%8B%E3%82%93%E3%81%98)');
+    assert.equal(toc('# 한자').content, '- [한자](#%ED%95%9C%EC%9E%90)');
+  });
+
+  it('should strip HTML tags from headings', function() {
+    assert.equal(toc('# <test>Foo').content, '- [Foo](#foo)');
+    assert.equal(toc('# <test> Foo').content, '- [Foo](#-foo)');
+    assert.equal(toc('# <test> Foo ').content, '- [Foo](#-foo)');
   });
 
   it('should condense spaces in the heading text', function() {
     var actual = toc('# Some    Article');
-    actual.content.should.equal('- [Some Article](#some----article)');
+    assert.equal(actual.content, '- [Some Article](#some----article)');
   });
 
-  it('should replace spaces with tabs', function() {
-    assert((toc('# Foo - bar').content) === '- [Foo - bar](#foo---bar)');
-    assert((toc('# Foo- - -bar').content) === '- [Foo- - -bar](#foo-----bar)');
-    assert((toc('# Foo---bar').content) === '- [Foo---bar](#foo---bar)');
-    assert((toc('# Foo- - -bar').content) === '- [Foo- - -bar](#foo-----bar)');
-    assert((toc('# Foo- -   -bar').content) === '- [Foo- -   -bar](#foo-------bar)');
+  it('should replace spaces in links with dashes', function() {
+    assert.equal(toc('# Foo - bar').content, '- [Foo - bar](#foo---bar)');
+    assert.equal(toc('# Foo- - -bar').content, '- [Foo- - -bar](#foo-----bar)');
+    assert.equal(toc('# Foo---bar').content, '- [Foo---bar](#foo---bar)');
+    assert.equal(toc('# Foo- - -bar').content, '- [Foo- - -bar](#foo-----bar)');
+    assert.equal(toc('# Foo- -   -bar').content, '- [Foo- - -bar](#foo-------bar)');
   });
 
   it('should allow a `filter` function to filter out unwanted bullets:', function() {
@@ -113,7 +117,7 @@ describe('options: custom functions:', function() {
         return str.indexOf('...') === -1;
       }
     });
-    actual.content.should.equal([
+    assert.equal(actual.content, [
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
       '    + [a.2](#a2)',
@@ -131,7 +135,7 @@ describe('options: custom functions:', function() {
 
 describe('toc', function() {
   it('should generate a TOC from markdown headings:', function() {
-    toc('# AAA\n# BBB\n# CCC\nfoo\nbar\nbaz').content.should.equal([
+    assert.equal(toc('# AAA\n# BBB\n# CCC\nfoo\nbar\nbaz').content, [
       '- [AAA](#aaa)',
       '- [BBB](#bbb)',
       '- [CCC](#ccc)'
@@ -139,7 +143,7 @@ describe('toc', function() {
   });
 
   it('should allow duplicate headings:', function() {
-    toc('# AAA\n# BBB\n# BBB\n# CCC\nfoo\nbar\nbaz').content.should.equal([
+    assert.equal(toc('# AAA\n# BBB\n# BBB\n# CCC\nfoo\nbar\nbaz').content, [
       '- [AAA](#aaa)',
       '- [BBB](#bbb)',
       '- [BBB](#bbb-1)',
@@ -148,14 +152,14 @@ describe('toc', function() {
   });
 
   it('should allow and ignore empty headings:', function() {
-    toc('#\n# \n# AAA\n# BBB\nfoo\nbar\nbaz#\n').content.should.equal([
+    assert.equal(toc('#\n# \n# AAA\n# BBB\nfoo\nbar\nbaz#\n').content, [
       '- [AAA](#aaa)',
       '- [BBB](#bbb)'
     ].join('\n'));
   });
 
   it('should handle dots, colons dashes and underscores correctly:', function() {
-    toc('# AAA:aaa\n# BBB.bbb\n# CCC-ccc\n# DDD_ddd\nfoo\nbar\nbaz').content.should.equal([
+    assert.equal(toc('# AAA:aaa\n# BBB.bbb\n# CCC-ccc\n# DDD_ddd\nfoo\nbar\nbaz').content, [
       '- [AAA:aaa](#aaaaaa)',
       '- [BBB.bbb](#bbbbbb)',
       '- [CCC-ccc](#ccc-ccc)',
@@ -164,7 +168,7 @@ describe('toc', function() {
   });
 
   it('should use a different bullet for each level', function() {
-    toc(read('test/fixtures/levels.md')).content.should.equal([
+    assert.equal(toc(read('test/fixtures/levels.md')).content, [
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
       '    + [a.2](#a2)',
@@ -173,7 +177,7 @@ describe('toc', function() {
   });
 
   it('should use a different bullet for each level', function() {
-    toc(read('test/fixtures/repeat-bullets.md')).content.should.equal([
+    assert.equal(toc(read('test/fixtures/repeat-bullets.md')).content, [
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
       '    + [a.2](#a2)',
@@ -183,7 +187,7 @@ describe('toc', function() {
   });
 
   it('should handle mixed heading levels:', function() {
-    toc(read('test/fixtures/mixed.md')).content.should.equal([
+    assert.equal(toc(read('test/fixtures/mixed.md')).content, [
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
       '    + [a.2](#a2)',
@@ -197,7 +201,7 @@ describe('toc', function() {
   });
 
   it('should ignore headings in fenced code blocks.', function() {
-    toc(read('test/fixtures/fenced-code-blocks.md')).content.should.equal([
+    assert.equal(toc(read('test/fixtures/fenced-code-blocks.md')).content, [
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
       '    + [a.2](#a2)',
@@ -211,26 +215,26 @@ describe('toc', function() {
   });
 
   it('should allow `maxdepth` to limit heading levels:', function() {
-    toc('# AAA\n## BBB\n### CCC', {maxdepth: 2}).content.should.equal([
+    assert.equal(toc('# AAA\n## BBB\n### CCC', {maxdepth: 2}).content, [
       '- [AAA](#aaa)',
       '  * [BBB](#bbb)'
     ].join('\n'));
   });
 
   it('should remove the first H1 when `firsth1` is false:', function() {
-    toc('# AAA\n## BBB\n### CCC', {firsth1: false}).content.should.equal([
+    assert.equal(toc('# AAA\n## BBB\n### CCC', {firsth1: false}).content, [
       '- [BBB](#bbb)',
       '  * [CCC](#ccc)'
     ].join('\n'));
   });
 
   it.skip('should correctly calculate `maxdepth` when `firsth1` is false:', function() {
-    toc('# AAA\n## BBB\n### CCC\n#### DDD', {maxdepth: 2, firsth1: false}).content.should.equal([
+    assert.equal(toc('# AAA\n## BBB\n### CCC\n#### DDD', {maxdepth: 2, firsth1: false}).content, [
       '- [BBB](#bbb)',
       '  * [CCC](#ccc)'
     ].join('\n'));
 
-    toc('## BBB\n### CCC\n#### DDD', {maxdepth: 2, firsth1: false}).content.should.equal([
+    assert.equal(toc('## BBB\n### CCC\n#### DDD', {maxdepth: 2, firsth1: false}).content, [
       '- [BBB](#bbb)',
       '  * [CCC](#ccc)'
     ].join('\n'));
@@ -241,7 +245,7 @@ describe('toc', function() {
       bullets: ['?']
     });
 
-    actual.content.should.equal([
+    assert.equal(actual.content, [
       '? [AAA](#aaa)',
       '? [BBB](#bbb)',
       '? [CCC](#ccc)'
@@ -253,7 +257,7 @@ describe('toc', function() {
       bullets: ['?']
     });
 
-    actual.content.should.equal([
+    assert.equal(actual.content, [
       '? [AAA](#aaa)',
       '  ? [BBB](#bbb)',
       '    ? [CCC](#ccc)'
@@ -262,7 +266,7 @@ describe('toc', function() {
 
   it('should rotate bullets when there are more levels than bullets defined:', function() {
     var actual = toc(read('test/fixtures/repeated-headings.md')).content;
-    actual.should.equal(read('test/expected/repeated-headings.md'));
+    assert.equal(actual, read('test/expected/repeated-headings.md'));
   });
 
   it('should wrap around the bullet point array', function() {
@@ -270,7 +274,7 @@ describe('toc', function() {
       bullets: ['*', '-']
     });
 
-    actual.content.should.equal([
+    assert.equal(actual.content, [
       '* [AAA](#aaa)',
       '  - [aaa](#aaa)',
       '    * [bbb](#bbb)',
@@ -288,7 +292,7 @@ describe('toc', function() {
       bullets: ['*', '1.', '-']
     });
 
-    actual.content.should.equal([
+    assert.equal(actual.content, [
       '* [AAA](#aaa)',
       '  1. [aaa](#aaa)',
       '    - [bbb](#bbb)',
@@ -304,7 +308,7 @@ describe('toc', function() {
   it('should remove diacritics from the links', function() {
     var actual = toc(read('test/fixtures/diacritics.md'));
 
-    actual.content.should.equal([
+    assert.equal(actual.content, [
       '- [Regras de formatação de código](#regras-de-formatacao-de-codigo)',
       '- [Conteúdo de autenticação côncovo](#conteudo-de-autenticacao-concovo)'
     ].join('\n'));
@@ -315,7 +319,7 @@ describe('toc', function() {
       strip: ['foo', 'bar', 'baz', 'fez']
     });
 
-    actual.content.should.equal([
+    assert.equal(actual.content, [
       '- [aaa](#foo-aaa)',
       '- [bbb](#bar-bbb)',
       '- [ccc](#baz-ccc)',
@@ -325,77 +329,84 @@ describe('toc', function() {
 });
 
 describe('toc tokens', function() {
-  var result = toc('# AAA\n## BBB\n### CCC');
-
   it('should return an object for customizing a toc:', function() {
-    result.should.be.an.object;
-    result.should.have.properties(['highest', 'tokens', 'content']);
+    var actual = toc('# AAA\n## BBB\n### CCC');
+    assert(actual);
+    assert.equal(typeof actual, 'object');
+    assert(actual.hasOwnProperty('content'));
+    assert(actual.hasOwnProperty('highest'));
+    assert(actual.hasOwnProperty('tokens'));
   });
 
   it('should return the `highest` heading level in the TOC:', function() {
-    toc('# AAA\n## BBB\n### CCC\n#### DDD').should.have.property('highest', 1);
-    toc('## BBB\n### CCC\n#### DDD').should.have.property('highest', 2);
-    toc('### CCC\n#### DDD').should.have.property('highest', 3);
+    assert.equal(toc('# AAA\n## BBB\n### CCC\n#### DDD').highest, 1);
+    assert.equal(toc('## BBB\n### CCC\n#### DDD').highest, 2);
+    assert.equal(toc('### CCC\n#### DDD').highest, 3);
   });
 
   it('should return an array of tokens:', function() {
-    result.tokens.should.be.an.array;
+    assert(Array.isArray(toc('# AAA\n## BBB\n### CCC').tokens));
   });
 
   it('should expose the `lvl` property on headings tokens:', function() {
-    result.tokens[1].should.have.property('lvl', 1);
-    result.tokens[4].should.have.property('lvl', 2);
-    result.tokens[7].should.have.property('lvl', 3);
+    var actual = toc('# AAA\n## BBB\n### CCC');
+    assert.equal(actual.tokens[1].lvl, 1);
+    assert.equal(actual.tokens[4].lvl, 2);
+    assert.equal(actual.tokens[7].lvl, 3);
   });
 });
 
 describe('json property', function() {
-  var result = toc('# AAA\n## BBB\n## BBB\n### CCC\nfoo');
   it('should expose a `json` property:', function() {
-    result.json.should.be.an.array;
-    result.json[0].should.have.properties(['content', 'lvl', 'slug']);
+    var actual = toc('# AAA\n## BBB\n## BBB\n### CCC\nfoo');
+    assert(Array.isArray(actual.json));
+    assert(actual.json[0].hasOwnProperty('content'));
+    assert(actual.json[0].hasOwnProperty('lvl'));
+    assert(actual.json[0].hasOwnProperty('slug'));
   });
 
   it('should return the `content` property for a heading:', function() {
-    toc('# AAA\n## BBB\n### CCC\n#### DDD').json[0].should.have.property('content', 'AAA');
-    toc('## BBB\n### CCC\n#### DDD').json[2].should.have.property('content', 'DDD');
-    toc('### CCC\n#### DDD').json[0].should.have.property('content', 'CCC');
+    assert.equal(toc('# AAA\n## BBB\n### CCC\n#### DDD').json[0].content, 'AAA');
+    assert.equal(toc('## BBB\n### CCC\n#### DDD').json[2].content, 'DDD');
+    assert.equal(toc('### CCC\n#### DDD').json[0].content, 'CCC');
   });
 });
 
 describe('toc.insert', function() {
   it('should retain trailing newlines in the given string', function() {
     var str = fs.readFileSync('test/fixtures/newline.md', 'utf8');
-    toc.insert(str).should.equal(fs.readFileSync('test/expected/newline.md', 'utf8'));
+    assert.equal(toc.insert(str), fs.readFileSync('test/expected/newline.md', 'utf8'));
   });
 
   it('should insert a markdown TOC beneath a `<!-- toc -->` comment.', function() {
     var str = read('test/fixtures/insert.md');
-    strip(toc.insert(str)).should.equal(read('test/expected/insert.md'));
+    assert.equal(strip(toc.insert(str)), read('test/expected/insert.md'));
   });
 
   it('should replace an old TOC between `<!-- toc -->...<!-- tocstop -->` comments.', function() {
     var str = read('test/fixtures/replace-existing.md');
-    strip(toc.insert(str)).should.equal(read('test/expected/replace-existing.md'));
+    assert.equal(strip(toc.insert(str)), read('test/expected/replace-existing.md'));
   });
 
   it('should insert the toc passed on the options.', function() {
     var str = read('test/fixtures/replace-existing.md');
-    strip(toc.insert(str, {toc: toc(str).content})).should.equal(read('test/expected/replace-existing.md'));
-    strip(toc.insert(str, {toc: '- Foo'})).should.equal(read('test/expected/foo.md'));
+    assert.equal(strip(toc.insert(str, {toc: toc(str).content})), read('test/expected/replace-existing.md'));
+    assert.equal(strip(toc.insert(str, {toc: '- Foo'})), read('test/expected/foo.md'));
   });
 
   it('should accept options', function() {
     var str = read('test/fixtures/insert.md');
-    strip(toc.insert(str, { slugify: function(text) {
+    var actual = toc.insert(str, { slugify: function(text) {
       return text.toLowerCase();
-    }})).should.equal(read('test/expected/insert-options.md'));
+    }});
+
+    assert.equal(strip(actual), read('test/expected/insert-options.md'));
   });
-  
+
   it('should accept no links option', function() {
     var str = read('test/fixtures/insert.md');
-    strip(toc.insert(str, { })).should.equal(read('test/expected/insert.md'));
-    strip(toc.insert(str, { linkify: true })).should.equal(read('test/expected/insert.md'));
-    strip(toc.insert(str, { linkify: false })).should.equal(read('test/expected/insert-no-links.md'));
+    assert.equal(strip(toc.insert(str, { })), read('test/expected/insert.md'));
+    assert.equal(strip(toc.insert(str, { linkify: true })), read('test/expected/insert.md'));
+    assert.equal(strip(toc.insert(str, { linkify: false })), read('test/expected/insert-no-links.md'));
   });
 });
