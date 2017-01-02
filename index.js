@@ -45,7 +45,7 @@ toc.insert = require('./lib/insert');
 function generate(options) {
   var opts = utils.merge({firsth1: true, maxdepth: 6}, options);
   var stripFirst = opts.firsth1 === false;
-  if (opts.linkify !== false) opts.linkify = true;
+  if (typeof opts.linkify === 'undefined') opts.linkify = true;
 
   return function(md) {
     md.renderer.render = function(tokens) {
