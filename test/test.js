@@ -100,6 +100,15 @@ describe('options: custom functions:', function() {
     assert.equal(toc('#  Foo <test>').content, '- [Foo](#foo-)');
   });
 
+  it('should not strip HTML tags from headings when `stripHeadingTags` is false', function() {
+    var opts = {stripHeadingTags: false};
+    assert.equal(toc('# <test>Foo', opts).content, '- [Foo](#testfoo)');
+    assert.equal(toc('# <test> Foo', opts).content, '- [Foo](#test-foo)');
+    assert.equal(toc('# <test> Foo ', opts).content, '- [Foo](#test-foo)');
+    assert.equal(toc('# <div> Foo </div>', opts).content, '- [Foo](#div-foo-div)');
+    assert.equal(toc('#  Foo <test>', opts).content, '- [Foo](#foo-test)');
+  });
+
   it('should condense spaces in the heading text', function() {
     var actual = toc('# Some    Article');
     assert.equal(actual.content, '- [Some Article](#some----article)');
