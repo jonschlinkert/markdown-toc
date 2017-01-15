@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "concat-stream": "^1.5.2",
+    "diacritics-map": "^0.1.0",
     "gray-matter": "^2.1.0",
     "lazy-cache": "^2.0.2",
     "list-item": "^1.1.1",
