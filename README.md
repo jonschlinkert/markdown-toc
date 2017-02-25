@@ -47,7 +47,7 @@ Usage: markdown-toc [--json] [-i] <input>
           (Without this flag, the default is to print the TOC to stdout.)
 ```
 
-## Highights
+## Highlights
 
 **Features**
 
