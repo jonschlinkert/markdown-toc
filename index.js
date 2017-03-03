@@ -184,7 +184,9 @@ function linkify(tok, options) {
     opts.num = tok.seen;
     var text = titleize(tok.content, opts);
     var slug = utils.slugify(tok.content, opts);
-    slug = querystring.escape(slug);
+    if (!options.keepDiacritics) {
+      slug = querystring.escape(slug);
+    }
     if (opts && typeof opts.linkify === 'function') {
       return opts.linkify(tok, text, slug, opts);
     }

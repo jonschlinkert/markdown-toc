@@ -4,7 +4,7 @@ var fs = require('fs');
 var toc = require('./index.js');
 var utils = require('./lib/utils');
 var args = utils.minimist(process.argv.slice(2), {
-  boolean: ['i', 'json']
+  boolean: ['i', 'json', 'keepDiacritics']
 });
 
 if (args._.length !== 1) {
@@ -15,6 +15,8 @@ if (args._.length !== 1) {
     '          or "-" to read from stdin.',
     '',
     '  --json: Print the TOC in json format',
+    '',
+    '  --keepDiacritics: Don\'t replace diacritics in links (Without this flag, the default is to replace ä to a etc.)',
     '',
     '  -i:     Edit the <input> file directly, injecting the TOC at <!-- toc -->',
     '          (Without this flag, the default is to print the TOC to stdout.)'
@@ -37,10 +39,10 @@ if (args._[0] !== '-') input = fs.createReadStream(args._[0]);
 
 input.pipe(utils.concat(function(input) {
   if (args.i) {
-    var newMarkdown = toc.insert(input.toString());
+    var newMarkdown = toc.insert(input.toString(), { keepDiacritics: args.keepDiacritics });
     fs.writeFileSync(args._[0], newMarkdown);
   } else {
-    var parsed = toc(input.toString());
+    var parsed = toc(input.toString(), { keepDiacritics: args.keepDiacritics });
     output(parsed);
   }
 }));
