@@ -39,10 +39,10 @@ if (args._[0] !== '-') input = fs.createReadStream(args._[0]);
 
 input.pipe(utils.concat(function(input) {
   if (args.i) {
-    var newMarkdown = toc.insert(input.toString(), { keepDiacritics: args.keepDiacritics });
+    var newMarkdown = toc.insert(input.toString(), args);
     fs.writeFileSync(args._[0], newMarkdown);
   } else {
-    var parsed = toc(input.toString(), { keepDiacritics: args.keepDiacritics });
+    var parsed = toc(input.toString(), args);
     output(parsed);
   }
 }));
