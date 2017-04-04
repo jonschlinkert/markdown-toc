@@ -55,9 +55,9 @@ Usage: markdown-toc [--json] [-i] <input>
 * Returns an object with the rendered TOC (on `content`), as well as a `json` property with the raw TOC object, so you can generate your own TOC using templates or however you want
 * Works with [repeated headings](https://gist.github.com/jonschlinkert/ac5d8122bfaaa394f896)
 * Uses sane defaults, so no customization is necessary, but you can if you need to.
-* [filter](#filter-headings) out headings you don't want
-* [Improve](#titleize) the headings you do want
-* Use a custom [slugify](#optionsslugify) function to change how links are created
+* [Filters](#filter-headings) out headings you don't want
+* [Improves](#titleize) the headings you do want
+* Uses a custom [slugify](#optionsslugify) function to change how links are created
 
 **Safe!**
 
