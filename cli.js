@@ -4,7 +4,10 @@ var fs = require('fs');
 var toc = require('./index.js');
 var utils = require('./lib/utils');
 var args = utils.minimist(process.argv.slice(2), {
-  boolean: ['i', 'json', 'keepDiacritics']
+  boolean: ['i', 'json', 'escapeQuery'],
+  default: {
+    'escapeQuery': true
+  }
 });
 
 if (args._.length !== 1) {
@@ -16,7 +19,7 @@ if (args._.length !== 1) {
     '',
     '  --json: Print the TOC in json format',
     '',
-    '  --keepDiacritics: Don\'t replace diacritics in links (Without this flag, the default is to replace ä to a etc.)',
+    '  --escapeQuery (default: true): Escape the query string and replace diacritics in links.',
     '',
     '  -i:     Edit the <input> file directly, injecting the TOC at <!-- toc -->',
     '          (Without this flag, the default is to print the TOC to stdout.)'

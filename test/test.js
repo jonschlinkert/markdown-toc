@@ -331,11 +331,11 @@ describe('toc', function() {
     ].join('\n'));
   });
 
-  it('should accept keepDiacritics option', function() {
+  it('should accept escapeQuery option', function() {
     var input = read('test/fixtures/umlauts.md');
     assert.equal(strip(toc.insert(input, { })), read('test/expected/umlauts-replace.md'));
-    assert.equal(strip(toc.insert(input, { keepDiacritics: false })), read('test/expected/umlauts-replace.md'));
-    assert.equal(strip(toc.insert(input, { keepDiacritics: true })), read('test/expected/umlauts-keep.md'));
+    assert.equal(strip(toc.insert(input, { escapeQuery: true })), read('test/expected/umlauts-replace.md'));
+    assert.equal(strip(toc.insert(input, { escapeQuery: false })), read('test/expected/umlauts-keep.md'));
   });
 
   it('should strip words from heading text, but not from urls:', function() {
