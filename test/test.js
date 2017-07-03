@@ -269,6 +269,14 @@ describe('toc', function() {
     ].join('\n'));
   });
 
+  it('should add a slug prefix, if defined:', function() {
+    assert.equal(toc('# AAA\n# BBB\n# CCC\nfoo\nbar\nbaz', {slug_prefix: 'test-'}).content, [
+      '- [AAA](#test-aaa)',
+      '- [BBB](#test-bbb)',
+      '- [CCC](#test-ccc)'
+    ].join('\n'));
+  });
+
   it('should rotate bullets when there are more levels than bullets defined:', function() {
     var actual = toc('# AAA\n## BBB\n### CCC', {
       bullets: ['?']
