@@ -243,6 +243,7 @@ function strip(str, opts) {
  * Expose utils
  */
 
+toc.utils = utils;
 toc.bullets = bullets;
 toc.linkify = linkify;
 toc.slugify = utils.slugify;
