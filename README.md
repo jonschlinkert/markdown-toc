@@ -1,4 +1,4 @@
-# markdown-toc [![NPM version](https://img.shields.io/npm/v/markdown-toc.svg?style=flat)](https://www.npmjs.com/package/markdown-toc) [![NPM monthly downloads](https://img.shields.io/npm/dm/markdown-toc.svg?style=flat)](https://npmjs.org/package/markdown-toc)  [![NPM total downloads](https://img.shields.io/npm/dt/markdown-toc.svg?style=flat)](https://npmjs.org/package/markdown-toc) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/markdown-toc.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/markdown-toc)
+# markdown-toc [![NPM version](https://img.shields.io/npm/v/markdown-toc.svg?style=flat)](https://www.npmjs.com/package/markdown-toc) [![NPM monthly downloads](https://img.shields.io/npm/dm/markdown-toc.svg?style=flat)](https://npmjs.org/package/markdown-toc)  [![NPM total downloads](https://img.shields.io/npm/dt/markdown-toc.svg?style=flat)](https://npmjs.org/package/markdown-toc) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/markdown-toc.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/markdown-toc) [![Windows Build Status](https://img.shields.io/appveyor/ci/jonschlinkert/markdown-toc.svg?style=flat&label=AppVeyor)](https://ci.appveyor.com/project/jonschlinkert/markdown-toc)
 
 > Generate a markdown TOC (table of contents) with Remarkable.
 
@@ -6,7 +6,7 @@
 
 - [Install](#install)
 - [CLI](#cli)
-- [Highights](#highights)
+- [Highlights](#highlights)
 - [Usage](#usage)
 - [API](#api)
   * [toc.plugin](#tocplugin)
@@ -36,15 +36,29 @@ $ npm install --save markdown-toc
 ## CLI
 
 ```
-Usage: markdown-toc [--json] [-i] <input>
+Usage: markdown-toc [options] <input>
 
-  input:  The markdown file to parse for table of contents,
-          or "-" to read from stdin.
+  input:        The Markdown file to parse for table of contents,
+                or "-" to read from stdin.
 
-  --json: Print the TOC in json format
+  -i:           Edit the <input> file directly, injecting the TOC at &lt;!-- toc --&gt;
+                (Without this flag, the default is to print the TOC to stdout.)
 
-  -i:     Edit the <input> file directly, injecting the TOC at <!-- toc -->
-          (Without this flag, the default is to print the TOC to stdout.)
+  --json:       Print the TOC in JSON format
+
+  --append:     Append a string to the end of the TOC
+
+  --bullets:    Bullets to use for items in the generated TOC
+                (Supports multiple bullets: --bullets "*" --bullets "-" --bullets "+")
+                (Default is "*".)
+
+  --maxdepth:   Use headings whose depth is at most maxdepth
+                (Default is 6.)
+
+  --no-firsth1: Include the first h1-level heading in a file
+
+  --no-stripHeadingTags: Do not strip extraneous HTML tags from heading
+                         text before slugifying
 ```
 
 ## Highlights
@@ -287,44 +301,45 @@ Pull requests and stars are always welcome. For bugs and feature requests, [plea
 
 ### Contributors
 
-| **Commits** | **Contributor** | 
-| --- | --- |
-| 190 | [jonschlinkert](https://github.com/jonschlinkert) |
-| 4 | [stefanwalther](https://github.com/stefanwalther) |
-| 3 | [Marsup](https://github.com/Marsup) |
-| 2 | [dvcrn](https://github.com/dvcrn) |
-| 2 | [maxogden](https://github.com/maxogden) |
-| 2 | [twang2218](https://github.com/twang2218) |
-| 2 | [angrykoala](https://github.com/angrykoala) |
-| 2 | [zeke](https://github.com/zeke) |
-| 1 | [Vortex375](https://github.com/Vortex375) |
-| 1 | [owzim](https://github.com/owzim) |
-| 1 | [chendaniely](https://github.com/chendaniely) |
-| 1 | [Feder1co5oave](https://github.com/Feder1co5oave) |
-| 1 | [garygreen](https://github.com/garygreen) |
-| 1 | [TehShrike](https://github.com/TehShrike) |
-| 1 | [citizenmatt](https://github.com/citizenmatt) |
-| 1 | [rafaelsteil](https://github.com/rafaelsteil) |
-| 1 | [RichardBradley](https://github.com/RichardBradley) |
-| 1 | [sethvincent](https://github.com/sethvincent) |
-| 1 | [lu22do](https://github.com/lu22do) |
+| **Commits** | **Contributor** |  
+| --- | --- |  
+| 196 | [jonschlinkert](https://github.com/jonschlinkert) |  
+| 4   | [stefanwalther](https://github.com/stefanwalther) |  
+| 3   | [Marsup](https://github.com/Marsup) |  
+| 2   | [dvcrn](https://github.com/dvcrn) |  
+| 2   | [maxogden](https://github.com/maxogden) |  
+| 2   | [twang2218](https://github.com/twang2218) |  
+| 2   | [angrykoala](https://github.com/angrykoala) |  
+| 2   | [zeke](https://github.com/zeke) |  
+| 1   | [Vortex375](https://github.com/Vortex375) |  
+| 1   | [owzim](https://github.com/owzim) |  
+| 1   | [chendaniely](https://github.com/chendaniely) |  
+| 1   | [Daniel-Mietchen](https://github.com/Daniel-Mietchen) |  
+| 1   | [Feder1co5oave](https://github.com/Feder1co5oave) |  
+| 1   | [garygreen](https://github.com/garygreen) |  
+| 1   | [TehShrike](https://github.com/TehShrike) |  
+| 1   | [citizenmatt](https://github.com/citizenmatt) |  
+| 1   | [rafaelsteil](https://github.com/rafaelsteil) |  
+| 1   | [RichardBradley](https://github.com/RichardBradley) |  
+| 1   | [sethvincent](https://github.com/sethvincent) |  
+| 1   | [lu22do](https://github.com/lu22do) |  
 
 ### Building docs
 
-_(This document was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme) (a [verb](https://github.com/verbose/verb) generator), please don't edit the readme directly. Any changes to the readme must be made in [.verb.md](.verb.md).)_
+_(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
 
-To generate the readme and API documentation with [verb](https://github.com/verbose/verb):
+To generate the readme, run the following command:
 
 ```sh
-$ npm install -g verb verb-generate-readme && verb
+$ npm install -g verbose/verb#dev verb-generate-readme && verb
 ```
 
 ### Running tests
 
-Install dev dependencies:
+Running and reviewing unit tests is a great way to get familiarized with a library and its API. You can install dependencies and run tests with the following command:
 
 ```sh
-$ npm install -d && npm test
+$ npm install && npm test
 ```
 
 ### Author
@@ -337,8 +352,8 @@ $ npm install -d && npm test
 ### License
 
 Copyright © 2017, [Jon Schlinkert](https://github.com/jonschlinkert).
-Released under the [MIT license](LICENSE).
+Released under the [MIT License](LICENSE).
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.4.1, on January 15, 2017._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.6.0, on September 19, 2017._
