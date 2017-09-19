@@ -8,7 +8,7 @@ var args = utils.minimist(process.argv.slice(2), {
   string: ['append', 'bullets'],
   default: {
     firsth1: true,
-    stripHeadingTags: true,
+    stripHeadingTags: true
   }
 });
 
@@ -26,7 +26,8 @@ if (args._.length !== 1) {
     '',
     '  --append:     Append a string to the end of the TOC',
     '',
-    '  --bullets:    The bullet to use for each item in the generated TOC',
+    '  --bullets:    Bullets to use for items in the generated TOC',
+    '                (Supports multiple bullets: --bullets "*" --bullets "-" --bullets "+")',
     '                (Default is "*".)',
     '',
     '  --maxdepth:   Use headings whose depth is at most maxdepth',
@@ -35,7 +36,7 @@ if (args._.length !== 1) {
     '  --no-firsth1: Include the first h1-level heading in a file',
     '',
     '  --no-stripHeadingTags: Do not strip extraneous HTML tags from heading',
-    '                         text before slugifying',
+    '                         text before slugifying'
   ].join('\n'));
   process.exit(1);
 }
