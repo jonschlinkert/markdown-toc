@@ -11,19 +11,22 @@
     "index.js"
   ],
   "dependencies": {
-    "concat-stream": "^1.5.1",
-    "gray-matter": "^2.0.2",
-    "lazy-cache": "^1.0.2",
+    "concat-stream": "^1.5.2",
+    "diacritics-map": "^0.1.0",
+    "gray-matter": "^2.1.0",
+    "lazy-cache": "^2.0.2",
+    "list-item": "^1.1.1",
     "markdown-link": "^0.1.1",
     "minimist": "^1.2.0",
     "mixin-deep": "^1.1.3",
-    "object.pick": "^1.1.1",
-    "remarkable": "^1.6.1",
-    "repeat-string": "^1.5.2"
+    "object.pick": "^1.2.0",
+    "remarkable": "^1.7.1",
+    "repeat-string": "^1.6.1",
+    "strip-color": "^0.1.0"
   },
   "devDependencies": {
-    "mocha": "*",
-    "should": "*"
+    "gulp-format-md": "^0.1.11",
+    "mocha": "^3.2.0"
   },
   "keywords": [
     "anchor",
@@ -31,23 +34,67 @@
     "docs",
     "document",
     "documentation",
-    "heading",
-    "markdown",
-    "md",
     "glossary",
+    "heading",
     "index",
     "links",
-    "reference",
+    "markdown",
+    "md",
+    "plugin",
     "readme",
+    "reference",
     "remarkable",
     "remarkableplugin",
-    "plugin",
     "render",
     "renderer",
-    "table-of-contents",
-    "table of contents",
     "table",
+    "table of contents",
+    "table-of-contents",
     "toc",
     "write"
+  ],
+  "version": "1.1.0",
+  "contributors": [
+    "(https://github.com/lu22do)",
+    "=^._.^= (http://maxogden.com)",
+    "Benjamin Schmitz (https://github.com/Vortex375)",
+    "Christian Raunitschka (raunitschka.de)",
+    "Daniel Chen (http://chendaniely.github.io)",
+    "David Mohl <github@dvcrn.io> (https://dvcrn.github.io)",
+    "Federico Soave (https://github.com/Feder1co5oave)",
+    "Gary Green (https://github.com/garygreen)",
+    "Jon Schlinkert <jon.schlinkert@sellside.com> (http://twitter.com/jonschlinkert)",
+    "Josh Duff (https://tehshrike.github.io)",
+    "Matt Ellis (http://sticklebackplastic.com)",
+    "Nicolas Morel <nicolas@morel.io> (https://github.com/Marsup)",
+    "Richard Bradley (https://github.com/RichardBradley)",
+    "Seth Vincent <sethvincent@gmail.com> (http://sethvincent.com)",
+    "Stefan Walther (http://qliksite.io)",
+    "Tao Wang <twang2218@gmail.com> (https://github.com/twang2218)",
+    "Zeke Sikelianos <zeke@sikelianos.com> (http://zeke.sikelianos.com)"
+  ],
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/markdown-toc/issues"
+  },
+  "files": [
+    "cli.js",
+    "index.js",
+    "lib"
+  ],
+  "bin": {
+    "markdown-toc": "cli.js"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "ignore": [
+    "actual",
+    "bower_components",
+    "fixtures",
+    "node_modules",
+    "temp",
+    "test",
+    "test.js",
+    "tmp"
   ]
 }
