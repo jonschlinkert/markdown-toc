@@ -5,7 +5,7 @@ var toc = require('./index.js');
 var utils = require('./lib/utils');
 var args = utils.minimist(process.argv.slice(2), {
   boolean: ['i', 'json', 'firsth1', 'stripHeadingTags'],
-  string: ['append', 'bullets'],
+  string: ['append', 'bullets', 'indent', 'open', 'close'],
   default: {
     firsth1: true,
     stripHeadingTags: true
@@ -36,7 +36,10 @@ if (args._.length !== 1) {
     '  --no-firsth1: Include the first h1-level heading in a file',
     '',
     '  --no-stripHeadingTags: Do not strip extraneous HTML tags from heading',
-    '                         text before slugifying'
+    '                         text before slugifying',
+    '',  
+    '  --indent:     Provide the indentation to use - defaults to \'  \'',
+    '                (to specify a tab, use the bash-escaped $\'\\t\')'
   ].join('\n'));
   process.exit(1);
 }
