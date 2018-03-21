@@ -4,6 +4,8 @@
 
 ## Table of Contents
 
+- [Install](#install)
+- [Quick Start](#quick-start)
 - [CLI](#cli)
 - [Highlights](#highlights)
 - [Usage](#usage)
