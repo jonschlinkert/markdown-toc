@@ -188,13 +188,13 @@ function linkify(tok, options) {
     var text = titleize(tok.content, opts);
     var slug = utils.slugify(tok.content, opts);
 
-    var new_text = clearToken(text, '[');
-    var new_slug = clearToken(slug, '#');
-    new_slug = querystring.escape(new_slug);
+    var slug = clearToken(slug, '#');
+    var text = stripMarkdownLink(text);
+    slug = querystring.escape(slug);
     if (opts && typeof opts.linkify === 'function') {
-      return opts.linkify(tok, new_text, new_slug, opts);
+      return opts.linkify(tok, text, slug, opts);
     }
-    tok.content = utils.mdlink(new_text, '#' + new_slug);
+    tok.content = utils.mdlink(text, '#' + slug);
   }
   return tok;
 }
@@ -202,9 +202,9 @@ function linkify(tok, options) {
 /**
  * Removes a given token from the string returning the new value.
  *
- * @param  {[String]} token
- * @param  {[String]} delimiter
- * @return {[String]} cleaned token
+ * @param  {String} token
+ * @param  {String} delimiter
+ * @return {String} cleaned token
  */
 
 function clearToken(token, delimiter) {
@@ -218,6 +218,21 @@ function clearToken(token, delimiter) {
   // console.log('Before: ' + token)
   // console.log('After : ' + new_token)
   return new_token
+}
+
+/**
+ * Regex match markdown link
+ * https://stackoverflow.com/questions/37462126/regex-match-markdown-link
+ *
+ * @param  {String} text
+ * @return {String} stripped text
+ */
+function stripMarkdownLink(text) {
+  // var str = String(text).replace(/__|\*|\#|(?:\[([^\]]*)\]\([^)]*\))/gm, '$1').trim();
+  var str = String(text).replace(/__|\*|\#|(?:\[([^\]]*)\]\([^)]*\))/gm, '').trim();
+  // console.log('Before: ' + text)
+  // console.log('After : ' + str)
+  return str;
 }
 
 /**

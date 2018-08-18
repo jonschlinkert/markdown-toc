@@ -128,6 +128,7 @@ describe('options: custom functions:', function() {
         return str.indexOf('...') === -1;
       }
     });
+    // console.log('actual.content: \n' + actual.content)
     assert.equal(actual.content, [
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
