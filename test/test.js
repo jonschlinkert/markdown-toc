@@ -344,6 +344,11 @@ describe('toc', function() {
       '- [ddd](#fez-ddd)'
     ].join('\n'));
   });
+
+  it('should strip out links and html on headings', function() {
+    assert.equal(toc('## Title <sub>[Go](#ite)</sub>').content, '- [Title](#title-go)');
+    assert.equal(toc('## Title <sub>[Go]</sub>').content, '- [Title [Go]](#title-go)');
+  });
 });
 
 describe('toc tokens', function() {
