@@ -187,13 +187,37 @@ function linkify(tok, options) {
     opts.num = tok.seen;
     var text = titleize(tok.content, opts);
     var slug = utils.slugify(tok.content, opts);
-    slug = querystring.escape(slug);
+
+    var new_text = clearToken(text, '[');
+    var new_slug = clearToken(slug, '#');
+    new_slug = querystring.escape(new_slug);
     if (opts && typeof opts.linkify === 'function') {
-      return opts.linkify(tok, text, slug, opts);
+      return opts.linkify(tok, new_text, new_slug, opts);
     }
-    tok.content = utils.mdlink(text, '#' + slug);
+    tok.content = utils.mdlink(new_text, '#' + new_slug);
   }
   return tok;
+}
+
+/**
+ * Removes a given token from the string returning the new value.
+ *
+ * @param  {[String]} token
+ * @param  {[String]} delimiter
+ * @return {[String]} cleaned token
+ */
+
+function clearToken(token, delimiter) {
+  var new_token
+  if(token.indexOf(delimiter) != -1) {
+    new_token = token.substring(0, token.lastIndexOf(delimiter)).trim();
+  }
+  else {
+    new_token = token
+  }
+  // console.log('Before: ' + token)
+  // console.log('After : ' + new_token)
+  return new_token
 }
 
 /**
