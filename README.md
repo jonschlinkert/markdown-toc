@@ -49,7 +49,7 @@ Usage: markdown-toc [options] <input>
   --append:     Append a string to the end of the TOC
 
   --bullets:    Bullets to use for items in the generated TOC
-                (Supports multiple bullets: --bullets "*" --bullets "-" --bullets "+")
+                (Supports multiple bullets: --bullets="*" --bullets="-" --bullets="+")
                 (Default is "*".)
 
   --maxdepth:   Use headings whose depth is at most maxdepth

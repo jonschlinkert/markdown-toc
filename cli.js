@@ -27,7 +27,7 @@ if (args._.length !== 1) {
     '  --append:     Append a string to the end of the TOC',
     '',
     '  --bullets:    Bullets to use for items in the generated TOC',
-    '                (Supports multiple bullets: --bullets "*" --bullets "-" --bullets "+")',
+    '                (Supports multiple bullets: --bullets="*" --bullets="-" --bullets="+")',
     '                (Default is "*".)',
     '',
     '  --maxdepth:   Use headings whose depth is at most maxdepth',
@@ -37,7 +37,7 @@ if (args._.length !== 1) {
     '',
     '  --no-stripHeadingTags: Do not strip extraneous HTML tags from heading',
     '                         text before slugifying',
-    '',  
+    '',
     '  --indent:     Provide the indentation to use - defaults to \'  \'',
     '                (to specify a tab, use the bash-escaped $\'\\t\')'
   ].join('\n'));
