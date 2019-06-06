@@ -188,6 +188,7 @@ function linkify(tok, options) {
     var text = titleize(tok.content, opts);
     var slug = utils.slugify(tok.content, opts);
     slug = querystring.escape(slug);
+    slug = slug.split("(").join("%28").split(")").join("%29");
     if (opts && typeof opts.linkify === 'function') {
       return opts.linkify(tok, text, slug, opts);
     }
@@ -212,9 +213,9 @@ function titleize(str, opts) {
   if (opts && typeof opts.titleize === 'function') {
     return opts.titleize(str, opts);
   }
-  str = utils.getTitle(str);
   str = str.split(/<\/?[^>]+>/).join('');
   str = str.split(/[ \t]+/).join(' ');
+  str = utils.getTitle(str);
   return str.trim();
 }
 
