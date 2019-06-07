@@ -5,7 +5,7 @@ var toc = require('./index.js');
 var utils = require('./lib/utils');
 var args = utils.minimist(process.argv.slice(2), {
   boolean: ['i', 'json', 'firsth1', 'stripHeadingTags'],
-  string: ['append', 'bullets', 'indent'],
+  string: ['append', 'bullets', 'indent', 'open', 'close'],
   default: {
     firsth1: true,
     stripHeadingTags: true

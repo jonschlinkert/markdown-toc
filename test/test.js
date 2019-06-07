@@ -405,6 +405,22 @@ describe('toc.insert', function() {
     assert.equal(strip(toc.insert(str)), read('test/expected/replace-existing.md'));
   });
 
+  it('should insert a markdown TOC beneath a `[comment]: <> (toc)` comment.', function() {
+    var str = read('test/fixtures/insert-regex.md');
+    assert.equal(strip(toc.insert(str, {
+      open: '[comment]: <> (toc)',
+      close: '[comment]: <> (tocstop)'
+    })), read('test/expected/insert-regex.md'));
+  });
+
+  it('should replace an old TOC between `[comment]: <> (toc)...[comment]: <> (tocstop)` comments.', function() {
+    var str = read('test/fixtures/replace-existing-regex.md');
+    assert.equal(strip(toc.insert(str, {
+      open: '[comment]: <> (toc)',
+      close: '[comment]: <> (tocstop)'
+    })), read('test/expected/replace-existing-regex.md'));
+  });
+
   it('should insert the toc passed on the options.', function() {
     var str = read('test/fixtures/replace-existing.md');
     assert.equal(strip(toc.insert(str, {toc: toc(str).content})), read('test/expected/replace-existing.md'));
