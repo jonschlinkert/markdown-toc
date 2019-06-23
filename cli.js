@@ -37,7 +37,7 @@ if (args._.length !== 1) {
     '',
     '  --no-stripHeadingTags: Do not strip extraneous HTML tags from heading',
     '                         text before slugifying',
-    '',  
+    '',
     '  --indent:     Provide the indentation to use - defaults to \'  \'',
     '                (to specify a tab, use the bash-escaped $\'\\t\')'
   ].join('\n'));
@@ -74,5 +74,5 @@ input.on('error', function onErr(err) {
 
 function output(parsed) {
   if (args.json) return console.log(JSON.stringify(parsed.json, null, '  '));
-  process.stdout.write(parsed.content);
+  process.stdout.write(parsed.content+'\n');
 }

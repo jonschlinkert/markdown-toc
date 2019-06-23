@@ -128,6 +128,7 @@ describe('options: custom functions:', function() {
         return str.indexOf('...') === -1;
       }
     });
+    // console.log('actual.content: \n' + actual.content)
     assert.equal(actual.content, [
       '- [AAA](#aaa)',
       '  * [a.1](#a1)',
@@ -342,6 +343,11 @@ describe('toc', function() {
       '- [ccc](#baz-ccc)',
       '- [ddd](#fez-ddd)'
     ].join('\n'));
+  });
+
+  it('should strip out links and html on headings', function() {
+    assert.equal(toc('## Title <sub>[Go](#ite)</sub>').content, '- [Title](#title-go)');
+    assert.equal(toc('## Title <sub>[Go]</sub>').content, '- [Title [Go]](#title-go)');
   });
 });
 
