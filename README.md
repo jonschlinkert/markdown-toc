@@ -33,6 +33,13 @@ Install with [npm](https://www.npmjs.com/):
 $ npm install --save markdown-toc
 ```
 
+On [Arch Linux](https://www.archlinux.org/) install the [nodejs-markdown-toc
+AUR package](https://aur.archlinux.org/packages/nodejs-markdown-toc/):
+
+```sh
+pacaur -S nodejs-markdown-toc
+```
+
 ## CLI
 
 ```
