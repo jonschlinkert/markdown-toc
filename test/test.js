@@ -18,9 +18,7 @@ function read(fp) {
 describe('plugin', function() {
   it('should work as a remarkable plugin', function() {
     function render(str, options) {
-      return new utils.Remarkable()
-        .use(toc.plugin(options))
-        .render(str);
+      return new utils.Remarkable.Remarkable().use(toc.plugin(options)).render(str)
     }
 
     var actual = render(read('test/fixtures/strip-words.md'), {
