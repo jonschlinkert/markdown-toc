@@ -426,4 +426,8 @@ describe('toc.insert', function() {
     assert.equal(strip(toc.insert(str, { linkify: true })), read('test/expected/insert.md'));
     assert.equal(strip(toc.insert(str, { linkify: false })), read('test/expected/insert-no-links.md'));
   });
+
+  it('should strip HTML entities from slugs', function() {
+    assert.equal(toc('# &lt;div&gt; elements').content, '- [&lt;div&gt; elements](#div-elements)');
+  })
 });
