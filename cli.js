@@ -12,14 +12,14 @@ var args = utils.minimist(process.argv.slice(2), {
   }
 });
 
-if (args._.length !== 1) {
+if (args._.length === 0) {
   console.error([
     'Usage: markdown-toc [options] <input> ',
     '',
-    '  input:        The Markdown file to parse for table of contents,',
+    '  input:        The Markdown files to parse for table of contents,',
     '                or "-" to read from stdin.',
     '',
-    '  -i:           Edit the <input> file directly, injecting the TOC at <!-- toc -->',
+    '  -i:           Edit the <input> files directly, injecting the TOC at <!-- toc -->',
     '                (Without this flag, the default is to print the TOC to stdout.)',
     '',
     '  --json:       Print the TOC in JSON format',
@@ -54,22 +54,23 @@ if (args.i && args._[0] === '-') {
   process.exit(1);
 }
 
-var input = process.stdin;
-if (args._[0] !== '-') input = fs.createReadStream(args._[0]);
+args._.forEach(function(filepath) {
+    var input = (filepath === '-') ? process.stdin : fs.createReadStream(filepath);
 
-input.pipe(utils.concat(function(input) {
-  if (args.i) {
-    var newMarkdown = toc.insert(input.toString(), args);
-    fs.writeFileSync(args._[0], newMarkdown);
-  } else {
-    var parsed = toc(input.toString(), args);
-    output(parsed);
-  }
-}));
+    input.pipe(utils.concat(function(input) {
+      if (args.i) {
+        var newMarkdown = toc.insert(input.toString(), args);
+        fs.writeFileSync(filepath, newMarkdown);
+      } else {
+        var parsed = toc(input.toString(), args);
+        output(parsed);
+      }
+    }));
 
-input.on('error', function onErr(err) {
-  console.error(err);
-  process.exit(1);
+    input.on('error', function onErr(err) {
+      console.error(err);
+      process.exit(1);
+    });
 });
 
 function output(parsed) {

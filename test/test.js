@@ -427,3 +427,43 @@ describe('toc.insert', function() {
     assert.equal(strip(toc.insert(str, { linkify: false })), read('test/expected/insert-no-links.md'));
   });
 });
+
+describe('cli.js', function() {
+  describe('when provided two Markdon files', function() {
+    var hook;
+    beforeEach(function(){
+      hook = captureStream(process.stdout);
+    });
+    it('should build a ToC for both files"', function() {
+      process.argv= ["node", "cli.js", "test/fixtures/basic.md", "test/fixtures/levels.md"];
+      require('../cli');
+      setTimeout(function() {
+        hook.unhook();
+        assert.equal(hook.captured(), `- [AAA](#aaa)
+- [BBB](#bbb)
+- [CCC](#ccc)
+- [DDD](#ddd)- [AAA](#aaa)
+  * [a.1](#a1)
+    + [a.2](#a2)
+      - [a.3](#a3)`);
+      });
+    });
+  });
+});
+
+function captureStream(stream){
+  var oldWrite = stream.write;
+  var buf = '';
+  stream.write = function(chunk, encoding, callback){
+    buf += chunk.toString(); // chunk is a String or Buffer
+    oldWrite.apply(stream, arguments);
+  }
+  return {
+    unhook: function unhook() {
+     stream.write = oldWrite;
+    },
+    captured: function() {
+      return buf;
+    }
+  };
+}
