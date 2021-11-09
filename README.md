@@ -38,10 +38,10 @@ $ npm install --save markdown-toc
 ```
 Usage: markdown-toc [options] <input>
 
-  input:        The Markdown file to parse for table of contents,
+  input:        The Markdown file(s) to parse for table of contents,
                 or "-" to read from stdin.
 
-  -i:           Edit the <input> file directly, injecting the TOC at <!-- toc -->;
+  -i:           Edit the <input> file(s) directly, injecting the TOC at <!-- toc -->;
                 (Without this flag, the default is to print the TOC to stdout.)
 
   --json:       Print the TOC in JSON format
