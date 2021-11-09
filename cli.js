@@ -19,7 +19,7 @@ if (args._.length === 0) {
     '  input:        The Markdown files to parse for table of contents,',
     '                or "-" to read from stdin.',
     '',
-    '  -i:           Edit the <input> files directly, injecting the TOC at <!-- toc -->',
+    '  -i:           Edit the <input> file(s) directly, injecting the TOC at <!-- toc -->',
     '                (Without this flag, the default is to print the TOC to stdout.)',
     '',
     '  --json:       Print the TOC in JSON format',
