@@ -16,7 +16,7 @@ if (args._.length === 0) {
   console.error([
     'Usage: markdown-toc [options] <input> ',
     '',
-    '  input:        The Markdown files to parse for table of contents,',
+    '  input:        The Markdown file(s) to parse for table of contents,',
     '                or "-" to read from stdin.',
     '',
     '  -i:           Edit the <input> file(s) directly, injecting the TOC at <!-- toc -->',
