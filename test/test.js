@@ -439,13 +439,15 @@ describe('cli.js', function() {
       require('../cli');
       setTimeout(function() {
         hook.unhook();
-        assert.equal(hook.captured(), `- [AAA](#aaa)
-- [BBB](#bbb)
-- [CCC](#ccc)
-- [DDD](#ddd)- [AAA](#aaa)
-  * [a.1](#a1)
-    + [a.2](#a2)
-      - [a.3](#a3)`);
+        assert.equal(hook.captured(), [
+            '- [AAA](#aaa)',
+            '- [BBB](#bbb)',
+            '- [CCC](#ccc)',
+            '- [DDD](#ddd)- [AAA](#aaa)',
+            '  * [a.1](#a1)',
+            '    + [a.2](#a2)',
+            '      - [a.3](#a3)'
+        ].join('\n'));
       });
     });
   });
