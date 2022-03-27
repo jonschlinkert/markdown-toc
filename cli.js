@@ -8,7 +8,8 @@ var args = utils.minimist(process.argv.slice(2), {
   string: ['append', 'bullets', 'indent'],
   default: {
     firsth1: true,
-    stripHeadingTags: true
+    stripHeadingTags: true,
+    num: false
   }
 });
 
