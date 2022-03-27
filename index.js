@@ -109,7 +109,7 @@ function generate(options) {
       res.tokens = tokens;
 
       if (stripFirst) result = result.slice(1);
-      if(options.num && result.length){
+      if(options.number && result.length){
         res.content = bullets_num(result);
       }else{
         res.content = bullets(result, opts);

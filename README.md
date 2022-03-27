@@ -263,7 +263,7 @@ Default: `*`
 
 The bullet to use for each item in the generated TOC. If passed as an array (`['*', '-', '+']`), the bullet point strings will be used based on the header depth.
 
-### options.num
+### options.number
 
 Type: `Boolean`
 
