@@ -47,7 +47,7 @@ toc.insert = require('./lib/insert');
  */
 
 function generate(options) {
-  var opts = utils.merge({firsth1: true, maxdepth: 6}, options);
+  var opts = utils.merge({firsth1: true, maxdepth: 6, number: false}, options);
   var stripFirst = opts.firsth1 === false;
   if (typeof opts.linkify === 'undefined') opts.linkify = true;
 
@@ -109,7 +109,7 @@ function generate(options) {
       res.tokens = tokens;
 
       if (stripFirst) result = result.slice(1);
-      if(options.number && result.length){
+      if(opts.number && result.length){
         res.content = bullets_num(result);
       }else{
         res.content = bullets(result, opts);
