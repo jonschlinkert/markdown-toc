@@ -4,7 +4,7 @@ var fs = require('fs');
 var toc = require('./index.js');
 var utils = require('./lib/utils');
 var args = utils.minimist(process.argv.slice(2), {
-  boolean: ['i', 'json', 'firsth1', 'stripHeadingTags'],
+  boolean: ['i', 'json', 'firsth1', 'stripHeadingTags','num'],
   string: ['append', 'bullets', 'indent'],
   default: {
     firsth1: true,
@@ -29,6 +29,8 @@ if (args._.length !== 1) {
     '  --bullets:    Bullets to use for items in the generated TOC',
     '                (Supports multiple bullets: --bullets "*" --bullets "-" --bullets "+")',
     '                (Default is "*".)',
+    '  --num:        use number bullets , like 1. 2. 3.',
+    '',
     '',
     '  --maxdepth:   Use headings whose depth is at most maxdepth',
     '                (Default is 6.)',
