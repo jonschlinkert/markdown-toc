@@ -52,7 +52,7 @@ Usage: markdown-toc [options] <input>
                 (Supports multiple bullets: --bullets "*" --bullets "-" --bullets "+")
                 (Default is "*".)
                 
-  --num:        use number bullets , like 1. 2. 3.
+  --number:        use number bullets , like 1. 2. 3.
   
   --maxdepth:   Use headings whose depth is at most maxdepth
                 (Default is 6.)
