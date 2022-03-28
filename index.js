@@ -211,7 +211,7 @@ function listitem_num() {
         parent = parent.parent;
       }
       ele.parent = parent.parent;
-      bullet = parent.lvl += 1;
+      bullet = parent.bullet += 1;
     }
     ele.bullet = bullet;
 
