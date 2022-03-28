@@ -9,6 +9,7 @@
 
 var utils = require('./lib/utils');
 var querystring = require('querystring');
+var repeat = require('repeat-string');
 
 /**
  * expose `toc`
@@ -46,7 +47,7 @@ toc.insert = require('./lib/insert');
  */
 
 function generate(options) {
-  var opts = utils.merge({firsth1: true, maxdepth: 6}, options);
+  var opts = utils.merge({firsth1: true, maxdepth: 6, number: false}, options);
   var stripFirst = opts.firsth1 === false;
   if (typeof opts.linkify === 'undefined') opts.linkify = true;
 
@@ -108,7 +109,11 @@ function generate(options) {
       res.tokens = tokens;
 
       if (stripFirst) result = result.slice(1);
-      res.content = bullets(result, opts);
+      if(opts.number && result.length){
+        res.content = bullets_num(result);
+      }else{
+        res.content = bullets(result, opts);
+      }
       res.content += (opts.append || '');
       return res;
     };
@@ -158,6 +163,74 @@ function bullets(arr, options) {
   }
   return res.join('\n');
 }
+
+
+
+/**
+ * Render markdown list bullets with number , like 1. 2. 3.
+ *
+ * @param  {Array} `arr` Array of listitem objects
+ * @return {String}
+ */
+function bullets_num(arr) {
+
+  var listitem = listitem_num();
+
+  var len = arr.length;
+  var res = [];
+  var i = 0;
+  var last_ele = arr[0];
+  last_ele.parent = null;
+  last_ele.bullet = 0;
+  while (i < len) {
+    var ele = arr[i++];
+    res.push(listitem(ele,last_ele));
+    last_ele = ele;
+  }
+  return res.join('\n');
+}
+
+/**
+ * Returns a function to generate a plain-text/markdown list-item with numurous beginning 
+ * Called by `bullets_num()`
+ *
+ * @return {String} returns a formatted list item
+ */
+function listitem_num() {
+  return function(ele,last_ele) {
+    var bullet = 1;
+    if(ele.lvl == last_ele.lvl){
+      ele.parent = last_ele.parent;
+      bullet = last_ele.bullet + 1;
+    }else if(ele.lvl > last_ele.lvl){
+      ele.parent = last_ele;
+      bullet = 1;
+    }else if(ele.lvl < last_ele.lvl){
+      var parent = last_ele.parent;
+      for(var i = 1; i < last_ele.lvl - ele.lvl; i += 1){
+        parent = parent.parent;
+      }
+      ele.parent = parent.parent;
+      bullet = parent.bullet += 1;
+    }
+    ele.bullet = bullet;
+
+    var indent = '  ';
+
+    var prefix = bullet + '. ';
+
+    var res = '';
+    res += repeat(indent, ele.lvl);
+    res += prefix;
+    res += ele.content;
+    return res;
+  };
+}
+
+
+
+
+
 
 /**
  * Get the highest heading level in the array, so
