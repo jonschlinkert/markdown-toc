@@ -3,7 +3,7 @@
 /*!
  * markdown-toc <https://github.com/jonschlinkert/markdown-toc>
  *
- * Copyright © 2013-2017, Jon Schlinkert.
+ * Copyright © 2013-2023, Jon Schlinkert.
  * Released under the MIT License.
  */
 
