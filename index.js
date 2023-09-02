@@ -26,9 +26,7 @@ module.exports = toc;
  */
 
 function toc(str, options) {
-  return new utils.Remarkable()
-    .use(generate(options))
-    .render(str);
+  return new utils.Remarkable.Remarkable().use(generate(options)).render(str)
 }
 
 /**
