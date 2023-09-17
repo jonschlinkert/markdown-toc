@@ -431,4 +431,8 @@ describe('toc.insert', function() {
     assert.equal(toc.insert('---\nExample\n'),  '---\nExample\n');
   })
 
+  it('should not generate a link to a commented heading', function() {
+    assert.equal(toc.insert(read('test/fixtures/commented-header.md')), read('test/expected/commented-header.md'));
+  })
+
 });
