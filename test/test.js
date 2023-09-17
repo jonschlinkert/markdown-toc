@@ -426,4 +426,9 @@ describe('toc.insert', function() {
     assert.equal(strip(toc.insert(str, { linkify: true })), read('test/expected/insert.md'));
     assert.equal(strip(toc.insert(str, { linkify: false })), read('test/expected/insert-no-links.md'));
   });
+
+  it('should not mangle a file with an initial horizontal rule', function() {
+    assert.equal(toc.insert('---\nExample\n'),  '---\nExample\n');
+  })
+
 });
