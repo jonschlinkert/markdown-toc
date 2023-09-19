@@ -426,4 +426,22 @@ describe('toc.insert', function() {
     assert.equal(strip(toc.insert(str, { linkify: true })), read('test/expected/insert.md'));
     assert.equal(strip(toc.insert(str, { linkify: false })), read('test/expected/insert-no-links.md'));
   });
+
+  it('should not mangle a file with an initial horizontal rule', function() {
+    assert.equal(toc.insert('---\nExample\n'),  '---\nExample\n');
+  })
+
+  it('should not generate a link to a commented heading', function() {
+    assert.equal(toc.insert(read('test/fixtures/commented-header.md')), read('test/expected/commented-header.md'));
+  })
+
+
+  it('should not strip inline code', function() {
+    assert.equal(toc.insert(read('test/fixtures/inline-code.md')), read('test/expected/inline-code.md'))
+  })
+
+  it('should strip symbols instead of making them dashes in slug', function() {
+    assert.equal(toc.insert(read('test/fixtures/symbols-in-heading.md')), read('test/expected/symbols-in-heading.md'))
+  })
+
 });
