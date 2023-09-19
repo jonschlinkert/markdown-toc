@@ -435,4 +435,9 @@ describe('toc.insert', function() {
     assert.equal(toc.insert(read('test/fixtures/commented-header.md')), read('test/expected/commented-header.md'));
   })
 
+
+  it('should not strip inline code', function() {
+    assert.equal(toc.insert(read('test/fixtures/inline-code.md')), read('test/expected/inline-code.md'))
+  })
+
 });
