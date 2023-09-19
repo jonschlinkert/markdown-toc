@@ -440,4 +440,8 @@ describe('toc.insert', function() {
     assert.equal(toc.insert(read('test/fixtures/inline-code.md')), read('test/expected/inline-code.md'))
   })
 
+  it('should strip symbols instead of making them dashes in slug', function() {
+    assert.equal(toc.insert(read('test/fixtures/symbols-in-heading.md')), read('test/expected/symbols-in-heading.md'))
+  })
+
 });
