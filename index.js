@@ -103,11 +103,16 @@ function generate(options) {
         }
       }
 
+      // Searching for the first H1 and removing it if set by the options
+      let firstH1Index = result.findIndex(e => e.lvl === 1);
+      if (stripFirst && firstH1Index >= 0) {
+        result.splice(firstH1Index, 1);
+      }
+
       opts.highest = highest(result);
       res.highest = opts.highest;
       res.tokens = tokens;
 
-      if (stripFirst) result = result.slice(1);
       res.content = bullets(result, opts);
       res.content += (opts.append || '');
       return res;
@@ -126,17 +131,11 @@ function generate(options) {
 function bullets(arr, options) {
   var opts = utils.merge({indent: '  '}, options);
   opts.chars = opts.chars || opts.bullets || ['-', '*', '+'];
-  var unindent = 0;
 
   var listitem = utils.li(opts);
   var fn = typeof opts.filter === 'function'
     ? opts.filter
     : null;
-
-  // Keep the first h1? This is `true` by default
-  if (opts && opts.firsth1 === false) {
-    unindent = 1;
-  }
 
   var len = arr.length;
   var res = [];
@@ -144,7 +143,6 @@ function bullets(arr, options) {
 
   while (i < len) {
     var ele = arr[i++];
-    ele.lvl -= unindent;
     if (fn && !fn(ele.content, ele, arr)) {
       continue;
     }
