@@ -83,19 +83,20 @@ function generate(options) {
 
         if (tok.lines && (tok.lines[0] > tocstart)) {
           var val = tok.content;
+          const lowerVal = val.toLowerCase();
           if (tok.children && tok.children[0].type === 'link_open') {
             if (tok.children[1].type === 'text') {
               val = tok.children[1].content;
             }
           }
 
-          if (!seen.hasOwnProperty(val)) {
-            seen[val] = 0;
+          if (!seen.hasOwnProperty(lowerVal)) {
+            seen[lowerVal] = 0;
           } else {
-            seen[val]++;
+            seen[lowerVal]++;
           }
 
-          tok.seen = opts.num = seen[val];
+          tok.seen = opts.num = seen[lowerVal];
           tok.slug = utils.slugify(val, opts);
           res.json.push(utils.pick(tok, ['content', 'slug', 'lvl', 'i', 'seen']));
           if (opts.linkify) tok = linkify(tok, opts);
