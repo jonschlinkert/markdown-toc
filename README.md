@@ -51,6 +51,22 @@ Assuming you want to add a TOC to README.md:
 2. Edit README.md and insert the following line where you want the TOC inserted:<br />`<!-- toc -->`
 3. `$ markdown-toc -i README.md`
 
+## Usage with Docker
+
+First, clone the repository and create the image using the command:
+
+```sh
+docker build -t markdown-toc:latest .
+```
+
+Then, use the Docker "run" command to launch the container (assuming that the file contains a line with `<!-- toc -->`):
+
+```sh
+docker run -it --rm -v "$(pwd):/src" -i /src/README.md
+```
+
+The command above assumes that the `README.md` file is in the current working directory. If not, replace `$(pwd)` with the path to the directory where the markdown file is.
+
 ## CLI
 
 ```
