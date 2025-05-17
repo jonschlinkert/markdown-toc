@@ -41,7 +41,7 @@
     "markdown-toc": "cli.js"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=6.0.0"
   },
   "scripts": {
     "test": "mocha"
@@ -56,7 +56,7 @@
     "minimist": "^1.2.0",
     "mixin-deep": "^1.1.3",
     "object.pick": "^1.2.0",
-    "remarkable": "^1.7.1",
+    "remarkable": "^2.0.1",
     "repeat-string": "^1.6.1",
     "strip-color": "^0.1.0"
   },

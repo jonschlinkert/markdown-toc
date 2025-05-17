@@ -5,6 +5,7 @@ var fs = require('fs');
 var assert = require('assert');
 var inspect = require('util').inspect;
 var utils = require('../lib/utils');
+var Remarkable = require('remarkable').Remarkable;
 var toc = require('..');
 
 function strip(str) {
@@ -18,7 +19,7 @@ function read(fp) {
 describe('plugin', function() {
   it('should work as a remarkable plugin', function() {
     function render(str, options) {
-      return new utils.Remarkable()
+      return new Remarkable()
         .use(toc.plugin(options))
         .render(str);
     }

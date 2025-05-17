@@ -8,6 +8,7 @@
  */
 
 var utils = require('./lib/utils');
+var Remarkable = require('remarkable').Remarkable;
 var querystring = require('querystring');
 
 /**
@@ -26,7 +27,7 @@ module.exports = toc;
  */
 
 function toc(str, options) {
-  return new utils.Remarkable()
+  return new Remarkable()
     .use(generate(options))
     .render(str);
 }
