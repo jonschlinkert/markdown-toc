@@ -426,4 +426,49 @@ describe('toc.insert', function() {
     assert.equal(strip(toc.insert(str, { linkify: true })), read('test/expected/insert.md'));
     assert.equal(strip(toc.insert(str, { linkify: false })), read('test/expected/insert-no-links.md'));
   });
+
+  it('should ignore extra <!-- toc --> markers after the first (issue #198)', function() {
+    var str = [
+      '# Title',
+      '',
+      '<!-- toc -->',
+      '',
+      '## Alpha',
+      '',
+      'Docs may show a literal <!-- toc --> in prose.',
+      '',
+      '## Beta'
+    ].join('\n');
+    var actual = toc.insert(str);
+    // First marker gets a TOC; the literal second marker remains in body text
+    assert(actual.indexOf('<!-- toc -->') !== -1);
+    assert(actual.indexOf('<!-- tocstop -->') !== -1);
+    assert(actual.indexOf('- [Alpha](#alpha)') !== -1);
+    assert(actual.indexOf('- [Beta](#beta)') !== -1);
+    assert(actual.indexOf('literal <!-- toc --> in prose') !== -1);
+    // Must not throw / must not treat the second open as tocstop
+    assert(actual.indexOf('markdown-toc only supports one') === -1);
+  });
+
+  it('should not throw when a filled TOC pair is followed by another <!-- toc --> (#198)', function() {
+    var str = [
+      '# Title',
+      '',
+      '<!-- toc -->',
+      '',
+      '- old',
+      '',
+      '<!-- tocstop -->',
+      '',
+      '## Alpha',
+      '',
+      'Example: <!-- toc -->',
+      '',
+      '## Beta'
+    ].join('\n');
+    var actual = toc.insert(str);
+    assert(actual.indexOf('- [Alpha](#alpha)') !== -1);
+    assert(actual.indexOf('- [Beta](#beta)') !== -1);
+    assert(actual.indexOf('Example: <!-- toc -->') !== -1);
+  });
 });
