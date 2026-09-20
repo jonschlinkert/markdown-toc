@@ -109,6 +109,17 @@ describe('options: custom functions:', function() {
     assert.equal(toc('#  Foo <test>', opts).content, '- [Foo](#foo-test)');
   });
 
+  it('should preserve HTML-like text inside inline code in headings', function() {
+    assert.equal(
+      toc('## The `<log-in>` element').content,
+      '- [The `<log-in>` element](#the-log-in-element)'
+    );
+    assert.equal(
+      toc('## The `<log-in>` element', {stripHeadingTags: false}).content,
+      '- [The `<log-in>` element](#the-log-in-element)'
+    );
+  });
+
   it('should condense spaces in the heading text', function() {
     var actual = toc('# Some    Article');
     assert.equal(actual.content, '- [Some Article](#some----article)');

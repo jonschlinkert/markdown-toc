@@ -213,7 +213,8 @@ function titleize(str, opts) {
     return opts.titleize(str, opts);
   }
   str = utils.getTitle(str);
-  str = str.split(/<\/?[^>]+>/).join('');
+  // Preserve inline code so HTML-like text inside backticks is kept (issue #170)
+  str = utils.stripHtmlTags(str);
   str = str.split(/[ \t]+/).join(' ');
   return str.trim();
 }
